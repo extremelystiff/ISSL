@@ -6,10 +6,105 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Insurgency Sandstorm Server Setup</title>
 	<style>
-	textarea {
-		width: 100%;
-		height: 200px;
-	}
+/* General Styling */
+body {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    color: #f8c400;  /* Gold-like color for headers */
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+select, input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Dividing Sections */
+div {
+    margin-bottom: 40px;
+}
+
+/* Color for Selected Options in Dropdown */
+select option:checked {
+    background-color: #555;
+}
+
+/* For labels of checkboxes */
+label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* Button Styles (if you have any buttons) */
+button {
+    background-color: #f8c400;
+    color: #1e1e1e;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e1b000;
+}
+
+/* Responsive */
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    select, input[type="text"] {
+        width: calc(100% - 20px);
+    }
+}
+
 	</style>
 </head>
 
