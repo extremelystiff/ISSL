@@ -163,14 +163,10 @@ input[type="checkbox"] {
 		<input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535">
 		<label for="scenario">Choose a Scenario:</label>
 		<select name="scenario" id="scenario">
-			<!-- Add available scenarios here -->
-			<option value="Scenario_Refinery_Push_Security">Refinery Push Security</option>
+			
+			<option value="Oilfield?Scenario_Refinery_Push_Security">Refinery Push Security</option>
 		</select>
-		<label for="map">Choose a Map:</label>
-		<select name="map" id="map">
-			<!-- Add available maps here -->
-			<option value="Oilfield">Oilfield</option>
-		</select>
+
 <!-- [Other form inputs remain unchanged] -->
 <label for="password">Password:</label>
 <input type="text" id="password" name="password" placeholder="YourServerPassword">
@@ -200,7 +196,6 @@ document.getElementById('serverForm').addEventListener('submit', function (e) {
 	var port = document.getElementById('port').value;
 	var queryPort = document.getElementById('queryPort').value;
 	var scenario = document.getElementById('scenario').value;
-	var map = document.getElementById('map').value;
 	var password = document.getElementById('password').value;
         var enableCheats = document.getElementById('enableCheats').checked;
 	var password = document.getElementById('password').value;
@@ -215,7 +210,7 @@ document.getElementById('serverForm').addEventListener('submit', function (e) {
 	"InsurgencyServer.exe" :
 	"Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
 	
-    var travelParams = `${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers}`;
+    var travelParams = `${scenario}?MaxPlayers=${maxPlayers}`;
     
     if (password) travelParams += `?Password=${password}`;
     var gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
