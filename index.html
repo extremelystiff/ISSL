@@ -134,46 +134,54 @@ button:hover {
 			<!-- Add available maps here -->
 			<option value="Oilfield">Oilfield</option>
 		</select>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="YourServerPassword">
-        <label for="enableCheats">Enable Cheats:</label>
-        <input type="checkbox" id="enableCheats" name="enableCheats">
-        <input type="submit" value="Generate Config">
+<!-- [Other form inputs remain unchanged] -->
+<label for="password">Password:</label>
+<input type="password" id="password" name="password" placeholder="YourServerPassword">
+<label for="gameStatsToken">GameStats Token:</label>
+<input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="YourGameStatsToken">
+<label for="gsltToken">GSLT Token:</label>
+<input type="text" id="gsltToken" name="gsltToken" placeholder="YourGSLTToken">
+<label for="enableGameStats">Enable GameStats:</label>
+<input type="checkbox" id="enableGameStats" name="enableGameStats">
+<label for="officialRules">Use Official Rules:</label>
+<input type="checkbox" id="officialRules" name="officialRules">
+<input type="submit" value="Generate Config">
+
     </form>
     <label for="configOutput">Generated Config:</label>
     <textarea id="configOutput" readonly></textarea>
 
     <script>
-        document.getElementById('serverForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent the form from submitting
+document.getElementById('serverForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-            // Gather all needed values
-            var os = document.getElementById('os').value;
-            var hostname = document.getElementById('hostname').value;
-            var maxPlayers = document.getElementById('maxPlayers').value;
-            var port = document.getElementById('port').value;
-            var queryPort = document.getElementById('queryPort').value;
-            var scenario = document.getElementById('scenario').value;
-            var map = document.getElementById('map').value;
-            var password = document.getElementById('password').value;
-            var enableCheats = document.getElementById('enableCheats').checked;
+    // [Fetching other variables remain unchanged]
+    var password = document.getElementById('password').value;
+    var gameStatsToken = document.getElementById('gameStatsToken').value;
+    var gsltToken = document.getElementById('gsltToken').value;
+    var enableGameStats = document.getElementById('enableGameStats').checked;
+    var officialRules = document.getElementById('officialRules').checked;
 
-            // Generate the configuration string
-            var configString = "";
+    // [Base command logic remains the same]
+    var travelParams = `${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers}`;
+    
+    if (password) travelParams += `?Password=${password}`;
+    if (gsltToken) travelParams += `?GSLTToken=${gsltToken}`;
 
-            var baseCommand = os === "windows" ?
-                "InsurgencyServer.exe" :
-                "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
+    var cheatParam = enableCheats ? " -EnableCheats" : "";
+    var gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
+    var officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
+    
+    configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${officialRulesParam}`;
 
-            var travelParams = `${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers}?Password=${password}`;
-            
-            var cheatParam = enableCheats ? " -EnableCheats" : "";
+    document.getElementById('configOutput').value = configString;
+});
 
-            configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}`;
+document.getElementById('gameStatsToken').addEventListener('input', function (e) {
+    // Auto-check enableGameStats if gameStatsToken is provided
+    document.getElementById('enableGameStats').checked = !!e.target.value.trim();
+});
 
-            // Display the generated string in the textarea
-            document.getElementById('configOutput').value = configString;
-        });
 	</script>
 </body>
 <head>
