@@ -100,17 +100,29 @@ button:hover, input[type="submit"]:hover {
 /* Checkbox Group Styling */
 .checkbox-group {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);  /* 3 columns. Adjust as needed. */
-    gap: 10px;  /* Space between checkboxes */
-    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr);  /* Increased columns to 4 */
+    gap: 10px 15px;  /* Adjusted gaps between checkboxes: vertical horizontal */
+    margin-bottom: 15px;  /* Reduced bottom margin */
 }
 
 label {
     display: flex;
     align-items: center;
+    margin: 0;  /* Removed bottom margin */
+    font-size: 0.9em;  /* Reduced font size */
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
 }
 
 /* Responsive Styling */
+@media only screen and (max-width: 1200px) {
+    .checkbox-group {
+        grid-template-columns: repeat(3, 1fr);  /* 3 columns for mid-sized screens */
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .checkbox-group {
         grid-template-columns: repeat(2, 1fr);  /* 2 columns for smaller screens */
@@ -122,7 +134,6 @@ label {
         grid-template-columns: 1fr;  /* 1 column for very small screens */
     }
 }
-
 
 	</style>
 </head>
