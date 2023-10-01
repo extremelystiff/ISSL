@@ -233,14 +233,19 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 <head>
     <title>Map Cycle Configuration</title>
     <script>
-        function toggleAllCheckboxes(category) {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"][value^="Scenario_' + category + '"]');
-            var checkAll = document.getElementById('checkAll_' + category);
-            
-            checkboxes.forEach(function(checkbox) {
-                checkbox.checked = checkAll.checked;
-            });
-        }
+	function toggleAllCheckboxes(category) {
+	    var checkboxes = document.querySelectorAll('input[type="checkbox"][value^="Scenario_' + category + '"]');
+	    var checkAll = document.getElementById('checkAll_' + category);
+	    
+	    console.log('Category:', category);
+	    console.log('Master Checkbox:', checkAll);
+	    console.log('Toggling these checkboxes:', checkboxes);
+	    
+	    checkboxes.forEach(function(checkbox) {
+	        checkbox.checked = checkAll.checked;
+	    });
+	}
+
     </script>
 </head>
 
