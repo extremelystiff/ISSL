@@ -153,9 +153,9 @@ input[type="checkbox"] {
 		<label for="maxPlayers">Maximum Players:</label>
 		<input type="number" id="maxPlayers" name="maxPlayers" placeholder="28">
 		<label for="port">Port:</label>
-		<input type="number" id="port" name="port" placeholder="27102">
+		<input type="number" id="port" name="port" placeholder="27102" min="1" max="65535">
 		<label for="queryPort">Query Port:</label>
-		<input type="number" id="queryPort" name="queryPort" placeholder="27131">
+		<input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535">
 		<label for="scenario">Choose a Scenario:</label>
 		<select name="scenario" id="scenario">
 			<!-- Add available scenarios here -->
