@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurgency Sandstorm Server Setup</title>
+</head>
+
+<body>
+    <h1>Setup Your Insurgency Sandstorm Server</h1>
+    <form action="your_server_side_script" method="post">
+        <label for="os">Choose your OS:</label>
+        <select name="os" id="os">
+            <option value="windows">Windows</option>
+            <option value="linux">Linux</option>
+        </select>
+
+        <label for="hostname">Hostname:</label>
+        <input type="text" id="hostname" name="hostname" placeholder="My Server">
+
+        <label for="maxPlayers">Maximum Players:</label>
+        <input type="number" id="maxPlayers" name="maxPlayers" placeholder="28">
+
+        <label for="port">Port:</label>
+        <input type="number" id="port" name="port" placeholder="27102">
+
+        <label for="queryPort">Query Port:</label>
+        <input type="number" id="queryPort" name="queryPort" placeholder="27131">
+
+        <label for="scenario">Choose a Scenario:</label>
+        <select name="scenario" id="scenario">
+            <!-- Add available scenarios here -->
+            <option value="Scenario_Refinery_Push_Security">Refinery Push Security</option>
+        </select>
+
+        <label for="map">Choose a Map:</label>
+        <select name="map" id="map">
+            <!-- Add available maps here -->
+            <option value="Oilfield">Oilfield</option>
+        </select>
+
+        <!-- Add more fields as per your requirement -->
+
+        <input type="submit" value="Generate Config">
+    </form>
+</body>
+
+<head>
+	<title>Map Cycle Configuration</title>
+</head>
+
+<body>
+	<h1>Configure Your Map Cycle</h1>
+	<p>Select the scenarios you'd like to include in your MapCycle.txt file:</p>
+	<form id="mapCycleForm">
+		<div>
+			<h2>Bab</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Push_Security"> Push Security</label>
+			<br> </div>
+		<div>
+			<h2>Citadel</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Defusal"> Defusal</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Frontline"> Frontline</label>
+			<br> </div>
+		<div>
+			<h2>Crossing (Canyon)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Crossing_Team_Deathmatch"> Team Deathmatch</label>
+			<br> </div>
+		<div>
+			<h2>Farmhouse</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Farmhouse_Team_Deathmatch"> Team Deathmatch</label>
+			<br> </div>
+		<div>
+			<h2>Gap</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Firefight"> Firefight</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Gap_Defusal"> Defusal</label>
+			<br> </div>
+		<div>
+			<h2>Hideout (Town)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hideout_Team_Deathmatch"> Team Deathmatch</label>
+			<br> </div>
+		<div>
+			<h2>Hillside (Sinjar)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Push_Security"> Push Security (INS2014 layout)</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Hillside_Team_Deathmatch"> Team Deathmatch</label>
+			<br> </div>
+		<div>
+			<h2>Ministry</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Firefight_A"> Firefight</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Ministry_Team_Deathmatch"> Team Deathmatch</label>
+			<br> </div>
+		<div>
+			<h2>Outskirts (Compound)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Team_Deathmatch"> Team Deathmatch</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Outskirts_Defusal"> Defusal</label>
+			<br> </div>
+		<div>
+			<h2>Precinct</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Team_Deathmatch"> Team Deathmatch</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Precinct_Defusal"> Defusal</label>
+			<br> </div>
+		<div>
+			<h2>Refinery (Oilfield)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Team_Deathmatch"> Team Deathmatch</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Refinery_Survival"> Survival</label>
+			<br> </div>
+		<div>
+			<h2>Summit (Mountain)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Skirmish"> Skirmish</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Team_Deathmatch"> Team Deathmatch</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Summit_Survival"> Survival</label>
+			<br> </div>
+		<div>
+			<h2>Power Plant (PowerPlant)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Powerplant_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_PowerPlant_Frontline"> Frontline</label>
+			<br> </div>
+		<div>
+			<h2>Tell</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tell_Frontline"> Frontline</label>
+			<br> </div>
+		<div>
+			<h2>Tideway (Buhriz)</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Firefight_West"> Firefight West</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Tideway_Survival"> Survival</label>
+			<br> </div>
+		<div>
+			<h2>Bab</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Bab_Push_Security"> Push Security</label>
+			<br> </div>
+		<div>
+			<h2>Citadel</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Firefight_East"> Firefight East</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Citadel_Frontline"> Frontline</label>
+			<br> </div>
+		<div>
+			<h2>Prison</h2>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Firefight"> Firefight</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_Prison_Defusal"> Defusal</label>
+			<br> </div>
+		<div>
+			<h2>Last Light</h2>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Checkpoint_Security"> Checkpoint Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Domination"> Domination</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Firefight"> Firefight</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Ambush"> Ambush</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Survival"> Survival</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Push_Insurgents"> Push Insurgents</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Push_Security"> Push Security</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Outpost"> Outpost</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Defusal"> Defusal</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Frontline"> Frontline</label>
+			<br>
+			<label>
+				<input type="checkbox" value="Scenario_LastLight_Team_Deathmatch"> Team Deathmatch</label>
+			<br> </div>
+		<button type="button" onclick="generateMapCycle()">Generate MapCycle.txt</button>
+	</form>
+	<h2>Generated MapCycle.txt</h2>
+	<textarea id="output" rows="10" cols="50" readonly></textarea>
+	<script>
+	function generateMapCycle() {
+		const form = document.getElementById('mapCycleForm');
+		const output = document.getElementById('output');
+		let scenarios = [];
+		// Loop through all checkboxes
+		for(let i = 0; i < form.elements.length; i++) {
+			if(form.elements[i].type === 'checkbox' && form.elements[i].checked) {
+				scenarios.push(form.elements[i].value);
+			}
+		}
+		// Update the textarea with the selected scenarios
+		output.value = scenarios.join('\n');
+	}
+	</script>
+</body>
+
+</html>
