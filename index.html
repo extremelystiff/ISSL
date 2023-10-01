@@ -238,18 +238,18 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 <head>
     <title>Map Cycle Configuration</title>
     <script>
-	function toggleAllCheckboxes(category) {
-	    var checkboxes = document.querySelectorAll('input[type="checkbox"][value^="Scenario_' + category + '"]');
-	    var checkAll = document.getElementById('checkAll_' + category);
-	    
-	    console.log('Category:', category);
-	    console.log('Master Checkbox:', checkAll);
-	    console.log('Toggling these checkboxes:', checkboxes);
-	    
-	    checkboxes.forEach(function(checkbox) {
-	        checkbox.checked = checkAll.checked;
-	    });
-	}
+function selectAllGameMode(gameMode) {
+    // Select checkboxes whose value contains the gameMode string
+    var checkboxes = document.querySelectorAll('input[type="checkbox"][value*="' + gameMode + '"]');
+    
+    // Check if all checkboxes are already checked
+    var allChecked = Array.from(checkboxes).every(chk => chk.checked);
+    
+    // Check/uncheck based on the allChecked status
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = !allChecked;
+    });
+}
 
     </script>
 </head>
@@ -259,20 +259,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
     <p>Select the scenarios you'd like to include in your MapCycle.txt file:</p>
 
     <!-- Checkboxes for categories -->
-    <label><input type="checkbox" id="checkAll_AllScenarios" onclick="toggleAllCheckboxes('All')"> All Scenarios</label><br>
-    <label><input type="checkbox" id="checkAll_CheckpointSecurity" onclick="toggleAllCheckboxes('Checkpoint_Security')"> Checkpoint Security</label><br>
-    <label><input type="checkbox" id="checkAll_CheckpointInsurgents" onclick="toggleAllCheckboxes('Checkpoint_Insurgents')"> Checkpoint Insurgents</label><br>
-    <label><input type="checkbox" id="checkAll_Firefight" onclick="toggleAllCheckboxes('Firefight')"> Firefight</label><br>
-    <label><input type="checkbox" id="checkAll_PushSecurity" onclick="toggleAllCheckboxes('Push_Security')"> Push Security</label><br>
-    <label><input type="checkbox" id="checkAll_PushInsurgents" onclick="toggleAllCheckboxes('Push_Insurgents')"> Push Insurgents</label><br>
-    <label><input type="checkbox" id="checkAll_Domination" onclick="toggleAllCheckboxes('Domination')"> Domination</label><br>
-    <label><input type="checkbox" id="checkAll_TeamDeathmatch" onclick="toggleAllCheckboxes('TeamDeathmatch')"> Team Deathmatch</label><br>
-    <label><input type="checkbox" id="checkAll_Outpost" onclick="toggleAllCheckboxes('Outpost')"> Outpost</label><br>
-    <label><input type="checkbox" id="checkAll_Survival" onclick="toggleAllCheckboxes('Survival')"> Survival</label><br>
-    <label><input type="checkbox" id="checkAll_Defusual" onclick="toggleAllCheckboxes('Defusual')"> Defusual</label><br>
-    <label><input type="checkbox" id="checkAll_Frontline" onclick="toggleAllCheckboxes('Frontline')"> Frontline</label><br>
-    <label><input type="checkbox" id="checkAll_Skirmish" onclick="toggleAllCheckboxes('Skirmish')"> Skirmish</label><br>
-    <label><input type="checkbox" id="checkAll_Ambush" onclick="toggleAllCheckboxes('Ambush')"> Ambush</label><br>
+<button type="button" onclick="selectAllGameMode('Defusal')">Select All Defusal</button>
+<button type="button" onclick="selectAllGameMode('Domination')">Select All Domination</button>
+<!-- Add more buttons as needed -->
+
     
 	<form id="mapCycleForm">
 		<section class="map-section" id="babSection">
