@@ -231,12 +231,39 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 	</script>
 </body>
 <head>
-	<title>Map Cycle Configuration</title>
+    <title>Map Cycle Configuration</title>
+    <script>
+        function toggleAllCheckboxes(category) {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"][value^="Scenario_' + category + '"]');
+            var checkAll = document.getElementById('checkAll_' + category);
+            
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = checkAll.checked;
+            });
+        }
+    </script>
 </head>
 
 <body>
-	<h1>Configure Your Map Cycle</h1>
-	<p>Select the scenarios you'd like to include in your MapCycle.txt file:</p>
+    <h1>Configure Your Map Cycle</h1>
+    <p>Select the scenarios you'd like to include in your MapCycle.txt file:</p>
+
+    <!-- Checkboxes for categories -->
+    <label><input type="checkbox" id="checkAll_AllScenarios" onclick="toggleAllCheckboxes('All')"> All Scenarios</label><br>
+    <label><input type="checkbox" id="checkAll_CheckpointSecurity" onclick="toggleAllCheckboxes('Checkpoint_Security')"> Checkpoint Security</label><br>
+    <label><input type="checkbox" id="checkAll_CheckpointInsurgents" onclick="toggleAllCheckboxes('Checkpoint_Insurgents')"> Checkpoint Insurgents</label><br>
+    <label><input type="checkbox" id="checkAll_Firefight" onclick="toggleAllCheckboxes('Firefight')"> Firefight</label><br>
+    <label><input type="checkbox" id="checkAll_PushSecurity" onclick="toggleAllCheckboxes('Push_Security')"> Push Security</label><br>
+    <label><input type="checkbox" id="checkAll_PushInsurgents" onclick="toggleAllCheckboxes('Push_Insurgents')"> Push Insurgents</label><br>
+    <label><input type="checkbox" id="checkAll_Domination" onclick="toggleAllCheckboxes('Domination')"> Domination</label><br>
+    <label><input type="checkbox" id="checkAll_TeamDeathmatch" onclick="toggleAllCheckboxes('TeamDeathmatch')"> Team Deathmatch</label><br>
+    <label><input type="checkbox" id="checkAll_Outpost" onclick="toggleAllCheckboxes('Outpost')"> Outpost</label><br>
+    <label><input type="checkbox" id="checkAll_Survival" onclick="toggleAllCheckboxes('Survival')"> Survival</label><br>
+    <label><input type="checkbox" id="checkAll_Defusual" onclick="toggleAllCheckboxes('Defusual')"> Defusual</label><br>
+    <label><input type="checkbox" id="checkAll_Frontline" onclick="toggleAllCheckboxes('Frontline')"> Frontline</label><br>
+    <label><input type="checkbox" id="checkAll_Skirmish" onclick="toggleAllCheckboxes('Skirmish')"> Skirmish</label><br>
+    <label><input type="checkbox" id="checkAll_Ambush" onclick="toggleAllCheckboxes('Ambush')"> Ambush</label><br>
+    
 	<form id="mapCycleForm">
 		<section class="map-section" id="babSection">
 			<h2>Bab</h2>
