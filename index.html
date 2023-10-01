@@ -238,16 +238,27 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 <head>
     <title>Map Cycle Configuration</title>
     <script>
+function selectAll(sectionId) {
+    var checkboxes = document.querySelectorAll('#' + sectionId + ' input[type="checkbox"]');
+    var checkAll = !checkboxes[0].checked;
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = checkAll;
+    });
+}
+
 function selectAllGameMode(gameMode) {
-    // Select checkboxes whose value contains the gameMode string
     var checkboxes = document.querySelectorAll('input[type="checkbox"][value*="' + gameMode + '"]');
-    
-    // Check if all checkboxes are already checked
     var allChecked = Array.from(checkboxes).every(chk => chk.checked);
-    
-    // Check/uncheck based on the allChecked status
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = !allChecked;
+    });
+}
+
+function selectAllGlobal() {
+    var checkboxes = document.querySelectorAll('#mapCycleForm input[type="checkbox"]');
+    var checkAll = !checkboxes[0].checked;
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = checkAll;
     });
 }
 
@@ -258,10 +269,22 @@ function selectAllGameMode(gameMode) {
     <h1>Configure Your Map Cycle</h1>
     <p>Select the scenarios you'd like to include in your MapCycle.txt file:</p>
 
-    <!-- Checkboxes for categories -->
+<button type="button" onclick="selectAllGlobal()">Select All</button>
+<button type="button" onclick="selectAllGameMode('Ambush')">Select All Ambush</button>
+<button type="button" onclick="selectAllGameMode('Checkpoint_Insurgents')">Select All Checkpoint Insurgents</button>
+<button type="button" onclick="selectAllGameMode('Checkpoint_Security')">Select All Checkpoint Security</button>
 <button type="button" onclick="selectAllGameMode('Defusal')">Select All Defusal</button>
 <button type="button" onclick="selectAllGameMode('Domination')">Select All Domination</button>
-<!-- Add more buttons as needed -->
+<button type="button" onclick="selectAllGameMode('Firefight')">Select All Firefight</button>
+<button type="button" onclick="selectAllGameMode('Frontline')">Select All Frontline</button>
+<button type="button" onclick="selectAllGameMode('Outpost')">Select All Outpost</button>
+<button type="button" onclick="selectAllGameMode('Push_Insurgents')">Select All Push Insurgents</button>
+<button type="button" onclick="selectAllGameMode('Push_Security')">Select All Push Security</button>
+<button type="button" onclick="selectAllGameMode('Skirmish')">Select All Skirmish</button>
+<button type="button" onclick="selectAllGameMode('Survival')">Select All Survival</button>
+<button type="button" onclick="selectAllGameMode('Team_Deathmatch')">Select All Team Deathmatch</button>
+
+
 
     
 	<form id="mapCycleForm">
