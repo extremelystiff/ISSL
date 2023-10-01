@@ -42,9 +42,11 @@ form {
 label {
     display: block;
     margin-bottom: 5px;
+    color: #AB68FF;  
+    font-size: 1.5em; /* Or whichever size you find appropriate */
 }
 
-select, input[type="text"] {
+select, input[type="text"], input[type="number"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -166,7 +168,7 @@ input[type="checkbox"] {
 		</select>
 <!-- [Other form inputs remain unchanged] -->
 <label for="password">Password:</label>
-<input type="password" id="password" name="password" placeholder="YourServerPassword">
+<input type="text" id="password" name="password" placeholder="YourServerPassword">
 <label for="gameStatsToken">GameStats Token:</label>
 <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="YourGameStatsToken">
 <label for="gsltToken">GSLT Token:</label>
