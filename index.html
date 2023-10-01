@@ -75,8 +75,8 @@ label {
 }
 
 /* Button Styles (if you have any buttons) */
-button {
-    background-color: #f8c400;
+button, input[type="submit"] {
+    background-color: #AB68FF;
     color: #1e1e1e;
     padding: 10px 20px;
     border: none;
@@ -86,8 +86,8 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #e1b000;
+button:hover, input[type="submit"]:hover {
+    background-color: #8752C9;
 }
 
 /* Responsive */
@@ -181,13 +181,12 @@ document.getElementById('serverForm').addEventListener('submit', function (e) {
     var travelParams = `${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers}`;
     
     if (password) travelParams += `?Password=${password}`;
-    if (gsltToken) travelParams += `?GSLTToken=${gsltToken}`;
-
+    var gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
     var cheatParam = enableCheats ? " -EnableCheats" : "";
     var gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
     var officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
     
-    configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${officialRulesParam}`;
+    configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}`;
 
     document.getElementById('configOutput').value = configString;
 });
