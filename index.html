@@ -90,20 +90,39 @@ button:hover, input[type="submit"]:hover {
     background-color: #8752C9;
 }
 
-/* Responsive */
-@media only screen and (max-width: 600px) {
-    h1 {
-        font-size: 1.5em;
-    }
+/* Existing CSS ... */
 
-    h2 {
-        font-size: 1.2em;
-    }
+/* Map Section Styling */
+.map-section {
+    margin-bottom: 40px;
+}
 
-    select, input[type="text"] {
-        width: calc(100% - 20px);
+/* Checkbox Group Styling */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 columns. Adjust as needed. */
+    gap: 10px;  /* Space between checkboxes */
+    margin-bottom: 20px;
+}
+
+label {
+    display: flex;
+    align-items: center;
+}
+
+/* Responsive Styling */
+@media only screen and (max-width: 768px) {
+    .checkbox-group {
+        grid-template-columns: repeat(2, 1fr);  /* 2 columns for smaller screens */
     }
 }
+
+@media only screen and (max-width: 480px) {
+    .checkbox-group {
+        grid-template-columns: 1fr;  /* 1 column for very small screens */
+    }
+}
+
 
 	</style>
 </head>
@@ -206,8 +225,9 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 	<h1>Configure Your Map Cycle</h1>
 	<p>Select the scenarios you'd like to include in your MapCycle.txt file:</p>
 	<form id="mapCycleForm">
-		<div>
+		<section class="map-section" id="babSection">
 			<h2>Bab</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Bab_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
 			<br>
@@ -229,8 +249,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Bab_Push_Security"> Push Security</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id="CitadelSection">
 			<h2>Citadel</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
 			<br>
@@ -261,8 +283,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Citadel_Frontline"> Frontline</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id="CrossingSection">
 			<h2>Crossing (Canyon)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Crossing_Ambush"> Ambush</label>
 			<br>
@@ -296,8 +320,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Crossing_Team_Deathmatch"> Team Deathmatch</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=FarmhouseSection">
 			<h2>Farmhouse</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Farmhouse_Ambush"> Ambush</label>
 			<br>
@@ -334,8 +360,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Farmhouse_Team_Deathmatch"> Team Deathmatch</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=GapSection">
 			<h2>Gap</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Gap_Ambush"> Ambush</label>
 			<br>
@@ -369,8 +397,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Gap_Defusal"> Defusal</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=HideoutSection">
 			<h2>Hideout (Town)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Hideout_Ambush"> Ambush</label>
 			<br>
@@ -407,8 +437,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Hideout_Team_Deathmatch"> Team Deathmatch</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=HillsideSection">
 			<h2>Hillside (Sinjar)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Hillside_Ambush"> Ambush</label>
 			<br>
@@ -448,8 +480,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Hillside_Team_Deathmatch"> Team Deathmatch</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=MinistrySection">
 			<h2>Ministry</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Ministry_Ambush"> Ambush</label>
 			<br>
@@ -471,8 +505,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Ministry_Team_Deathmatch"> Team Deathmatch</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=OutskirtsSection">
 			<h2>Outskirts (Compound)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Outskirts_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
 			<br>
@@ -506,8 +542,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Outskirts_Defusal"> Defusal</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=PrecinctSection">
 			<h2>Precinct</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Precinct_Ambush"> Ambush</label>
 			<br>
@@ -544,8 +582,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Precinct_Defusal"> Defusal</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=RefinerySection">
 			<h2>Refinery (Oilfield)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Refinery_Ambush"> Ambush</label>
 			<br>
@@ -576,8 +616,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Refinery_Survival"> Survival</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=SummitSection">
 			<h2>Summit (Mountain)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Summit_Ambush"> Ambush</label>
 			<br>
@@ -611,8 +653,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Summit_Survival"> Survival</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=PowerSection">
 			<h2>Power Plant (PowerPlant)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Powerplant_Ambush"> Ambush</label>
 			<br>
@@ -643,8 +687,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_PowerPlant_Frontline"> Frontline</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=TellSection">
 			<h2>Tell</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Tell_Ambush"> Ambush</label>
 			<br>
@@ -678,8 +724,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Tell_Frontline"> Frontline</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=TidewaySection">
 			<h2>Tideway (Buhriz)</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Tideway_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
 			<br>
@@ -704,8 +752,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Tideway_Survival"> Survival</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=PrisonSection">
 			<h2>Prison</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_Prison_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
 			<br>
@@ -733,8 +783,10 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 			<label>
 				<input type="checkbox" value="Scenario_Prison_Defusal"> Defusal</label>
 			<br> </div>
-		<div>
+		</section>
+		<section class="map-section" id=LastSection">
 			<h2>Last Light</h2>
+			<div class="checkbox-group">
 			<label>
 				<input type="checkbox" value="Scenario_LastLight_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
 			<br>
