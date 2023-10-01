@@ -39,39 +39,46 @@
 			<!-- Add available maps here -->
 			<option value="Oilfield">Oilfield</option>
 		</select>
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password" placeholder="YourServerPassword">
-		<input type="submit" value="Generate Config"> </form>
-	</form>
-	<label for="configOutput">Generated Config:</label>
-	<textarea id="configOutput" readonly></textarea>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="YourServerPassword">
+        <label for="enableCheats">Enable Cheats:</label>
+        <input type="checkbox" id="enableCheats" name="enableCheats">
+        <input type="submit" value="Generate Config">
+    </form>
+    <label for="configOutput">Generated Config:</label>
+    <textarea id="configOutput" readonly></textarea>
 
-	<script>
-	document.getElementById('serverForm').addEventListener('submit', function (e) {
-		e.preventDefault(); // Prevent the form from submitting
-		
-		// Gather all needed values
-		var os = document.getElementById('os').value;
-		var hostname = document.getElementById('hostname').value;
-		var maxPlayers = document.getElementById('maxPlayers').value;
-		var port = document.getElementById('port').value;
-		var queryPort = document.getElementById('queryPort').value;
-		var scenario = document.getElementById('scenario').value;
-		var map = document.getElementById('map').value;
-		
-		// Generate the configuration string
-		var configString = "";
-		
-		if(os === "windows") {
-			configString = `InsurgencyServer.exe ${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
-		}
-		else if(os === "linux") {
-			configString = `Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping ${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
-		}
+    <script>
+        document.getElementById('serverForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the form from submitting
 
-		// Display the generated string in the textarea
-		document.getElementById('configOutput').value = configString;
-	});
+            // Gather all needed values
+            var os = document.getElementById('os').value;
+            var hostname = document.getElementById('hostname').value;
+            var maxPlayers = document.getElementById('maxPlayers').value;
+            var port = document.getElementById('port').value;
+            var queryPort = document.getElementById('queryPort').value;
+            var scenario = document.getElementById('scenario').value;
+            var map = document.getElementById('map').value;
+            var password = document.getElementById('password').value;
+            var enableCheats = document.getElementById('enableCheats').checked;
+
+            // Generate the configuration string
+            var configString = "";
+
+            var baseCommand = os === "windows" ?
+                "InsurgencyServer.exe" :
+                "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
+
+            var travelParams = `${map}?Scenario=${scenario}?MaxPlayers=${maxPlayers}?Password=${password}`;
+            
+            var cheatParam = enableCheats ? " -EnableCheats" : "";
+
+            configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}`;
+
+            // Display the generated string in the textarea
+            document.getElementById('configOutput').value = configString;
+        });
 	</script>
 </body>
 <head>
