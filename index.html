@@ -14,7 +14,11 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.container {
+    max-width: 50%;
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px;
+}
 h1, h2 {
     color: #AB68FF;  
 }
@@ -141,6 +145,7 @@ input[type="checkbox"] {
 </head>
 
 <body>
+	<div class="container">
 	<h1>Setup Your Insurgency Sandstorm Server</h1>
 	<form id="serverForm">
 		<label for="os">Choose your OS:</label>
@@ -887,6 +892,7 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
 		output.value = scenarios.join('\n');
 	}
 	</script>
+	</div>
 </body>
 
 </html>
