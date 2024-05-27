@@ -444,6 +444,18 @@ function launchServer() {
 </body>
 <head>
     <title>Map Cycle Configuration</title>
+<h2>Manual Setup Instructions</h2>
+<ol>
+  <li>Open your Steam library and navigate to the Insurgency Sandstorm server directory:</li>
+  <ul>
+    <li>Typically located at: <code>SteamLibrary\steamapps\common\sandstorm_server</code></li>
+  </ul>
+  <li>Create a new folder named <code>Insurgency</code> inside the <code>sandstorm_server</code> directory.</li>
+  <li>Inside the <code>Insurgency</code> folder, create a new folder named <code>Config</code>.</li>
+  <li>Inside the <code>Config</code> folder, create a new folder named <code>Server</code>.</li>
+  <li>Copy the generated <code>MapCycle.txt</code> file and paste it into the <code>Server</code> folder.</li>
+</ol>
+
     <script>
 function selectAll(sectionId) {
     var checkboxes = document.querySelectorAll('#' + sectionId + ' input[type="checkbox"]');
@@ -491,7 +503,7 @@ function selectAllGlobal() {
 <button type="button" onclick="selectAllGameMode('Survival')">Select All Survival</button>
 <button type="button" onclick="selectAllGameMode('Team_Deathmatch')">Select All Team Deathmatch</button>
 
-
+<button onclick="downloadMapCycle()">Download MapCycle.txt</button>
 
     
 	<form id="mapCycleForm">
@@ -1094,6 +1106,7 @@ function selectAllGlobal() {
 				<input type="checkbox" value="Scenario_LastLight_Team_Deathmatch"> Team Deathmatch</label>
 			<br> </div>
 		<button type="button" onclick="generateMapCycle()">Generate MapCycle.txt</button>
+<button onclick="downloadMapCycle()">Download MapCycle.txt</button>
 	</form>
 	<h2>Generated MapCycle.txt</h2>
 	<textarea id="output" rows="10" cols="50" readonly></textarea>
@@ -1111,6 +1124,16 @@ function selectAllGlobal() {
 		// Update the textarea with the selected scenarios
 		output.value = scenarios.join('\n');
 	}
+function downloadMapCycle() {
+    const mapCycleContent = document.getElementById('output').value;
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(mapCycleContent));
+    element.setAttribute('download', 'MapCycle.txt');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
 	</script>
 	</div>
 </body>
