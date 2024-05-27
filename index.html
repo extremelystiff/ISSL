@@ -444,17 +444,7 @@ function launchServer() {
 </body>
 <head>
     <title>Map Cycle Configuration</title>
-<h2>Manual Setup Instructions</h2>
-<ol>
-  <li>Open your Steam library and navigate to the Insurgency Sandstorm server directory:</li>
-  <ul>
-    <li>Typically located at: <code>SteamLibrary\steamapps\common\sandstorm_server</code></li>
-  </ul>
-  <li>Create a new folder named <code>Insurgency</code> inside the <code>sandstorm_server</code> directory.</li>
-  <li>Inside the <code>Insurgency</code> folder, create a new folder named <code>Config</code>.</li>
-  <li>Inside the <code>Config</code> folder, create a new folder named <code>Server</code>.</li>
-  <li>Copy the generated <code>MapCycle.txt</code> file and paste it into the <code>Server</code> folder.</li>
-</ol>
+
 
     <script>
 function selectAll(sectionId) {
@@ -502,7 +492,16 @@ function selectAllGlobal() {
 <button type="button" onclick="selectAllGameMode('Skirmish')">Select All Skirmish</button>
 <button type="button" onclick="selectAllGameMode('Survival')">Select All Survival</button>
 <button type="button" onclick="selectAllGameMode('Team_Deathmatch')">Select All Team Deathmatch</button>
-
+<h2>Manual Setup Instructions</h2>
+<ol>
+  <li>Open your Steam library and navigate to the Insurgency Sandstorm server directory:</li>
+  <ul>
+    <li>Typically located at: <code>C:\Program Files (x86)\Steam\steamapps\common\sandstorm_server</code></li>
+  </ul>
+  <li>Inside the <code>Insurgency</code> folder, create a new folder named <code>Config</code>.</li>
+  <li>Inside the <code>Config</code> folder, create a new folder named <code>Server</code>.</li>
+  <li>Copy the generated <code>MapCycle.txt</code> file and paste it into the <code>Server</code> folder.</li>
+</ol>
 <button onclick="downloadMapCycle()">Download MapCycle.txt</button>
 
     
@@ -1125,13 +1124,25 @@ function selectAllGlobal() {
 		output.value = scenarios.join('\n');
 	}
 function downloadMapCycle() {
+    // Generate the map cycle first
+    generateMapCycle();
+
+    // Get the generated map cycle content
     const mapCycleContent = document.getElementById('output').value;
+
+    // Create a temporary <a> element
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(mapCycleContent));
     element.setAttribute('download', 'MapCycle.txt');
     element.style.display = 'none';
+
+    // Append the temporary element to the document body
     document.body.appendChild(element);
+
+    // Trigger a click event on the temporary element to start the download
     element.click();
+
+    // Remove the temporary element from the document body
     document.body.removeChild(element);
 }
 	</script>
