@@ -401,78 +401,91 @@ a:hover {
 
     <script>
 document.getElementById('serverForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-	
-	var os = document.getElementById('os').value;
-	var hostname = document.getElementById('hostname').value;
-	var maxPlayers = document.getElementById('maxPlayers').value;
-	var port = document.getElementById('port').value;
-	var queryPort = document.getElementById('queryPort').value;
-	var scenario = document.getElementById('scenario').value;
-	var password = document.getElementById('password').value;
-        var enableCheats = document.getElementById('enableCheats').checked;
-	var password = document.getElementById('password').value;
-	var gameStatsToken = document.getElementById('gameStatsToken').value;
-	var gsltToken = document.getElementById('gsltToken').value;
-	var enableGameStats = document.getElementById('enableGameStats').checked;
-	var officialRules = document.getElementById('officialRules').checked;
+  e.preventDefault();
 
-	
-	var configString = "";
-	var baseCommand = os === "windows" ?
-	"InsurgencyServer.exe" :
-	"Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
-	
-    var travelParams = `${scenario}?MaxPlayers=${maxPlayers}`;
-    
-    if (password) travelParams += `?Password=${password}`;
-    var gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
-    var cheatParam = enableCheats ? " -EnableCheats" : "";
-    var gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
-    var officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
-    
-    configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}`;
+  var os = document.getElementById('os').value;
+  var hostname = document.getElementById('hostname').value;
+  var maxPlayers = document.getElementById('maxPlayers').value;
+  var port = document.getElementById('port').value;
+  var queryPort = document.getElementById('queryPort').value;
+  var scenario = document.getElementById('scenario').value;
+  var password = document.getElementById('password').value;
+  var enableCheats = document.getElementById('enableCheats').checked;
+  var gameStatsToken = document.getElementById('gameStatsToken').value;
+  var gsltToken = document.getElementById('gsltToken').value;
+  var enableGameStats = document.getElementById('enableGameStats').checked;
+  var officialRules = document.getElementById('officialRules').checked;
 
-    document.getElementById('configOutput').value = configString;
+  var selectedMutators = Array.from(document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]:checked'))
+    .map(checkbox => checkbox.value)
+    .join(',');
+
+  var configString = "";
+  var baseCommand = os === "windows" ?
+    "InsurgencyServer.exe" :
+    "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
+
+  var travelParams = `${scenario}?MaxPlayers=${maxPlayers}`;
+
+  if (password) travelParams += `?Password=${password}`;
+
+  var gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
+  var cheatParam = enableCheats ? " -EnableCheats" : "";
+  var gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
+  var officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
+  var mutatorParam = selectedMutators ? ` -Mutators=${selectedMutators}` : "";
+
+  configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}${mutatorParam}`;
+
+  document.getElementById('configOutput').value = configString;
 });
 
 document.getElementById('gameStatsToken').addEventListener('input', function (e) {
-    // Auto-check enableGameStats if gameStatsToken is provided
-    document.getElementById('enableGameStats').checked = !!e.target.value.trim();
+  // Auto-check enableGameStats if gameStatsToken is provided
+  document.getElementById('enableGameStats').checked = !!e.target.value.trim();
 });
+
 function launchServer() {
-    const form = document.getElementById('serverForm');
-    const scenario = form.elements['scenario'].value;
-    const maxPlayers = form.elements['maxPlayers'].value;
-    const port = form.elements['port'].value;
-    const queryPort = form.elements['queryPort'].value;
-    const hostname = form.elements['hostname'].value;
-    const gameStatsToken = form.elements['gameStatsToken'].value;
-    const gsltToken = form.elements['gsltToken'].value;
-    const enableGameStats = form.elements['enableGameStats'].checked;
-    const officialRules = form.elements['officialRules'].checked;
-    const enableCheats = form.elements['enableCheats'].checked;
+  const form = document.getElementById('serverForm');
+  const scenario = form.elements['scenario'].value;
+  const maxPlayers = form.elements['maxPlayers'].value;
+  const port = form.elements['port'].value;
+  const queryPort = form.elements['queryPort'].value;
+  const hostname = form.elements['hostname'].value;
+  const gameStatsToken = form.elements['gameStatsToken'].value;
+  const gsltToken = form.elements['gsltToken'].value;
+  const enableGameStats = form.elements['enableGameStats'].checked;
+  const officialRules = form.elements['officialRules'].checked;
+  const enableCheats = form.elements['enableCheats'].checked;
 
-    let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
+  const selectedMutators = Array.from(document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]:checked'))
+    .map(checkbox => checkbox.value)
+    .join(',');
 
-    if (enableCheats) {
-        serverParams += ' -EnableCheats';
-    }
+  let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
 
-    if (gameStatsToken && enableGameStats) {
-        serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
-    }
+  if (enableCheats) {
+    serverParams += ' -EnableCheats';
+  }
 
-    if (gsltToken) {
-        serverParams += ` -GSLTToken=${gsltToken}`;
-    }
+  if (gameStatsToken && enableGameStats) {
+    serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
+  }
 
-    if (officialRules) {
-        serverParams += ' -ruleset=OfficialRules';
-    }
+  if (gsltToken) {
+    serverParams += ` -GSLTToken=${gsltToken}`;
+  }
 
-    const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
-    window.location.href = steamURL;
+  if (officialRules) {
+    serverParams += ' -ruleset=OfficialRules';
+  }
+
+  if (selectedMutators) {
+    serverParams += ` -Mutators=${selectedMutators}`;
+  }
+
+  const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
+  window.location.href = steamURL;
 }
 	</script>
 </body>
@@ -1183,6 +1196,78 @@ function downloadMapCycle() {
     document.body.removeChild(element);
 }
 	</script>
+<script>
+// Event listeners
+document.addEventListener('DOMContentLoaded', generateMutatorCheckboxes);
+document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
+	// Mutators data
+// Mutators data
+const mutators = [
+  { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
+  { name: 'AntiMaterielRiflesOnly', description: 'Only anti-materiel rifles are available along with normal equipment and explosives.' },
+  { name: 'BoltActionsOnly', description: 'Only bolt-action rifles are available along with normal equipment and explosives.' },
+  { name: 'Broke', description: 'Start with 0 supply points.' },
+  { name: 'BudgetAntiquing', description: 'Normal equipment and explosives, but limited to old and inexpensive weapons.' },
+  { name: 'BulletSponge', description: 'Health is increased.' },
+  { name: 'Competitive', description: 'Equipment is more expensive, rounds are shorter, and capturing objectives is faster.' },
+  { name: 'CompetitiveLoadouts', description: 'Player classes are replaced with those from Competitive.' },
+  { name: 'FastMovement', description: 'Move Faster.' },
+  { name: 'Frenzy', description: 'Fight against AI enemies who only use melee attacks. Watch out for special enemies.' },
+  { name: 'FullyLoaded', description: 'All weapons, equipment, and explosives in the game are available in the Loadout Menu' },
+  { name: 'Guerrillas', description: 'Start with 5 supply points.' },
+  { name: 'Gunslingers', description: 'Kill the enemy more than they kill you with a big stinkin' revolver. And explosives.' },
+  { name: 'Hardcore', description: 'Mutator featuring slower movement speeds and longer capture times.' },
+  { name: 'HeadshotOnly', description: 'Players only take damage when shot in the head.' },
+  { name: 'HotPotato', description: 'A live fragmentation grenade is dropped on death.' },
+  { name: 'LockedAim', description: 'Weapons always point to the center of the screen.' },
+  { name: 'MakarovsOnly', description: 'Makarovs are the only option.' },
+  { name: 'NoAim', description: 'Aiming down sights is disabled.' },
+  { name: 'NoDrops', description: 'No scavenging allowed.' },
+  { name: 'PistolsOnly', description: 'Only pistols are available along with normal equipment and explosives.' },
+  { name: 'Poor', description: 'Start with limited supply.' },
+  { name: 'ShotgunsOnly', description: 'Only Shotguns are available along with normal equipment and explosives.' },
+  { name: 'SlowCaptureTimes', description: 'Objectives will take longer to capture.' },
+  { name: 'SlowMovement', description: 'Move slower.' },
+  { name: 'SoldierOfFortune', description: 'Gain supply points as your score increases.' },
+  { name: 'SpecialOperations', description: 'Start with 30 supply points.' },
+  { name: 'Strapped', description: 'Start with 1 supply point.' },
+  { name: 'Ultralethal', description: 'Everyone dies with one shot.' },
+  { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
+  { name: 'Warlords', description: 'Start with 10 supply points.' }
+];
+
+// Generate mutator checkboxes
+function generateMutatorCheckboxes() {
+  const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
+  mutators.forEach(mutator => {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = mutator.name;
+    checkbox.id = `mutator-${mutator.name}`;
+    
+    const label = document.createElement('label');
+    label.htmlFor = checkbox.id;
+    label.textContent = mutator.name;
+    
+    const description = document.createElement('span');
+    description.textContent = mutator.description;
+    
+    const br = document.createElement('br');
+    
+    mutatorCheckboxesContainer.appendChild(checkbox);
+    mutatorCheckboxesContainer.appendChild(label);
+    mutatorCheckboxesContainer.appendChild(description);
+    mutatorCheckboxesContainer.appendChild(br);
+  });
+}
+
+// Update selected mutators input
+function updateSelectedMutators() {
+  const selectedMutators = Array.from(document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]:checked'))
+    .map(checkbox => checkbox.value);
+  document.getElementById('mutatorInput').value = selectedMutators.join(',');
+}
+</script>
 	</div>
 </body>
 
