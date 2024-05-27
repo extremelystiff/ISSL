@@ -301,17 +301,31 @@
         <label for="password">Password (optional):</label>
         <input type="text" id="password" name="password" placeholder="Enter password">
 
-        <label for="gameStatsToken">GameStats Token (optional):</label>
-        <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
+<label for="gameStatsToken">
+  <a href="https://gamestats.sandstorm.game/" target="_blank">GameStats Token</a>
+  <abbr title="Any Insurgency: Sandstorm community server can host a stats-enabled game. Enabling stats on your server also enables experience gain while playing on the server. The only requirement is that you must use a Steam GSLT, and you must not have a server password.">?</abbr>
+  (optional):
+</label>
+<input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
 
-        <label for="gsltToken">GSLT Token (optional):</label>
-        <input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
+<label for="gsltToken">
+  <a href="https://steamcommunity.com/dev/managegameservers" target="_blank">GSLT Token</a>
+  <abbr title="For your server to authenticate with the stats server, you must authenticate your server through Steam GSLT (Game Server Login Token). GSLTs can be obtained from Steam's Game Server Account Management page.">?</abbr>
+  (optional):
+</label>
+<input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
 
-        <label for="enableGameStats">Enable GameStats:</label>
-        <input type="checkbox" id="enableGameStats" name="enableGameStats">
+<label for="enableGameStats">
+  Enable GameStats
+  <abbr title="By default, the game servers will not attempt to report to the stats system. Following the GSLT login steps, adding -GameStats to your server's command line will enable the opt-in to the system.">?</abbr>:
+</label>
+<input type="checkbox" id="enableGameStats" name="enableGameStats">
 
-        <label for="officialRules">Use Official Rules:</label>
-        <input type="checkbox" id="officialRules" name="officialRules">
+<label for="officialRules">
+  Use Official Rules
+  <abbr title="The game ships with a ruleset which are considered official rules; this locks down the options you can change on your dedicated server. If you are running a mostly vanilla server, you may consider opting into this ruleset for your server to appear under the 'official rules' filter. To opt-in, add -OfficialRules to your server's command line.">?</abbr>:
+</label>
+<input type="checkbox" id="officialRules" name="officialRules">
 
         <label for="enableCheats">Enable Cheats:</label>
         <input type="checkbox" id="enableCheats" name="enableCheats">
