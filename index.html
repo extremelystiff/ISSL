@@ -361,6 +361,7 @@ input[type="checkbox"] {
 <input type="submit" value="Generate Config">
 
     </form>
+<button onclick="launchServer()">Launch Server</button>
     <label for="configOutput">Generated Config:</label>
     <textarea id="configOutput" readonly></textarea>
 
@@ -405,7 +406,40 @@ document.getElementById('gameStatsToken').addEventListener('input', function (e)
     // Auto-check enableGameStats if gameStatsToken is provided
     document.getElementById('enableGameStats').checked = !!e.target.value.trim();
 });
+function launchServer() {
+    const form = document.getElementById('serverForm');
+    const scenario = form.elements['scenario'].value;
+    const maxPlayers = form.elements['maxPlayers'].value;
+    const port = form.elements['port'].value;
+    const queryPort = form.elements['queryPort'].value;
+    const hostname = form.elements['hostname'].value;
+    const gameStatsToken = form.elements['gameStatsToken'].value;
+    const gsltToken = form.elements['gsltToken'].value;
+    const enableGameStats = form.elements['enableGameStats'].checked;
+    const officialRules = form.elements['officialRules'].checked;
+    const enableCheats = form.elements['enableCheats'].checked;
 
+    let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
+
+    if (enableCheats) {
+        serverParams += ' -EnableCheats';
+    }
+
+    if (gameStatsToken && enableGameStats) {
+        serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
+    }
+
+    if (gsltToken) {
+        serverParams += ` -GSLTToken=${gsltToken}`;
+    }
+
+    if (officialRules) {
+        serverParams += ' -ruleset=OfficialRules';
+    }
+
+    const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
+    window.location.href = steamURL;
+}
 	</script>
 </body>
 <head>
