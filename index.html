@@ -438,14 +438,9 @@ a:hover {
 
         <label for="enableCheats">Enable Cheats:</label>
         <input type="checkbox" id="enableCheats" name="enableCheats">
-
-        <div class="btn-group">
-            <button type="submit">Generate Config</button>
-            <button type="button" onclick="launchServer()">Launch Server</button>
-        </div>
 <!-- Mutators Section -->
 <section id="mutatorsSection">
-  <h2>Mutators</h2>
+  <h2>Mutators (optional)</h2>
   <details>
     <summary>Select Mutators</summary>
     <div id="mutatorCheckboxes">
@@ -455,6 +450,11 @@ a:hover {
   <label for="mutatorInput">Selected Mutators:</label>
   <input type="text" id="mutatorInput" name="mutatorInput" readonly>
 </section>
+        <div class="btn-group">
+            <button type="submit">Generate Config</button>
+            <button type="button" onclick="launchServer()">Launch Server</button>
+        </div>
+
     </form>
 
     <label for="configOutput">Generated Config:</label>
