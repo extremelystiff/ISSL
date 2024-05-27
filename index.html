@@ -1197,10 +1197,6 @@ function downloadMapCycle() {
 }
 	</script>
 <script>
-// Event listeners
-document.addEventListener('DOMContentLoaded', generateMutatorCheckboxes);
-document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
-	// Mutators data
 // Mutators data
 const mutators = [
   { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
@@ -1235,6 +1231,12 @@ const mutators = [
   { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
   { name: 'Warlords', description: 'Start with 10 supply points.' }
 ];
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  generateMutatorCheckboxes();
+  document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
+});
 
 // Generate mutator checkboxes
 function generateMutatorCheckboxes() {
