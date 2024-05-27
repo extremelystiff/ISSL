@@ -505,10 +505,12 @@ a:hover {
 <!-- Mods Section -->
 <section id="modsSection">
   <h2>Mods (WIP)</h2>
+ <details>
   <button type="button" onclick="fetchMods()">Fetch Mods</button>
-  <div id="modCheckboxes">
+  <div id="">
     <!-- Mod checkboxes will be dynamically generated here -->
   </div>
+  </details>
   <label for="modListOutput">Generated Mods.txt:</label>
   <textarea id="modListOutput" readonly></textarea>
 </section>
@@ -600,6 +602,12 @@ function launchServer() {
   const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
   window.location.href = steamURL;
 }
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  generateMutatorCheckboxes();
+  document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
+  document.getElementById('modCheckboxes').addEventListener('change', generateModList);
+});
 	</script>
 </body>
 <head>
@@ -1345,12 +1353,7 @@ const mutators = [
   { name: 'Warlords', description: 'Start with 10 supply points.' }
 ];
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-  generateMutatorCheckboxes();
-  document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
-  document.getElementById('modCheckboxes').addEventListener('change', generateModList);
-});
+
 
 // Generate mutator checkboxes
 function generateMutatorCheckboxes() {
