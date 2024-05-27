@@ -643,7 +643,8 @@ function selectAllGlobal() {
 </head>
 
 <body>
-    <h2>Map Cycle Configuration</h2>
+        <details>
+  <summary><h2>Map Cycle Configuration</h2></summary>
     <div class="btn-group">
         <button type="button" onclick="selectAllGlobal()">Select All</button>
         <button type="button" onclick="selectAllGameMode('Ambush')">Select All Ambush</button>
@@ -665,8 +666,7 @@ function selectAllGlobal() {
         <button onclick="downloadMapCycle()">Download MapCycle.txt</button>
     </div>
 
-    <details>
-  <summary><h2>Generated MapCycle.txt</h2></summary>
+<h2>Generated MapCycle.txt</h2>
     <textarea id="output" readonly></textarea>
 
     <h2>Manual Setup Instructions</h2>
@@ -1280,7 +1280,7 @@ function selectAllGlobal() {
 			<br>
 			<label>
 				<input type="checkbox" value="Scenario_LastLight_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div></details>
+			<br> </div></section></form></details>
 	<script>
 	function generateMapCycle() {
 		const form = document.getElementById('mapCycleForm');
