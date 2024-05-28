@@ -642,15 +642,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Quick Start
-    function quickStart() {
-      document.getElementById('os').value = 'windows';
-      document.getElementById('hostname').value = 'My Insurgency Server';
-      document.getElementById('maxPlayers').value = '24';
-      document.getElementById('port').value = '27102';
-      document.getElementById('queryPort').value = '27131';
-      document.getElementById('scenario').value = 'Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Security';
-      launchServer();
-    }
+function quickStart() {
+  document.getElementById('os').value = 'windows';
+  document.getElementById('hostname').value = 'My Insurgency Server';
+  document.getElementById('maxPlayers').value = '24';
+  document.getElementById('port').value = '27102';
+  document.getElementById('queryPort').value = '27131';
+  
+  const scenarioDropdown = document.getElementById('scenario');
+  const randomIndex = Math.floor(Math.random() * scenarioDropdown.options.length);
+  scenarioDropdown.selectedIndex = randomIndex;
+  
+  launchServer();
+}
 
     // Save Preset
     function savePreset() {
