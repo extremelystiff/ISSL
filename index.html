@@ -681,26 +681,63 @@ function savePreset() {
       renderPresetButtons(presets);
     }
 
-    // Render Preset Buttons
-    function renderPresetButtons(presets) {
-      const presetButtonsContainer = document.getElementById('presetButtons');
-      presetButtonsContainer.innerHTML = '';
-      presets.forEach((preset, index) => {
-        const presetDiv = document.createElement('div');
-        presetDiv.className = 'preset';
-        const presetNameSpan = document.createElement('span');
-        presetNameSpan.textContent = preset.name;
-        const launchButton = document.createElement('button');
-        launchButton.textContent = 'Launch';
-        launchButton.onclick = function() {
-          loadPreset(index);
-          launchServer();
-        };
-        presetDiv.appendChild(presetNameSpan);
-        presetDiv.appendChild(launchButton);
-        presetButtonsContainer.appendChild(presetDiv);
-      });
-    }
+// Render Preset Buttons
+function renderPresetButtons(presets) {
+  const presetButtonsContainer = document.getElementById('presetButtons');
+  presetButtonsContainer.innerHTML = '';
+  presets.forEach((preset, index) => {
+    const presetDiv = document.createElement('div');
+    presetDiv.className = 'preset';
+
+    const presetNameSpan = document.createElement('span');
+    presetNameSpan.textContent = preset.name;
+
+    const launchButton = document.createElement('button');
+    launchButton.textContent = 'Launch';
+    launchButton.onclick = function() {
+      loadPreset(index);
+      launchServer();
+    };
+
+    const renameButton = document.createElement('button');
+    renameButton.textContent = 'Rename';
+    renameButton.onclick = function() {
+      renamePreset(index);
+    };
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.onclick = function() {
+      deletePreset(index);
+    };
+
+    presetDiv.appendChild(presetNameSpan);
+    presetDiv.appendChild(launchButton);
+    presetDiv.appendChild(renameButton);
+    presetDiv.appendChild(deleteButton);
+
+    presetButtonsContainer.appendChild(presetDiv);
+  });
+}
+
+// Delete Preset
+function deletePreset(index) {
+  const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+  presets.splice(index, 1);
+  localStorage.setItem('presets', JSON.stringify(presets));
+  renderPresetButtons(presets);
+}
+
+// Rename Preset
+function renamePreset(index) {
+  const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+  const newName = prompt('Enter a new name for the preset:', presets[index].name);
+  if (newName) {
+    presets[index].name = newName;
+    localStorage.setItem('presets', JSON.stringify(presets));
+    renderPresetButtons(presets);
+  }
+}
     // Load presets from local storage on page load
     window.addEventListener('load', loadPresetsFromStorage);
 
