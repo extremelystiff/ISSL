@@ -262,38 +262,34 @@ a:hover {
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Insurgency Sandstorm Server Setup</h1>
-    <h2>Server Configuration</h2>
-    <form id="serverForm">
+ <div class="container">
+    <div class="main-content">
+      <h1>Insurgency Sandstorm Server Setup</h1>
+      <button id="quickStartButton" onclick="quickStart()">Quick Start</button>
+      <h2>Server Configuration</h2>
+      <form id="serverForm">
         <!-- Server configuration fields -->
         <label for="os">Operating System:</label>
         <select name="os" id="os">
-            <option value="windows">Windows</option>
-            <option value="linux">Linux</option>
+          <option value="windows">Windows</option>
+          <option value="linux">Linux</option>
         </select>
-
         <label for="hostname">Server Name:</label>
         <input type="text" id="hostname" name="hostname" placeholder="Enter server name">
-
         <label for="maxPlayers">Max Players:</label>
         <input type="number" id="maxPlayers" name="maxPlayers" placeholder="24" min="1" max="9999">
-
-<label for="port">
-  Game Port
-  <abbr title="For your server to show up on the server browser, you will have to forward both TCP and UDP. You can find tutorials on port forwarding on a lot of websites. We suggest portforward.com, which offers tutorials for most router manufacturers.">?</abbr>:
-</label>
-<input type="number" id="port" name="port" placeholder="27102" min="1" max="65535">
-
-<label for="queryPort">
-  Query Port
-  <abbr title="The query port is used by the server browser to retrieve information about your server. It should be a different port than the game port.">?</abbr>:
-</label>
-<input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535">
-
-
-		<label for="scenario">Choose a Scenario:</label>
-		<select name="scenario" id="scenario">
+        <label for="port">
+          Game Port
+          <abbr title="For your server to show up on the server browser, you will have to forward both TCP and UDP. You can find tutorials on port forwarding on a lot of websites. We suggest portforward.com, which offers tutorials for most router manufacturers.">?</abbr>:
+        </label>
+        <input type="number" id="port" name="port" placeholder="27102" min="1" max="65535">
+        <label for="queryPort">
+          Query Port
+          <abbr title="The query port is used by the server browser to retrieve information about your server. It should be a different port than the game port.">?</abbr>:
+        </label>
+        <input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535">
+        <label for="scenario">Choose a Scenario:</label>
+        <select name="scenario" id="scenario">
 			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Insurgents">Bab Checkpoint Insurgents</option>
 			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Security">Bab Checkpoint Security</option>
 			<option value="Bab?Scenario=Scenario_Bab_Domination">Bab Domination</option>
@@ -474,56 +470,65 @@ a:hover {
 			<option value="Buhriz?Scenario=Scenario_Tideway_Push_Insurgents">Tideway Push Insurgents</option>
 			<option value="Buhriz?Scenario=Scenario_Tideway_Push_Security">Tideway Push Security</option>
 			<option value="Buhriz?Scenario=Scenario_Tideway_Survival">Tideway Survival</option>
-		</select>
-
+        </select>
         <label for="password">Password (optional):</label>
         <input type="text" id="password" name="password" placeholder="Enter password">
-
-<label for="gameStatsToken">
-  <a href="https://gamestats.sandstorm.game/" target="_blank">GameStats Token</a>
-  <abbr title="Any Insurgency: Sandstorm community server can host a stats-enabled game. Enabling stats on your server also enables experience gain while playing on the server. The only requirement is that you must use a Steam GSLT, and you must not have a server password.">?</abbr>
-  (optional):
-</label>
-<input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
-
-<label for="gsltToken">
-  <a href="https://steamcommunity.com/dev/managegameservers" target="_blank">GSLT Token</a>
-  <abbr title="For your server to authenticate with the stats server, you must authenticate your server through Steam GSLT (Game Server Login Token). GSLTs can be obtained from Steam's Game Server Account Management page.">?</abbr>
-  (optional):
-</label>
-<input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
-
-<label for="enableGameStats">
-  Enable GameStats
-  <abbr title="By default, the game servers will not attempt to report to the stats system. Following the GSLT login steps, adding -GameStats to your server's command line will enable the opt-in to the system.">?</abbr>:
-</label>
-<input type="checkbox" id="enableGameStats" name="enableGameStats">
-
-<label for="officialRules">
-  Use Official Rules
-  <abbr title="The game ships with a ruleset which are considered official rules; this locks down the options you can change on your dedicated server. If you are running a mostly vanilla server, you may consider opting into this ruleset for your server to appear under the 'official rules' filter. To opt-in, add -OfficialRules to your server's command line.">?</abbr>:
-</label>
-<input type="checkbox" id="officialRules" name="officialRules">
-
+        <label for="gameStatsToken">
+          <a href="https://gamestats.sandstorm.game/" target="_blank">GameStats Token</a>
+          <abbr title="Any Insurgency: Sandstorm community server can host a stats-enabled game. Enabling stats on your server also enables experience gain while playing on the server. The only requirement is that you must use a Steam GSLT, and you must not have a server password.">?</abbr>
+          (optional):
+        </label>
+        <input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
+        <label for="gsltToken">
+          <a href="https://steamcommunity.com/dev/managegameservers" target="_blank">GSLT Token</a>
+          <abbr title="For your server to authenticate with the stats server, you must authenticate your server through Steam GSLT (Game Server Login Token). GSLTs can be obtained from Steam's Game Server Account Management page.">?</abbr>
+          (optional):
+        </label>
+        <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
+        <label for="enableGameStats">
+          Enable GameStats
+          <abbr title="By default, the game servers will not attempt to report to the stats system. Following the GSLT login steps, adding -GameStats to your server's command line will enable the opt-in to the system.">?</abbr>:
+        </label>
+        <input type="checkbox" id="enableGameStats" name="enableGameStats">
+        <label for="officialRules">
+          Use Official Rules
+          <abbr title="The game ships with a ruleset which are considered official rules; this locks down the options you can change on your dedicated server. If you are running a mostly vanilla server, you may consider opting into this ruleset for your server to appear under the 'official rules' filter. To opt-in, add -OfficialRules to your server's command line.">?</abbr>:
+        </label>
+        <input type="checkbox" id="officialRules" name="officialRules">
         <label for="enableCheats">Enable Cheats:</label>
         <input type="checkbox" id="enableCheats" name="enableCheats">
-<!-- Mutators Section -->
-<section id="mutatorsSection">
-  <h2>Mutators (optional)</h2>
-  <details>
-    <summary>Select Mutators</summary>
-    <div id="mutatorCheckboxes">
-      <!-- Mutator checkboxes will be dynamically generated here -->
-    </div>
-  </details>
-  <label for="mutatorInput">Selected Mutators:</label>
-  <input type="text" id="mutatorInput" name="mutatorInput" readonly>
-</section>
+        <!-- Mutators Section -->
+        <section id="mutatorsSection">
+          <h2>Mutators (optional)</h2>
+          <details>
+            <summary>Select Mutators</summary>
+            <div id="mutatorCheckboxes">
+              <!-- Mutator checkboxes will be dynamically generated here -->
+            </div>
+          </details>
+          <label for="mutatorInput">Selected Mutators:</label>
+          <input type="text" id="mutatorInput" name="mutatorInput" readonly>
+        </section>
         <div class="btn-group">
-            <button type="submit">Generate Config</button>
-            <button type="button" onclick="launchServer()">Launch Server</button><abbr title="To use the Insurgency: Sandstorm Server Launcher, you need to have Insurgency: Sandstorm Server installed via Steam">?</abbr>
-      	 <button id="quickStartButton" onclick="quickStart()">Quick Start</button>
-	</div>
+          <button type="submit">Generate Config</button>
+          <button type="button" onclick="launchServer()">Launch Server</button><abbr title="To use the Insurgency: Sandstorm Server Launcher, you need to have Insurgency: Sandstorm Server installed via Steam">?</abbr>
+        </div>
+      </form>
+      <label for="configOutput">Generated Config:</label>
+      <textarea id="configOutput" readonly></textarea>
+      <!-- Mods Section -->
+      <section id="modsSection">
+        <h2>Mods (WIP)</h2>
+        <details>
+          <button type="button" onclick="fetchMods()">Fetch Mods</button>
+          <div id="modCheckboxes">
+            <!-- Mod checkboxes will be dynamically generated here -->
+          </div>
+        </details>
+        <label for="modListOutput">Generated Mods.txt:</label>
+        <textarea id="modListOutput" readonly></textarea>
+      </section>
+    </div>
     <div id="presetsContainer">
       <h2>Presets</h2>
       <div id="presetButtons"></div>
@@ -531,22 +536,7 @@ a:hover {
       <button type="button" onclick="exportPresets()">Export Presets</button>
       <button type="button" onclick="importPresets()">Import Presets</button>
     </div>
-    </form>
-
-    <label for="configOutput">Generated Config:</label>
-    <textarea id="configOutput" readonly></textarea>
-<!-- Mods Section -->
-<section id="modsSection">
-  <h2>Mods (WIP)</h2>
- <details>
-  <button type="button" onclick="fetchMods()">Fetch Mods</button>
-  <div id="">
-    <!-- Mod checkboxes will be dynamically generated here -->
   </div>
-  </details>
-  <label for="modListOutput">Generated Mods.txt:</label>
-  <textarea id="modListOutput" readonly></textarea>
-</section>
     <script>
 document.getElementById('serverForm').addEventListener('submit', function (e) {
   e.preventDefault();
