@@ -235,6 +235,15 @@ a:hover {
   background-color: #f8f8f8;
   resize: none;
 }
+    #presetsContainer {
+      margin-top: 20px;
+    }
+    .preset {
+      margin-bottom: 10px;
+    }
+    .preset button {
+      margin-left: 10px;
+    }
     </style>
 </head>
 <body>
@@ -498,8 +507,15 @@ a:hover {
         <div class="btn-group">
             <button type="submit">Generate Config</button>
             <button type="button" onclick="launchServer()">Launch Server</button><abbr title="To use the Insurgency: Sandstorm Server Launcher, you need to have Insurgency: Sandstorm Server installed via Steam">?</abbr>
-        </div>
-
+      	 <button type="button" onclick="quickStart()">Quick Start</button>
+	</div>
+    <div id="presetsContainer">
+      <h2>Presets</h2>
+      <div id="presetButtons"></div>
+      <button type="button" onclick="savePreset()">Save Preset</button>
+      <button type="button" onclick="exportPresets()">Export Presets</button>
+      <button type="button" onclick="importPresets()">Import Presets</button>
+    </div>
     </form>
 
     <label for="configOutput">Generated Config:</label>
@@ -610,6 +626,120 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
   document.getElementById('modCheckboxes').addEventListener('change', generateModList);
 });
+
+
+    // Quick Start
+    function quickStart() {
+      document.getElementById('os').value = 'windows';
+      document.getElementById('hostname').value = 'My Insurgency Server';
+      document.getElementById('maxPlayers').value = '24';
+      document.getElementById('port').value = '27102';
+      document.getElementById('queryPort').value = '27131';
+      document.getElementById('scenario').value = 'Scenario_Farmhouse_Checkpoint_Security';
+      launchServer();
+    }
+
+    // Save Preset
+    function savePreset() {
+      const presetName = prompt('Enter a name for the preset:');
+      if (presetName) {
+        const preset = {
+          name: presetName,
+          os: document.getElementById('os').value,
+          hostname: document.getElementById('hostname').value,
+          maxPlayers: document.getElementById('maxPlayers').value,
+          port: document.getElementById('port').value,
+          queryPort: document.getElementById('queryPort').value,
+          scenario: document.getElementById('scenario').value,
+          password: document.getElementById('password').value,
+          enableCheats: document.getElementById('enableCheats').checked,
+          gameStatsToken: document.getElementById('gameStatsToken').value,
+          gsltToken: document.getElementById('gsltToken').value,
+          enableGameStats: document.getElementById('enableGameStats').checked,
+          officialRules: document.getElementById('officialRules').checked,
+          mutators: document.getElementById('mutatorInput').value
+        };
+        const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+        presets.push(preset);
+        localStorage.setItem('presets', JSON.stringify(presets));
+        renderPresetButtons();
+      }
+    }
+
+    // Render Preset Buttons
+    function renderPresetButtons() {
+      const presetButtonsContainer = document.getElementById('presetButtons');
+      presetButtonsContainer.innerHTML = '';
+      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+      presets.forEach((preset, index) => {
+        const presetDiv = document.createElement('div');
+        presetDiv.className = 'preset';
+        const presetNameSpan = document.createElement('span');
+        presetNameSpan.textContent = preset.name;
+        const launchButton = document.createElement('button');
+        launchButton.textContent = 'Launch';
+        launchButton.onclick = function() {
+          loadPreset(index);
+          launchServer();
+        };
+        presetDiv.appendChild(presetNameSpan);
+        presetDiv.appendChild(launchButton);
+        presetButtonsContainer.appendChild(presetDiv);
+      });
+    }
+
+    // Load Preset
+    function loadPreset(index) {
+      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+      const preset = presets[index];
+      if (preset) {
+        document.getElementById('os').value = preset.os;
+        document.getElementById('hostname').value = preset.hostname;
+        document.getElementById('maxPlayers').value = preset.maxPlayers;
+        document.getElementById('port').value = preset.port;
+        document.getElementById('queryPort').value = preset.queryPort;
+        document.getElementById('scenario').value = preset.scenario;
+        document.getElementById('password').value = preset.password;
+        document.getElementById('enableCheats').checked = preset.enableCheats;
+        document.getElementById('gameStatsToken').value = preset.gameStatsToken;
+        document.getElementById('gsltToken').value = preset.gsltToken;
+        document.getElementById('enableGameStats').checked = preset.enableGameStats;
+        document.getElementById('officialRules').checked = preset.officialRules;
+        document.getElementById('mutatorInput').value = preset.mutators;
+      }
+    }
+
+    // Export Presets
+    function exportPresets() {
+      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+      const presetsJSON = JSON.stringify(presets, null, 2);
+      const blob = new Blob([presetsJSON], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'presets.json';
+      link.click();
+    }
+
+    // Import Presets
+    function importPresets() {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'application/json';
+      fileInput.onchange = function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const presetsJSON = e.target.result;
+          const presets = JSON.parse(presetsJSON);
+          localStorage.setItem('presets', JSON.stringify(presets));
+          renderPresetButtons();
+        };
+        reader.readAsText(file);
+      };
+      fileInput.click();
+    }
+
 	</script>
 </body>
 <head>
