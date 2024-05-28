@@ -235,8 +235,21 @@ a:hover {
   background-color: #f8f8f8;
   resize: none;
 }
+    #quickStartButton {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
     #presetsContainer {
+      border: 1px solid #ccc;
+      padding: 20px;
       margin-top: 20px;
+      background-color: #f9f9f9;
     }
     .preset {
       margin-bottom: 10px;
@@ -635,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('maxPlayers').value = '24';
       document.getElementById('port').value = '27102';
       document.getElementById('queryPort').value = '27131';
-      document.getElementById('scenario').value = 'Scenario_Farmhouse_Checkpoint_Security';
+      document.getElementById('scenario').value = 'Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Security';
       launchServer();
     }
 
@@ -666,11 +679,16 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
+    // Load Presets from Local Storage
+    function loadPresetsFromStorage() {
+      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+      renderPresetButtons(presets);
+    }
+
     // Render Preset Buttons
-    function renderPresetButtons() {
+    function renderPresetButtons(presets) {
       const presetButtonsContainer = document.getElementById('presetButtons');
       presetButtonsContainer.innerHTML = '';
-      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
       presets.forEach((preset, index) => {
         const presetDiv = document.createElement('div');
         presetDiv.className = 'preset';
@@ -687,6 +705,8 @@ document.addEventListener('DOMContentLoaded', function() {
         presetButtonsContainer.appendChild(presetDiv);
       });
     }
+    // Load presets from local storage on page load
+    window.addEventListener('load', loadPresetsFromStorage);
 
     // Load Preset
     function loadPreset(index) {
