@@ -648,32 +648,32 @@ function quickStart() {
   launchServer();
 }
 
-    // Save Preset
-    function savePreset() {
-      const presetName = prompt('Enter a name for the preset:');
-      if (presetName) {
-        const preset = {
-          name: presetName,
-          os: document.getElementById('os').value,
-          hostname: document.getElementById('hostname').value,
-          maxPlayers: document.getElementById('maxPlayers').value,
-          port: document.getElementById('port').value,
-          queryPort: document.getElementById('queryPort').value,
-          scenario: document.getElementById('scenario').value,
-          password: document.getElementById('password').value,
-          enableCheats: document.getElementById('enableCheats').checked,
-          gameStatsToken: document.getElementById('gameStatsToken').value,
-          gsltToken: document.getElementById('gsltToken').value,
-          enableGameStats: document.getElementById('enableGameStats').checked,
-          officialRules: document.getElementById('officialRules').checked,
-          mutators: document.getElementById('mutatorInput').value
-        };
-        const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-        presets.push(preset);
-        localStorage.setItem('presets', JSON.stringify(presets));
-        renderPresetButtons();
-      }
-    }
+// Save Preset
+function savePreset() {
+  const presetName = prompt('Enter a name for the preset:');
+  if (presetName) {
+    const preset = {
+      name: presetName,
+      os: document.getElementById('os').value,
+      hostname: document.getElementById('hostname').value,
+      maxPlayers: document.getElementById('maxPlayers').value,
+      port: document.getElementById('port').value,
+      queryPort: document.getElementById('queryPort').value,
+      scenario: document.getElementById('scenario').value,
+      password: document.getElementById('password').value,
+      enableCheats: document.getElementById('enableCheats').checked,
+      gameStatsToken: document.getElementById('gameStatsToken').value,
+      gsltToken: document.getElementById('gsltToken').value,
+      enableGameStats: document.getElementById('enableGameStats').checked,
+      officialRules: document.getElementById('officialRules').checked,
+      mutators: document.getElementById('mutatorInput').value
+    };
+    let presets = JSON.parse(localStorage.getItem('presets') || '[]');
+    presets.push(preset);
+    localStorage.setItem('presets', JSON.stringify(presets));
+    renderPresetButtons(presets);
+  }
+}
 
     // Load Presets from Local Storage
     function loadPresetsFromStorage() {
