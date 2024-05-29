@@ -4,8 +4,8 @@ Welcome to the Insurgency: Sandstorm Server Launcher! This repository contains a
 
 ## Features
 
-- **Easy Server Configuration**: The web interface provides a simple and intuitive way to configure your server settings, including game mode, map rotation, player count, and more.
 - **One-Click Server Launch**: With just a single click, you can launch your Insurgency: Sandstorm server and start playing with your friends or community.
+- **Easy Server Configuration**: The web interface provides a simple and intuitive way to configure your server settings, including game mode, map rotation, player count, and more.
 - **Comprehensive Map Cycle Management**: The built-in Map Cycle Configuration tool enables you to customize your map rotation by selecting specific scenarios for each map.
 - **Mutators and Mods Support**: Enhance your gameplay by enabling various mutators and mods directly from the web interface, adding new challenges and experiences to your server.
 
