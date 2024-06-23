@@ -141,12 +141,13 @@ textarea {
     <h1>Insurgency Sandstorm Server Setup</h1>
     
     <div class="tabs">
-        <button class="tab active" onclick="openTab(event, 'serverForm')">Server Configuration</button>
+        <button class="tab active" onclick="openTab(event, 'serverConfig')">Server Configuration</button>
         <button class="tab" onclick="openTab(event, 'mapCycle')">Map Cycle</button>
         <button class="tab" onclick="openTab(event, 'mods')">Mods</button>
     </div>
 
-    <div id="serverForm" class="tab-content active">
+    <div id="serverConfig" class="tab-content active">
+	<form id="serverForm">
         <!-- Server configuration fields -->
         <label for="os">Operating System:</label>
         <select name="os" id="os">
