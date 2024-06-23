@@ -400,18 +400,6 @@ textarea {
       </form>
       <label for="configOutput">Generated Config:</label>
       <textarea id="configOutput" readonly></textarea>
-      <!-- Mods Section -->
-      <section id="modsSection">
-        <h2>Mods (WIP)</h2>
-        <details>
-          <button type="button" onclick="fetchMods()">Fetch Mods</button>
-          <div id="modCheckboxes">
-            <!-- Mod checkboxes will be dynamically generated here -->
-          </div>
-        </details>
-        <label for="modListOutput">Generated Mods.txt:</label>
-        <textarea id="modListOutput" readonly></textarea>
-      </section>
     <div id="presetsContainer">
       <h2>Presets</h2>
       <div id="presetButtons"></div>
@@ -1066,12 +1054,18 @@ textarea {
     </div>
 
     <div id="mods" class="tab-content">
-        <h2>Mods</h2>
-        <button onclick="fetchMods()">Fetch Mods</button>
-        <div id="modCheckboxes" class="grid-container">
+	          <!-- Mods Section -->
+      <section id="modsSection">
+        <h2>Mods (WIP)</h2>
+        <details>
+          <button type="button" onclick="fetchMods()">Fetch Mods</button>
+          <div id="modCheckboxes">
             <!-- Mod checkboxes will be dynamically generated here -->
-        </div>
+          </div>
+        </details>
+        <label for="modListOutput">Generated Mods.txt:</label>
         <textarea id="modListOutput" readonly></textarea>
+      </section>
     </div>
 </div>
 
