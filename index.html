@@ -147,8 +147,9 @@ textarea {
     </div>
 
     <div id="serverConfig" class="tab-content active">
+ <button id="quickStartButton" onclick="quickStart()">Random Map Instant Start Server</button>
 	<h1>Insurgency Sandstorm Server Setup</h1>
-      <button id="quickStartButton" onclick="quickStart()">Random Map Instant Start Server</button>
+
       <h2>Server Configuration</h2>
 	<form id="serverForm">
         <!-- Server configuration fields -->
@@ -411,7 +412,6 @@ textarea {
         <label for="modListOutput">Generated Mods.txt:</label>
         <textarea id="modListOutput" readonly></textarea>
       </section>
-    </div>
     <div id="presetsContainer">
       <h2>Presets</h2>
       <div id="presetButtons"></div>
