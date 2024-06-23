@@ -248,13 +248,12 @@ textarea {
         <button class="tab" onclick="openTab(event, 'mods')">Mods</button>
     </div>
 	
+	<div class="main-content">
+		
     <div class="quick-start">
         <button id="quickStartButton" class="btn btn-primary btn-large" onclick="quickStart()">Random Map Instant Start Server</button>
     </div>
-
-
-    
-    <div class="main-content">
+		
         <div id="serverConfig" class="tab-content active">
             <h2>Server Configuration</h2>
             <form id="serverForm">
@@ -508,9 +507,7 @@ textarea {
             <div class="config-output">
                 <label for="configOutput">Generated Config:</label>
                 <textarea id="configOutput" readonly></textarea>
-            </div>
-        </div>
-    </div>
+	    </div>
     <div id="presetsContainer">
         <h2>Presets</h2>
         <div id="presetButtons"></div>
