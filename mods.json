@@ -530,8 +530,8 @@
   {
     "id": 147252,
     "name": "SSGB",
-    "summary": "Still working on. Private only.",
-    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ssgb-coop"
+    "summary": "Still working on. Private test only.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ssgb"
   },
   {
     "id": 147323,
@@ -571,8 +571,8 @@
   },
   {
     "id": 148909,
-    "name": "Testing mod Don't Subscribe 1",
-    "summary": "Only for private testing.",
+    "name": "Don't Subscribe (Only For Testing 1)",
+    "summary": "Only for testing",
     "profileUrl": "https://mod.io/g/insurgencysandstorm/m/only-for-test1"
   },
   {
