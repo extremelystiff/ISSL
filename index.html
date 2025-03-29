@@ -1,1720 +1,993 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<iframe src="https://extremelystiff.github.io/sandstormplayercount/widget.html" frameborder="0" scrolling="no" width="100%" height="auto"></iframe>
+    <iframe src="https://extremelystiff.github.io/sandstormplayercount/widget.html" frameborder="0" scrolling="no" width="100%" height="auto"></iframe>
     <title>Insurgency Sandstorm Server Setup</title>
-  <meta property="og:title" content="Insurgency: Sandstorm Server Launcher">
-  <meta property="og:description" content="A powerful and user-friendly web application that allows you to effortlessly launch and configure your own Insurgency: Sandstorm dedicated server right from your browser.">
-<style>
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 1px;
-    color: #333;
-}
+    <meta property="og:title" content="Insurgency: Sandstorm Server Launcher">
+    <meta property="og:description" content="A powerful and user-friendly web application that allows you to effortlessly launch and configure your own Insurgency: Sandstorm dedicated server right from your browser.">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 1px;
+            color: #333;
+        }
 
-.container {
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 20px;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-.quick-start {
-    text-align: center;
-    margin-bottom: 30px;
-}
+        .quick-start {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 5px;
-}
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+            font-weight: 500;
+        }
 
-.btn-primary {
-    background-color: #3498db;
-    color: white;
-}
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
 
-.btn-secondary {
-    background-color: #95a5a6;
-    color: white;
-}
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
 
-.btn-large {
-    font-size: 1.2em;
-    padding: 15px 25px;
-}
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
 
-.btn:hover {
-    opacity: 0.9;
-}
+        .btn-large {
+            font-size: 1.2em;
+            padding: 15px 25px;
+        }
 
-#serverForm {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 05px;
-}
+        .btn:hover {
+            opacity: 0.9;
+        }
 
-#serverForm label {
-    display: block;
-    margin-bottom: 5px;
-}
+        #serverForm {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
 
-#serverForm input,
-#serverForm select {
-    width: 95%;
-    padding: 5px;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-.form-actions {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
+        #serverForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
 
-.config-output {
-    margin-top: 30px;
-    width: 95%;
-}
+        #serverForm input,
+        #serverForm select {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
 
-#configOutput {
-    width: 100%;
-    height: 200px;
-    margin-top: 10px;
-}
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
 
-#presetsContainer {
-    margin-top: 30px;
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 500px;
-}
+        .config-output {
+            margin-top: 30px;
+            width: 100%;
+        }
 
-#presetButtons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 15px;
-}
+        #configOutput {
+            width: 100%;
+            height: 200px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
 
-.preset-actions {
-    display: flex;
-    gap: 10px;
-}
+        #presetsContainer {
+            margin-top: 30px;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+        }
 
-h1, h2 {
-    color: #2c3e50;
-}
+        #presetButtons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
 
-.tabs {
-    display: flex;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #e0e0e0;
-}
+        .preset {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
 
-.tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    background: none;
-    font-size: 16px;
-    font-weight: bold;
-    color: #777;
-    transition: color 0.3s;
-}
+        .preset-actions {
+            display: flex;
+            gap: 10px;
+        }
 
-.tab.active {
-    color: #3498db;
-    border-bottom: 2px solid #3498db;
-}
+        h1, h2 {
+            color: #2c3e50;
+        }
 
-.tab-content {
-    display: none;
-}
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
 
-.tab-content.active {
-    display: block;
-}
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #777;
+            transition: color 0.3s;
+        }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-}
+        .tab.active {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+        }
 
-.map-section {
-    background-color: #d1e4e4;
-    padding: 15px;
-    border-radius: 5px;
-}
+        .tab-content {
+            display: none;
+        }
 
-.checkbox-group {
-    display: flex;
-    flex-direction: column;
-}
+        .tab-content.active {
+            display: block;
+        }
 
-input[type="checkbox"] {
-    margin-right: 10px;
-}
+        .mutator-section {
+            margin-top: 20px;
+        }
 
-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 5px;
-}
+        .mod-section {
+            margin-top: 20px;
+        }
 
-button:hover {
-    background-color: #2980b9;
-}
+        details {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
 
-textarea {
-    width: 100%;
-    height: 200px;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+        }
 
-.collapsible {
-    background-color: #f1f1f1;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-}
+        #mutatorCheckboxes, #modCheckboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
 
-.active, .collapsible:hover {
-    background-color: #ccc;
-}
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
 
-.content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f9f9f9;
-}
+        .checkbox-item:hover {
+            background-color: #f9f9f9;
+        }
 
-.btn-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-#mutatorCheckboxes {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
+        .checkbox-item label {
+            margin-left: 10px;
+            flex: 1;
+        }
 
-#mutatorCheckboxes > div {
-    display: grid;
-    grid-template-columns: 45px auto 1fr;
-    align-items: start;
-    gap: 5px;
-}
+        .item-description {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            margin-left: 25px;
+        }
 
-#mutatorCheckboxes input[type="checkbox"] {
-    justify-self: end;
-    margin-top: 3px; /* Align with the first line of text */
-}
+        #selectedModsOutput, #selectedMutatorsOutput {
+            margin-top: 10px;
+            width: 100%;
+            min-height: 100px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+        }
 
-#mutatorCheckboxes label {
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .info-box {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
 
-.mutator-description {
-    font-size: 0.9em;
-    color: #5a5150;
-    grid-column: 2 / span 2;
-}
-</style>
+        .search-box {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .search-box button {
+            border-radius: 0 4px 4px 0;
+            padding: 8px 12px;
+        }
+
+        abbr {
+            text-decoration: none;
+            border-bottom: 1px dotted #666;
+            cursor: help;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Insurgency Sandstorm Server Setup</h1>
-	
+    <div class="container">
+        <h1>Insurgency Sandstorm Server Setup</h1>
+        
         <div class="tabs">
-        <button class="tab active" onclick="openTab(event, 'serverConfig')">Server Configuration</button>
-        <button class="tab" onclick="openTab(event, 'mapCycle')">Map Cycle</button>
-        <button class="tab" onclick="openTab(event, 'mods')">Mods(WIP)</button>
-    </div>
-	
-	<div class="main-content">
-  <div id="serverConfig" class="tab-content active">
-    <div class="quick-start">
-        <button id="quickStartButton" class="btn btn-primary btn-large" onclick="quickStart()">Random Map Instant Start Server</button>
-    </div>
-            <h2>Server Configuration</h2>
-            <form id="serverForm">
-        <!-- Server configuration fields -->
-        <label for="os">Operating System:</label>
-        <select name="os" id="os">
-          <option value="windows">Windows</option>
-          <option value="linux">Linux</option>
-        </select>
-        <label for="hostname">Server Name:</label>
-        <input type="text" id="hostname" name="hostname" placeholder="Enter server name">
-        <label for="maxPlayers">Max Players:</label>
-        <input type="number" id="maxPlayers" name="maxPlayers" placeholder="24" min="1" max="9999">
-        <label for="port">
-          Game Port
-          <abbr title="For your server to show up on the server browser, you will have to forward both TCP and UDP. You can find tutorials on port forwarding on a lot of websites. We suggest portforward.com, which offers tutorials for most router manufacturers.">?</abbr>:
-        </label>
-        <input type="number" id="port" name="port" placeholder="27102" min="1" max="65535">
-        <label for="queryPort">
-          Query Port
-          <abbr title="The query port is used by the server browser to retrieve information about your server. It should be a different port than the game port.">?</abbr>:
-        </label>
-        <input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535">
-        <label for="scenario">Choose a Scenario:</label>
-        <select name="scenario" id="scenario">
-			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Insurgents">Bab Checkpoint Insurgents</option>
-			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Security">Bab Checkpoint Security</option>
-			<option value="Bab?Scenario=Scenario_Bab_Domination">Bab Domination</option>
-			<option value="Bab?Scenario=Scenario_Bab_Firefight_East">Bab Firefight East</option>
-			<option value="Bab?Scenario=Scenario_Bab_Outpost">Bab Outpost</option>
-			<option value="Bab?Scenario=Scenario_Bab_Push_Insurgents">Bab Push Insurgents</option>
-			<option value="Bab?Scenario=Scenario_Bab_Push_Security">Bab Push Security</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Ambush">Citadel Ambush</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Insurgents">Citadel Checkpoint Insurgents</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Security">Citadel Checkpoint Security</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Domination">Citadel Domination</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Firefight_East">Citadel Firefight East</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Outpost">Citadel Outpost</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Push_Insurgents">Citadel Push Insurgents</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Push_Security">Citadel Push Security</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Survival">Citadel Survival</option>
-			<option value="Citadel?Scenario=Scenario_Citadel_Defusal">Citadel Defusal</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Ambush">Crossing Ambush</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Insurgents">Crossing Checkpoint Insurgents</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Security">Crossing Checkpoint Security</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Domination">Crossing Domination</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Firefight_West">Crossing Firefight West</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Frontline">Crossing Frontline</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Outpost">Crossing Outpost</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Push_Insurgents">Crossing Push Insurgents</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Push_Security">Crossing Push Security</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Skirmish">Crossing Skirmish</option>
-			<option value="Canyon?Scenario=Scenario_Crossing_Team_Deathmatch">Crossing Team Deathmatch</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Ambush">Farmhouse Ambush</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Insurgents">Farmhouse Checkpoint Insurgents</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Security">Farmhouse Checkpoint Security</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Domination">Farmhouse Domination</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Firefight_East">Farmhouse Firefight East</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Firefight_West">Farmhouse Firefight West</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Frontline">Farmhouse Frontline</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Push_Insurgents">Farmhouse Push Insurgents</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Push_Security">Farmhouse Push Security</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Skirmish">Farmhouse Skirmish</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Survival">Farmhouse Survival</option>
-			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Team_Deathmatch">Farmhouse Team Deathmatch</option>
-			<option value=Gap?Scenario=Scenario_Gap_Ambush">Gap Ambush</option>
-			<option value=Gap?Scenario=Scenario_Gap_Checkpoint_Insurgents">Gap Checkpoint Insurgents</option>
-			<option value=Gap?Scenario=Scenario_Gap_Checkpoint_Security">Gap Checkpoint Security</option>
-			<option value=Gap?Scenario=Scenario_Gap_Domination">Gap Domination</option>
-			<option value=Gap?Scenario=Scenario_Gap_Firefight">Gap Firefight</option>
-			<option value=Gap?Scenario=Scenario_Gap_Frontline">Gap Frontline</option>
-			<option value=Gap?Scenario=Scenario_Gap_Outpost">Gap Outpost</option>
-			<option value=Gap?Scenario=Scenario_Gap_Push_Insurgents">Gap Push Insurgents</option>
-			<option value=Gap?Scenario=Scenario_Gap_Push_Security">Gap Push Security</option>
-			<option value=Gap?Scenario=Scenario_Gap_Survival">Gap Survival</option>
-			<option value=Gap?Scenario=Scenario_Gap_Defusal">Gap Defusal</option>
-			<option value="Town?Scenario=Scenario_Hideout_Ambush">Hideout Ambush</option>
-			<option value="Town?Scenario=Scenario_Hideout_Checkpoint_Insurgents">Hideout Checkpoint Insurgents</option>
-			<option value="Town?Scenario=Scenario_Hideout_Checkpoint_Security">Hideout Checkpoint Security</option>
-			<option value="Town?Scenario=Scenario_Hideout_Domination">Hideout Domination</option>
-			<option value="Town?Scenario=Scenario_Hideout_Firefight_East">Hideout Firefight East</option>
-			<option value="Town?Scenario=Scenario_Hideout_Firefight_West">Hideout Firefight West</option>
-			<option value="Town?Scenario=Scenario_Hideout_Frontline">Hideout Frontline</option>
-			<option value="Town?Scenario=Scenario_Hideout_Push_Insurgents">Hideout Push Insurgents</option>
-			<option value="Town?Scenario=Scenario_Hideout_Push_Security">Hideout Push Security</option>
-			<option value="Town?Scenario=Scenario_Hideout_Skirmish">Hideout Skirmish</option>
-			<option value="Town?Scenario=Scenario_Hideout_Survival">Hideout Survival</option>
-			<option value="Town?Scenario=Scenario_Hideout_Team_Deathmatch">Hideout Team Deathmatch</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Ambush">Hillside Ambush</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Checkpoint_Insurgents">Hillside Checkpoint Insurgents</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Checkpoint_Security">Hillside Checkpoint Security</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Domination">Hillside Domination</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Firefight_East">Hillside Firefight East</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Firefight_West">Hillside Firefight West</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Frontline">Hillside Frontline</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Outpost">Hillside Outpost</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Push_Insurgents">Hillside Push Insurgents</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Push_Security">Hillside Push Security (INS2014 layout)</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Skirmish">Hillside Skirmish</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Survival">Hillside Survival</option>
-			<option value="Sinjar?Scenario=Scenario_Hillside_Team_Deathmatch">Hillside Team Deathmatch</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Push_Security">LastLight Push Security</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Checkpoint_Insurgents">LastLight Checkpoint Insurgents</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Checkpoint_Security">LastLight Checkpoint Security</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Domination">LastLight Domination</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Firefight">LastLight Firefight</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Ambush"LastLight >Ambush</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Survival">LastLight Survival</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Push_Insurgents">LastLight Push Insurgents</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Push_Security">LastLight Push Security</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Outpost">LastLight Outpost</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Defusal">LastLight Defusal</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Frontline">LastLight Frontline</option>
-			<option value="LastLight?Scenario=Scenario_LastLight_Team_Deathmatch">LastLight Team Deathmatch</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Ambush">Ministry Ambush</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Insurgents">Ministry Checkpoint Insurgents</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Security">Ministry Checkpoint Security</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Domination">Ministry Domination</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Firefight_A">Ministry Firefight</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Skirmish">Ministry Skirmish</option>
-			<option value="Ministry?Scenario=Scenario_Ministry_Team_Deathmatch">Ministry Team Deathmatch</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Checkpoint_Insurgents">Outskirts Checkpoint Insurgents</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Checkpoint_Security">Outskirts Checkpoint Security</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Firefight_East">Outskirts Firefight East</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Firefight_West">Outskirts Firefight West</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Frontline">Outskirts Frontline</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Push_Insurgents">Outskirts Push Insurgents</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Push_Security">Outskirts Push Security</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Skirmish">Outskirts Skirmish</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Team_Deathmatch">Outskirts Team Deathmatch</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Survival">Outskirts Survival</option>
-			<option value=Compound?Scenario=Scenario_Outskirts_Defusal">Outskirts Defusal</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Ambush">PowerPlant Ambush</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Insurgents">PowerPlant Checkpoint Insurgents</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Security">PowerPlant Checkpoint Security</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Domination">PowerPlant Domination</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Firefight_East">PowerPlant Firefight East</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Firefight_West">PowerPlant Firefight West</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Push_Insurgents">PowerPlant Push Insurgents</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Push_Security">PowerPlant Push Security</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Survival">PowerPlant Survival</option>
-			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Frontline">PowerPlant Frontline</option>	
-			<option value="Precinct?Scenario=Scenario_Precinct_Ambush">Precinct Ambush</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Insurgents">Precinct Checkpoint Insurgents</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Security">Precinct Checkpoint Security</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Firefight_East">Precinct Firefight East</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Firefight_West">Precinct Firefight West</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Frontline">Precinct Frontline</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Push_Insurgents">Precinct Push Insurgents</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Push_Security">Precinct Push Security</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Skirmish">Precinct Skirmish</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Team_Deathmatch">Precinct Team Deathmatch</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Survival">Precinct Survival</option>
-			<option value="Precinct?Scenario=Scenario_Precinct_Defusal">Precinct Defusal</option>
-			<option value="Prison?Scenario=Scenario_Prison_Push_Security">Prison Push Security</option>
-			<option value="Prison?Scenario=Scenario_Prison_Checkpoint_Insurgents">Prison Checkpoint Insurgents</option>
-			<option value="Prison?Scenario=Scenario_Prison_Checkpoint_Security">Prison Checkpoint Security</option>
-			<option value="Prison?Scenario=Scenario_Prison_Domination">Prison Domination</option>
-			<option value="Prison?Scenario=Scenario_Prison_Firefight">Prison Firefight</option>
-			<option value="Prison?Scenario=Scenario_Prison_Ambush">Prison Ambush</option>
-			<option value="Prison?Scenario=Scenario_Prison_Survival">Prison Survival</option>
-			<option value="Prison?Scenario=Scenario_Prison_Push_Insurgents">Prison Push Insurgents</option>
-			<option value="Prison?Scenario=Scenario_Prison_Push_Security">Prison Push Security</option>
-			<option value="Prison?Scenario=Scenario_Prison_Defusal">Prison Defusal</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Push_Security">Refinery Push Security</option>    
-			<option value="Oilfield?Scenario=Scenario_Refinery_Ambush">Refinery Ambush</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Insurgents">Refinery Checkpoint Insurgents</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Security">Refinery Checkpoint Security</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Domination">Refinery Domination</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Firefight_West">Refinery Firefight West</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Frontline">Refinery Frontline</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Push_Insurgents">Refinery Push Insurgents</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Push_Security">Refinery Push Security</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Skirmish">Refinery Skirmish</option>
-			<option value="Oilfield?Scenario=Scenario_Refinery_Survival">Refinery Survival</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Ambush">Summit Ambush</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Insurgents">Summit Checkpoint Insurgents</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Security">Summit Checkpoint Security</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Firefight_East">Summit Firefight East</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Firefight_West">Summit Firefight West</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Frontline">Summit Frontline</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Push_Insurgents">Summit Push Insurgents</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Push_Security">Summit Push Security</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Skirmish">Summit Skirmish</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Team_Deathmatch">Summit Team Deathmatch</option>
-			<option value="Mountain?Scenario=Scenario_Summit_Survival">Summit Survival</option>
-			<option value="Tell?Scenario=Scenario_Tell_Ambush">Tell Ambush</option>
-			<option value="Tell?Scenario=Scenario_Tell_Checkpoint_Insurgents">Tell Checkpoint Insurgents</option>
-			<option value="Tell?Scenario=Scenario_Tell_Checkpoint_Security">Tell Checkpoint Security</option>
-			<option value="Tell?Scenario=Scenario_Tell_Domination">Tell Domination</option>
-			<option value="Tell?Scenario=Scenario_Tell_Firefight_East">Tell Firefight East</option>
-			<option value="Tell?Scenario=Scenario_Tell_Firefight_West">Tell Firefight West</option>
-			<option value="Tell?Scenario=Scenario_Tell_Outpost">Tell Outpost</option>
-			<option value="Tell?Scenario=Scenario_Tell_Push_Insurgents">Tell Push Insurgents</option>
-			<option value="Tell?Scenario=Scenario_Tell_Push_Security">Tell Push Security</option>
-			<option value="Tell?Scenario=Scenario_Tell_Survival">Tell Survival</option>
-			<option value="Tell?Scenario=Scenario_Tell_Frontline">Tell Frontline</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Insurgents">Tideway Checkpoint Insurgents</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Security">Tideway Checkpoint Security</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Domination">Tideway Domination</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Firefight_West">Tideway Firefight West</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Frontline">Tideway Frontline</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Push_Insurgents">Tideway Push Insurgents</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Push_Security">Tideway Push Security</option>
-			<option value="Buhriz?Scenario=Scenario_Tideway_Survival">Tideway Survival</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Push_Security">Trainyard Push Security</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Push_Insurgents">Trainyard Push Insurgents</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Firefight_West">Trainyard Firefight West</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Firefight_East">Trainyard Firefight East</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Domination_West">Trainyard Domination West</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Domination_East">Trainyard Domination East</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Frontline">Trainyard Frontline</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Ambush_East">Trainyard Ambush East</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Ambush_West">Trainyard Ambush West</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Defusal_West">Trainyard Defusal West</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Checkpoint_Security">Trainyard Checkpoint Security</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Checkpoint_Insurgents">Trainyard Checkpoint Insurgents</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Outpost">Trainyard Outpost</option>
-			<option value="Trainyard?Scenario=Scenario_Trainyard_Survival">Trainyard Survival</option>
-        </select>
-        <label for="password">Password (optional):</label>
-        <input type="text" id="password" name="password" placeholder="Enter password">
-        <label for="gameStatsToken">
-          <a href="https://gamestats.sandstorm.game/" target="_blank">GameStats Token</a>
-          <abbr title="Any Insurgency: Sandstorm community server can host a stats-enabled game. Enabling stats on your server also enables experience gain while playing on the server. The only requirement is that you must use a Steam GSLT, and you must not have a server password.">?</abbr>
-          (optional):
-        </label>
-        <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
-        <label for="gsltToken">
-          <a href="https://steamcommunity.com/dev/managegameservers" target="_blank">GSLT Token</a>
-          <abbr title="For your server to authenticate with the stats server, you must authenticate your server through Steam GSLT (Game Server Login Token). GSLTs can be obtained from Steam's Game Server Account Management page.">?</abbr>
-          (optional):
-        </label>
-        <input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
-        <label for="enableGameStats">
-          Enable GameStats
-          <abbr title="By default, the game servers will not attempt to report to the stats system. Following the GSLT login steps, adding -GameStats to your server's command line will enable the opt-in to the system.">?</abbr>:
-        </label>
-        <input type="checkbox" id="enableGameStats" name="enableGameStats">
-        <label for="officialRules">
-          Use Official Rules
-          <abbr title="The game ships with a ruleset which are considered official rules; this locks down the options you can change on your dedicated server. If you are running a mostly vanilla server, you may consider opting into this ruleset for your server to appear under the 'official rules' filter. To opt-in, add -OfficialRules to your server's command line.">?</abbr>:
-        </label>
-        <input type="checkbox" id="officialRules" name="officialRules">
-        <label for="enableCheats">Enable Cheats:</label>
-        <input type="checkbox" id="enableCheats" name="enableCheats">
-        <!-- Mutators Section -->
-        <section id="mutatorsSection">
-          <h2>Mutators (optional)</h2>
-          <details>
-            <summary>Select Mutators</summary>
-            <div id="mutatorCheckboxes">
-              <!-- Mutator checkboxes will be dynamically generated here -->
-            </div>
-          </details>
-          <label for="mutatorInput">Selected Mutators:</label>
-          <input type="text" id="mutatorInput" name="mutatorInput" readonly>
-        </section>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-primary btn-large" onclick="launchServer()">Launch Server</button>
-                    <button type="submit" class="btn btn-secondary">Generate Config</button>
+            <button class="tab active" onclick="openTab(event, 'serverConfig')">Server Configuration</button>
+            <button class="tab" onclick="openTab(event, 'mods')">Mods</button>
+            <button class="tab" onclick="openTab(event, 'mutators')">Mutators</button>
+        </div>
+        
+        <div class="main-content">
+            <div id="serverConfig" class="tab-content active">
+                <div class="quick-start">
+                    <button id="quickStartButton" class="btn btn-primary btn-large" onclick="quickStart()">Quick Launch Random Map Server</button>
                 </div>
-            </form>
+                
+                <h2>Server Configuration</h2>
+                <form id="serverForm">
+                    <div class="form-group">
+                        <label for="os">Operating System:</label>
+                        <select name="os" id="os">
+                            <option value="windows">Windows</option>
+                            <option value="linux">Linux</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hostname">Server Name:</label>
+                        <input type="text" id="hostname" name="hostname" placeholder="Enter server name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="maxPlayers">Max Players:</label>
+                        <input type="number" id="maxPlayers" name="maxPlayers" placeholder="24" min="1" max="99" value="24">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="port">
+                            Game Port
+                            <abbr title="For your server to show up on the server browser, you will have to forward both TCP and UDP. You can find tutorials on port forwarding on a lot of websites. We suggest portforward.com, which offers tutorials for most router manufacturers.">?</abbr>:
+                        </label>
+                        <input type="number" id="port" name="port" placeholder="27102" min="1" max="65535" value="27102">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="queryPort">
+                            Query Port
+                            <abbr title="The query port is used by the server browser to retrieve information about your server. It should be a different port than the game port.">?</abbr>:
+                        </label>
+                        <input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535" value="27131">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scenario">Choose a Scenario:</label>
+                        <select name="scenario" id="scenario">
+                            <option value="Bab?Scenario=Scenario_Bab_Checkpoint_Insurgents">Bab Checkpoint Insurgents</option>
+                            <option value="Bab?Scenario=Scenario_Bab_Checkpoint_Security">Bab Checkpoint Security</option>
+                            <option value="Bab?Scenario=Scenario_Bab_Domination">Bab Domination</option>
+                            <option value="Bab?Scenario=Scenario_Bab_Firefight_East">Bab Firefight East</option>
+                            <option value="Bab?Scenario=Scenario_Bab_Outpost">Bab Outpost</option>
+                            <option value="Bab?Scenario=Scenario_Bab_Push_Insurgents">Bab Push Insurgents</option>
+                            <option value="Bab?Scenario=Scenario_Bab_Push_Security">Bab Push Security</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Insurgents">Citadel Checkpoint Insurgents</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Security">Citadel Checkpoint Security</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Domination">Citadel Domination</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Firefight_East">Citadel Firefight East</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Outpost">Citadel Outpost</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Push_Insurgents">Citadel Push Insurgents</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Push_Security">Citadel Push Security</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Survival">Citadel Survival</option>
+                            <option value="Citadel?Scenario=Scenario_Citadel_Defusal">Citadel Defusal</option>
+                            <option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Insurgents">Crossing Checkpoint Insurgents</option>
+                            <option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Security">Crossing Checkpoint Security</option>
+                            <option value="Canyon?Scenario=Scenario_Crossing_Domination">Crossing Domination</option>
+                            <option value="Canyon?Scenario=Scenario_Crossing_Firefight_West">Crossing Firefight West</option>
+                            <option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Insurgents">Farmhouse Checkpoint Insurgents</option>
+                            <option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Security">Farmhouse Checkpoint Security</option>
+                            <option value="Town?Scenario=Scenario_Hideout_Checkpoint_Insurgents">Hideout Checkpoint Insurgents</option>
+                            <option value="Town?Scenario=Scenario_Hideout_Checkpoint_Security">Hideout Checkpoint Security</option>
+                            <option value="Town?Scenario=Scenario_Hideout_Push_Insurgents">Hideout Push Insurgents</option>
+                            <option value="Town?Scenario=Scenario_Hideout_Push_Security">Hideout Push Security</option>
+                            <option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Insurgents">Ministry Checkpoint Insurgents</option>
+                            <option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Security">Ministry Checkpoint Security</option>
+                            <option value="Compound?Scenario=Scenario_Outskirts_Checkpoint_Insurgents">Outskirts Checkpoint Insurgents</option>
+                            <option value="Compound?Scenario=Scenario_Outskirts_Checkpoint_Security">Outskirts Checkpoint Security</option>
+                            <option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Insurgents">Precinct Checkpoint Insurgents</option>
+                            <option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Security">Precinct Checkpoint Security</option>
+                            <option value="Precinct?Scenario=Scenario_Precinct_Push_Insurgents">Precinct Push Insurgents</option>
+                            <option value="Precinct?Scenario=Scenario_Precinct_Push_Security">Precinct Push Security</option>
+                            <option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Insurgents">Refinery Checkpoint Insurgents</option>
+                            <option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Security">Refinery Checkpoint Security</option>
+                            <option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Insurgents">Summit Checkpoint Insurgents</option>
+                            <option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Security">Summit Checkpoint Security</option>
+                            <option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Insurgents">PowerPlant Checkpoint Insurgents</option>
+                            <option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Security">PowerPlant Checkpoint Security</option>
+                            <option value="Tell?Scenario=Scenario_Tell_Checkpoint_Insurgents">Tell Checkpoint Insurgents</option>
+                            <option value="Tell?Scenario=Scenario_Tell_Checkpoint_Security">Tell Checkpoint Security</option>
+                            <option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Insurgents">Tideway Checkpoint Insurgents</option>
+                            <option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Security">Tideway Checkpoint Security</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password (optional):</label>
+                        <input type="text" id="password" name="password" placeholder="Enter password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gameStatsToken">
+                            <a href="https://gamestats.sandstorm.game/" target="_blank">GameStats Token</a>
+                            <abbr title="Any Insurgency: Sandstorm community server can host a stats-enabled game. Enabling stats on your server also enables experience gain while playing on the server. The only requirement is that you must use a Steam GSLT, and you must not have a server password.">?</abbr>
+                            (optional):
+                        </label>
+                        <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gsltToken">
+                            <a href="https://steamcommunity.com/dev/managegameservers" target="_blank">GSLT Token</a>
+                            <abbr title="For your server to authenticate with the stats server, you must authenticate your server through Steam GSLT (Game Server Login Token). GSLTs can be obtained from Steam's Game Server Account Management page.">?</abbr>
+                            (optional):
+                        </label>
+                        <input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="enableGameStats" name="enableGameStats">
+                            Enable GameStats
+                            <abbr title="By default, the game servers will not attempt to report to the stats system. Following the GSLT login steps, adding -GameStats to your server's command line will enable the opt-in to the system.">?</abbr>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="officialRules" name="officialRules">
+                            Use Official Rules
+                            <abbr title="The game ships with a ruleset which are considered official rules; this locks down the options you can change on your dedicated server. If you are running a mostly vanilla server, you may consider opting into this ruleset for your server to appear under the 'official rules' filter. To opt-in, add -OfficialRules to your server's command line.">?</abbr>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="enableCheats" name="enableCheats">
+                            Enable Cheats
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary btn-large" onclick="launchServer()">Launch Server</button>
+                        <button type="button" class="btn btn-secondary" onclick="generateConfig()">Generate Config</button>
+                    </div>
+                </form>
+                
+                <div class="config-output">
+                    <label for="configOutput">Generated Config:</label>
+                    <textarea id="configOutput" readonly></textarea>
+                </div>
+                
+                <div id="presetsContainer">
+                    <h2>Presets</h2>
+                    <div id="presetButtons"></div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-secondary" onclick="savePreset()">Save Preset</button>
+                        <button type="button" class="btn btn-secondary" onclick="exportPresets()">Export Presets</button>
+                        <button type="button" class="btn btn-secondary" onclick="importPresets()">Import Presets</button>
+                    </div>
+                </div>
+            </div>
             
-            <div class="config-output">
-                <label for="configOutput">Generated Config:</label>
-                <textarea id="configOutput" readonly></textarea>
-	    </div>
-    <div id="presetsContainer">
-        <h2>Presets</h2>
-        <div id="presetButtons"></div>
-        <div class="preset-actions">
-            <button type="button" class="btn btn-secondary" onclick="savePreset()">Save Preset</button>
-            <button type="button" class="btn btn-secondary" onclick="exportPresets()">Export Presets</button>
-            <button type="button" class="btn btn-secondary" onclick="importPresets()">Import Presets</button>
-        </div>
-    </div>
-</div>
-
-    <div id="mapCycle" class="tab-content">
-        <button class="collapsible">Map Cycle Configuration</button>
-        <div class="content">
-            <div class="btn-group">
-        <button type="button" onclick="selectAllGlobal()">Select All</button>
-        <button type="button" onclick="selectAllGameMode('Ambush')">Select All Ambush</button>
-        <button type="button" onclick="selectAllGameMode('Checkpoint_Insurgents')">Select All Checkpoint Insurgents</button>
-        <button type="button" onclick="selectAllGameMode('Checkpoint_Security')">Select All Checkpoint Security</button>
-        <button type="button" onclick="selectAllGameMode('Defusal')">Select All Defusal</button>
-        <button type="button" onclick="selectAllGameMode('Domination')">Select All Domination</button>
-        <button type="button" onclick="selectAllGameMode('Firefight')">Select All Firefight</button>
-        <button type="button" onclick="selectAllGameMode('Frontline')">Select All Frontline</button>
-        <button type="button" onclick="selectAllGameMode('Outpost')">Select All Outpost</button>
-        <button type="button" onclick="selectAllGameMode('Push_Insurgents')">Select All Push Insurgents</button>
-        <button type="button" onclick="selectAllGameMode('Push_Security')">Select All Push Security</button>
-        <button type="button" onclick="selectAllGameMode('Skirmish')">Select All Skirmish</button>
-        <button type="button" onclick="selectAllGameMode('Survival')">Select All Survival</button>
-        <button type="button" onclick="selectAllGameMode('Team_Deathmatch')">Select All Team Deathmatch</button>
-
-        <button type="button" onclick="generateMapCycle()">Generate MapCycle.txt</button>
-        <button onclick="downloadMapCycle()">Download MapCycle.txt</button>
-    </div>
+            <div id="mods" class="tab-content">
+                <h2>Mods</h2>
+                <div class="info-box">
+                    Select mods to include with your server. The selected mods will be added to the server launch parameters.
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="modSearch" placeholder="Search mods..." onkeyup="searchMods()">
+                    <button type="button" class="btn btn-primary" onclick="searchMods()">Search</button>
+                </div>
+                
+                <button type="button" class="btn btn-primary" onclick="fetchMods()">Refresh Mod List</button>
+                
+                <div id="modCheckboxes">
+                    <p>Loading mods list... Please wait or click "Refresh Mod List"</p>
+                </div>
+                
+                <div>
+                    <h3>Selected Mods:</h3>
+                    <div id="selectedModsOutput"></div>
+                </div>
             </div>
-            <div class="grid-container">
-<h2>Generated MapCycle.txt</h2>
-    <textarea id="output" readonly></textarea>
-
-    <h2>Manual Setup Instructions</h2>
-    <ol>
-        <li>Open your Steam library and navigate to the Insurgency Sandstorm server directory:</li>
-        <ul>
-            <li>Typically located at: <code>C:\Program Files (x86)\Steam\steamapps\common\sandstorm_server</code></li>
-        </ul>
-        <li>Inside the <code>Insurgency</code> folder, create a new folder named <code>Config</code>.</li>
-        <li>Inside the <code>Config</code> folder, create a new folder named <code>Server</code>.</li>
-        <li>Copy the generated <code>MapCycle.txt</code> file and paste it into the <code>Server</code> folder.</li>
-    </ol>
-</div>
-
-    
-	<form id="mapCycleForm">
-		<section class="map-section" id="babSection">
-			<h2>Bab</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Bab_Push_Security"> Push Security</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id="CitadelSection">
-			<h2>Citadel</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Defusal"> Defusal</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Citadel_Frontline"> Frontline</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id="CrossingSection">
-			<h2>Crossing (Canyon)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Crossing_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=FarmhouseSection">
-			<h2>Farmhouse</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Farmhouse_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=GapSection">
-			<h2>Gap</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Firefight"> Firefight</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Gap_Defusal"> Defusal</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=HideoutSection">
-			<h2>Hideout (Town)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hideout_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=HillsideSection">
-			<h2>Hillside (Sinjar)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Push_Security"> Push Security (INS2014 layout)</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Hillside_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=MinistrySection">
-			<h2>Ministry</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Firefight_A"> Firefight</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Ministry_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=OutskirtsSection">
-			<h2>Outskirts (Compound)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Team_Deathmatch"> Team Deathmatch</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Outskirts_Defusal"> Defusal</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=PrecinctSection">
-			<h2>Precinct</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Team_Deathmatch"> Team Deathmatch</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Precinct_Defusal"> Defusal</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=RefinerySection">
-			<h2>Refinery (Oilfield)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Team_Deathmatch"> Team Deathmatch</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Refinery_Survival"> Survival</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=SummitSection">
-			<h2>Summit (Mountain)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Skirmish"> Skirmish</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Team_Deathmatch"> Team Deathmatch</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Summit_Survival"> Survival</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=PowerSection">
-			<h2>Power Plant (PowerPlant)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Powerplant_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_PowerPlant_Frontline"> Frontline</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=TellSection">
-			<h2>Tell</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Firefight_East"> Firefight East</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tell_Frontline"> Frontline</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=TidewaySection">
-			<h2>Tideway (Buhriz)</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Firefight_West"> Firefight West</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Tideway_Survival"> Survival</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id="TrainyardSection">
-		    <h2>Trainyard (Trainyard)</h2>
-		    <div class="checkbox-group">
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Push_Security"> Push Security</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Push_Insurgents"> Push Insurgents</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Firefight_West"> Firefight West</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Firefight_East"> Firefight East</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Domination_West"> Domination West</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Domination_East"> Domination East</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Frontline"> Frontline</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Ambush_East"> Ambush East</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Ambush_West"> Ambush West</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Defusal_West"> Defusal West</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Checkpoint_Security"> Checkpoint Security</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Outpost"> Outpost</label>
-		        <br>
-		        <label>
-		            <input type="checkbox" value="Scenario_Trainyard_Survival"> Survival</label>
-		        <br>
-		    </div>
-		</section>
-		<section class="map-section" id=PrisonSection">
-			<h2>Prison</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Firefight"> Firefight</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_Prison_Defusal"> Defusal</label>
-			<br> </div>
-		</section>
-		<section class="map-section" id=LastSection">
-			<h2>Last Light</h2>
-			<div class="checkbox-group">
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Checkpoint_Insurgents"> Checkpoint Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Checkpoint_Security"> Checkpoint Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Domination"> Domination</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Firefight"> Firefight</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Ambush"> Ambush</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Survival"> Survival</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Push_Insurgents"> Push Insurgents</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Push_Security"> Push Security</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Outpost"> Outpost</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Defusal"> Defusal</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Frontline"> Frontline</label>
-			<br>
-			<label>
-				<input type="checkbox" value="Scenario_LastLight_Team_Deathmatch"> Team Deathmatch</label>
-			<br> </div></section></form></details>
+            
+            <div id="mutators" class="tab-content">
+                <h2>Mutators</h2>
+                <div class="info-box">
+                    Select mutators to enable on your server. Mutators change gameplay mechanics and rules.
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="mutatorSearch" placeholder="Search mutators..." onkeyup="searchMutators()">
+                    <button type="button" class="btn btn-primary" onclick="searchMutators()">Search</button>
+                </div>
+                
+                <div id="mutatorCheckboxes">
+                    <!-- Mutator checkboxes will be dynamically generated here -->
+                </div>
+                
+                <div>
+                    <h3>Selected Mutators:</h3>
+                    <div id="selectedMutatorsOutput"></div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div id="mods" class="tab-content">
-	          <!-- Mods Section -->
-      <section id="modsSection">
-        <h2>Mods (WIP)</h2>
-        <details>
-          <button type="button" onclick="fetchMods()">Fetch Mods</button>
-          <div id="modCheckboxes">
-            <!-- Mod checkboxes will be dynamically generated here -->
-          </div>
-        </details>
-        <label for="modListOutput">Generated Mods.txt:</label>
-        <textarea id="modListOutput" readonly></textarea>
-      </section>
-    </div>
-</div>
 
     <script>
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tab");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
+        // Global variables
+        let mods = [];
+        let selectedMods = [];
+        let selectedMutators = [];
 
-var coll = document.getElementsByClassName("collapsible");
-var i;
+        // Mutators data
+        const mutators = [
+            { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
+            { name: 'AntiMaterielRiflesOnly', description: 'Only anti-materiel rifles are available along with normal equipment and explosives.' },
+            { name: 'BoltActionsOnly', description: 'Only bolt-action rifles are available along with normal equipment and explosives.' },
+            { name: 'Broke', description: 'Start with 0 supply points.' },
+            { name: 'BudgetAntiquing', description: 'Normal equipment and explosives, but limited to old and inexpensive weapons.' },
+            { name: 'BulletSponge', description: 'Health is increased.' },
+            { name: 'Competitive', description: 'Equipment is more expensive, rounds are shorter, and capturing objectives is faster.' },
+            { name: 'CompetitiveLoadouts', description: 'Player classes are replaced with those from Competitive.' },
+            { name: 'FastMovement', description: 'Move Faster.' },
+            { name: 'Frenzy', description: 'Fight against AI enemies who only use melee attacks. Watch out for special enemies.' },
+            { name: 'FullyLoaded', description: 'All weapons, equipment, and explosives in the game are available in the Loadout Menu' },
+            { name: 'Guerrillas', description: 'Start with 5 supply points.' },
+            { name: 'Gunslingers', description: 'Kill the enemy more than they kill you with a big stinkin revolver. And explosives.' },
+            { name: 'Hardcore', description: 'Mutator featuring slower movement speeds and longer capture times.' },
+            { name: 'HeadshotOnly', description: 'Players only take damage when shot in the head.' },
+            { name: 'HotPotato', description: 'A live fragmentation grenade is dropped on death.' },
+            { name: 'LockedAim', description: 'Weapons always point to the center of the screen.' },
+            { name: 'MakarovsOnly', description: 'Makarovs are the only option.' },
+            { name: 'NoAim', description: 'Aiming down sights is disabled.' },
+            { name: 'NoDrops', description: 'No scavenging allowed.' },
+            { name: 'PistolsOnly', description: 'Only pistols are available along with normal equipment and explosives.' },
+            { name: 'Poor', description: 'Start with limited supply.' },
+            { name: 'ShotgunsOnly', description: 'Only Shotguns are available along with normal equipment and explosives.' },
+            { name: 'SlowCaptureTimes', description: 'Objectives will take longer to capture.' },
+            { name: 'SlowMovement', description: 'Move slower.' },
+            { name: 'SoldierOfFortune', description: 'Gain supply points as your score increases.' },
+            { name: 'SpecialOperations', description: 'Start with 30 supply points.' },
+            { name: 'Strapped', description: 'Start with 1 supply point.' },
+            { name: 'Ultralethal', description: 'Everyone dies with one shot.' },
+            { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
+            { name: 'Warlords', description: 'Start with 10 supply points.' }
+        ];
 
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            generateMutatorCheckboxes();
+            fetchMods();
+            loadPresetsFromStorage();
+        });
+
+        // Tab switching
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-    });
-}
-	    
-document.getElementById('serverForm').addEventListener('submit', function (e) {
-  e.preventDefault();
 
-  var os = document.getElementById('os').value;
-  var hostname = document.getElementById('hostname').value;
-  var maxPlayers = document.getElementById('maxPlayers').value;
-  var port = document.getElementById('port').value;
-  var queryPort = document.getElementById('queryPort').value;
-  var scenario = document.getElementById('scenario').value;
-  var password = document.getElementById('password').value;
-  var enableCheats = document.getElementById('enableCheats').checked;
-  var gameStatsToken = document.getElementById('gameStatsToken').value;
-  var gsltToken = document.getElementById('gsltToken').value;
-  var enableGameStats = document.getElementById('enableGameStats').checked;
-  var officialRules = document.getElementById('officialRules').checked;
+        // Server configuration functions
+        function generateConfig() {
+            const os = document.getElementById('os').value;
+            const hostname = document.getElementById('hostname').value;
+            const maxPlayers = document.getElementById('maxPlayers').value;
+            const port = document.getElementById('port').value;
+            const queryPort = document.getElementById('queryPort').value;
+            const scenario = document.getElementById('scenario').value;
+            const password = document.getElementById('password').value;
+            const enableCheats = document.getElementById('enableCheats').checked;
+            const gameStatsToken = document.getElementById('gameStatsToken').value;
+            const gsltToken = document.getElementById('gsltToken').value;
+            const enableGameStats = document.getElementById('enableGameStats').checked;
+            const officialRules = document.getElementById('officialRules').checked;
 
-  var selectedMutators = Array.from(document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]:checked'))
-    .map(checkbox => checkbox.value)
-    .join(',');
+            let configString = "";
+            const baseCommand = os === "windows" ?
+                "InsurgencyServer.exe" :
+                "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
 
-  var configString = "";
-  var baseCommand = os === "windows" ?
-    "InsurgencyServer.exe" :
-    "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
+            let travelParams = `${scenario}?MaxPlayers=${maxPlayers}`;
 
-  var travelParams = `${scenario}?MaxPlayers=${maxPlayers}`;
+            if (password) travelParams += `?Password=${password}`;
 
-  if (password) travelParams += `?Password=${password}`;
+            let gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
+            let cheatParam = enableCheats ? " -EnableCheats" : "";
+            let gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
+            let officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
+            
+            // Add mutators parameter
+            let mutatorParam = selectedMutators.length > 0 ? ` -Mutators=${selectedMutators.join(',')}` : "";
+            
+            // Add mods parameter
+            let modsParam = "";
+            if (selectedMods.length > 0) {
+                const modIds = selectedMods.map(mod => mod.id).join(',');
+                modsParam = ` -mods -CmdModList=${modIds}`;
+            }
 
-  var gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
-  var cheatParam = enableCheats ? " -EnableCheats" : "";
-  var gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
-  var officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
-  var mutatorParam = selectedMutators ? ` -Mutators=${selectedMutators}` : "";
+            configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}${mutatorParam}${modsParam}`;
 
-  configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}${mutatorParam}`;
+            document.getElementById('configOutput').value = configString;
+        }
 
-  document.getElementById('configOutput').value = configString;
-});
+        function launchServer() {
+            generateConfig();
+            
+            const scenario = document.getElementById('scenario').value;
+            const maxPlayers = document.getElementById('maxPlayers').value;
+            const port = document.getElementById('port').value;
+            const queryPort = document.getElementById('queryPort').value;
+            const hostname = document.getElementById('hostname').value;
+            const password = document.getElementById('password').value;
+            const enableCheats = document.getElementById('enableCheats').checked;
+            const gameStatsToken = document.getElementById('gameStatsToken').value;
+            const gsltToken = document.getElementById('gsltToken').value;
+            const enableGameStats = document.getElementById('enableGameStats').checked;
+            const officialRules = document.getElementById('officialRules').checked;
 
-document.getElementById('gameStatsToken').addEventListener('input', function (e) {
-  // Auto-check enableGameStats if gameStatsToken is provided
-  document.getElementById('enableGameStats').checked = !!e.target.value.trim();
-});
+            let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
 
-function launchServer() {
-  const form = document.getElementById('serverForm');
-  const scenario = form.elements['scenario'].value;
-  const maxPlayers = form.elements['maxPlayers'].value;
-  const port = form.elements['port'].value;
-  const queryPort = form.elements['queryPort'].value;
-  const hostname = form.elements['hostname'].value;
-  const gameStatsToken = form.elements['gameStatsToken'].value;
-  const gsltToken = form.elements['gsltToken'].value;
-  const enableGameStats = form.elements['enableGameStats'].checked;
-  const officialRules = form.elements['officialRules'].checked;
-  const enableCheats = form.elements['enableCheats'].checked;
+            if (password) serverParams += `?Password=${password}`;
+            if (enableCheats) serverParams += ' -EnableCheats';
+            if (gameStatsToken && enableGameStats) serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
+            if (gsltToken) serverParams += ` -GSLTToken=${gsltToken}`;
+            if (officialRules) serverParams += ' -ruleset=OfficialRules';
+            
+            // Add mutators parameter
+            if (selectedMutators.length > 0) {
+                serverParams += ` -Mutators=${selectedMutators.join(',')}`;
+            }
+            
+            // Add mods parameter
+            if (selectedMods.length > 0) {
+                const modIds = selectedMods.map(mod => mod.id).join(',');
+                serverParams += ` -mods -CmdModList=${modIds}`;
+            }
 
-  const selectedMutators = Array.from(document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]:checked'))
-    .map(checkbox => checkbox.value)
-    .join(',');
+            const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
+            window.location.href = steamURL;
+        }
 
-  let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
+        function quickStart() {
+            document.getElementById('hostname').value = 'My Insurgency Server';
+            document.getElementById('maxPlayers').value = '24';
+            document.getElementById('port').value = '27102';
+            document.getElementById('queryPort').value = '27131';
+            
+            const scenarioDropdown = document.getElementById('scenario');
+            const randomIndex = Math.floor(Math.random() * scenarioDropdown.options.length);
+            scenarioDropdown.selectedIndex = randomIndex;
+            
+            launchServer();
+        }
 
-  if (enableCheats) {
-    serverParams += ' -EnableCheats';
-  }
+        // Preset functions
+        function savePreset() {
+            const presetName = prompt('Enter a name for the preset:');
+            if (!presetName) return;
+            
+            const preset = {
+                name: presetName,
+                os: document.getElementById('os').value,
+                hostname: document.getElementById('hostname').value,
+                maxPlayers: document.getElementById('maxPlayers').value,
+                port: document.getElementById('port').value,
+                queryPort: document.getElementById('queryPort').value,
+                scenario: document.getElementById('scenario').value,
+                password: document.getElementById('password').value,
+                enableCheats: document.getElementById('enableCheats').checked,
+                gameStatsToken: document.getElementById('gameStatsToken').value,
+                gsltToken: document.getElementById('gsltToken').value,
+                enableGameStats: document.getElementById('enableGameStats').checked,
+                officialRules: document.getElementById('officialRules').checked,
+                selectedMutators: [...selectedMutators],
+                selectedMods: [...selectedMods]
+            };
+            
+            let presets = JSON.parse(localStorage.getItem('presets') || '[]');
+            presets.push(preset);
+            localStorage.setItem('presets', JSON.stringify(presets));
+            renderPresetButtons(presets);
+        }
 
-  if (gameStatsToken && enableGameStats) {
-    serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
-  }
+        function loadPresetsFromStorage() {
+            const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+            renderPresetButtons(presets);
+        }
 
-  if (gsltToken) {
-    serverParams += ` -GSLTToken=${gsltToken}`;
-  }
+        function renderPresetButtons(presets) {
+            const presetButtonsContainer = document.getElementById('presetButtons');
+            presetButtonsContainer.innerHTML = '';
+            
+            presets.forEach((preset, index) => {
+                const presetDiv = document.createElement('div');
+                presetDiv.className = 'preset';
 
-  if (officialRules) {
-    serverParams += ' -ruleset=OfficialRules';
-  }
+                const presetNameSpan = document.createElement('span');
+                presetNameSpan.textContent = preset.name;
 
-  if (selectedMutators) {
-    serverParams += ` -Mutators=${selectedMutators}`;
-  }
+                const launchButton = document.createElement('button');
+                launchButton.textContent = 'Launch';
+                launchButton.className = 'btn btn-primary';
+                launchButton.onclick = function() {
+                    loadPreset(index);
+                    launchServer();
+                };
 
-  const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
-  window.location.href = steamURL;
-}
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-  generateMutatorCheckboxes();
-  document.getElementById('mutatorCheckboxes').addEventListener('change', updateSelectedMutators);
-  document.getElementById('modCheckboxes').addEventListener('change', generateModList);
-});
+                const renameButton = document.createElement('button');
+                renameButton.textContent = 'Rename';
+                renameButton.className = 'btn btn-secondary';
+                renameButton.onclick = function() {
+                    renamePreset(index);
+                };
 
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'btn btn-danger';
+                deleteButton.onclick = function() {
+                    deletePreset(index);
+                };
 
-    // Quick Start
-function quickStart() {
-  document.getElementById('os').value = 'windows';
-  document.getElementById('hostname').value = 'My Insurgency Server';
-  document.getElementById('maxPlayers').value = '24';
-  document.getElementById('port').value = '27102';
-  document.getElementById('queryPort').value = '27131';
-  
-  const scenarioDropdown = document.getElementById('scenario');
-  const randomIndex = Math.floor(Math.random() * scenarioDropdown.options.length);
-  scenarioDropdown.selectedIndex = randomIndex;
-  
-  launchServer();
-}
+                presetDiv.appendChild(presetNameSpan);
+                presetDiv.appendChild(launchButton);
+                presetDiv.appendChild(renameButton);
+                presetDiv.appendChild(deleteButton);
 
-// Save Preset
-function savePreset() {
-  const presetName = prompt('Enter a name for the preset:');
-  if (presetName) {
-    const preset = {
-      name: presetName,
-      os: document.getElementById('os').value,
-      hostname: document.getElementById('hostname').value,
-      maxPlayers: document.getElementById('maxPlayers').value,
-      port: document.getElementById('port').value,
-      queryPort: document.getElementById('queryPort').value,
-      scenario: document.getElementById('scenario').value,
-      password: document.getElementById('password').value,
-      enableCheats: document.getElementById('enableCheats').checked,
-      gameStatsToken: document.getElementById('gameStatsToken').value,
-      gsltToken: document.getElementById('gsltToken').value,
-      enableGameStats: document.getElementById('enableGameStats').checked,
-      officialRules: document.getElementById('officialRules').checked,
-      mutators: document.getElementById('mutatorInput').value
-    };
-    let presets = JSON.parse(localStorage.getItem('presets') || '[]');
-    presets.push(preset);
-    localStorage.setItem('presets', JSON.stringify(presets));
-    renderPresetButtons(presets);
-  }
-}
+                presetButtonsContainer.appendChild(presetDiv);
+            });
+        }
 
-    // Load Presets from Local Storage
-    function loadPresetsFromStorage() {
-      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-      renderPresetButtons(presets);
-    }
+        function deletePreset(index) {
+            const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+            presets.splice(index, 1);
+            localStorage.setItem('presets', JSON.stringify(presets));
+            renderPresetButtons(presets);
+        }
 
-// Render Preset Buttons
-function renderPresetButtons(presets) {
-  const presetButtonsContainer = document.getElementById('presetButtons');
-  presetButtonsContainer.innerHTML = '';
-  presets.forEach((preset, index) => {
-    const presetDiv = document.createElement('div');
-    presetDiv.className = 'preset';
+        function renamePreset(index) {
+            const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+            const newName = prompt('Enter a new name for the preset:', presets[index].name);
+            if (newName) {
+                presets[index].name = newName;
+                localStorage.setItem('presets', JSON.stringify(presets));
+                renderPresetButtons(presets);
+            }
+        }
 
-    const presetNameSpan = document.createElement('span');
-    presetNameSpan.textContent = preset.name;
+        function loadPreset(index) {
+            const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+            const preset = presets[index];
+            if (!preset) return;
+            
+            document.getElementById('os').value = preset.os;
+            document.getElementById('hostname').value = preset.hostname;
+            document.getElementById('maxPlayers').value = preset.maxPlayers;
+            document.getElementById('port').value = preset.port;
+            document.getElementById('queryPort').value = preset.queryPort;
+            document.getElementById('scenario').value = preset.scenario;
+            document.getElementById('password').value = preset.password;
+            document.getElementById('enableCheats').checked = preset.enableCheats;
+            document.getElementById('gameStatsToken').value = preset.gameStatsToken;
+            document.getElementById('gsltToken').value = preset.gsltToken;
+            document.getElementById('enableGameStats').checked = preset.enableGameStats;
+            document.getElementById('officialRules').checked = preset.officialRules;
+            
+            // Load saved mutators and mods
+            selectedMutators = preset.selectedMutators || [];
+            selectedMods = preset.selectedMods || [];
+            
+            updateMutatorCheckboxes();
+            updateModCheckboxes();
+            updateSelectedMutatorsDisplay();
+            updateSelectedModsDisplay();
+        }
 
-    const launchButton = document.createElement('button');
-    launchButton.textContent = 'Launch';
-    launchButton.onclick = function() {
-      loadPreset(index);
-      launchServer();
-    };
+        function exportPresets() {
+            const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+            const presetsJSON = JSON.stringify(presets, null, 2);
+            const blob = new Blob([presetsJSON], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'insurgency_server_presets.json';
+            link.click();
+        }
 
-    const renameButton = document.createElement('button');
-    renameButton.textContent = 'Rename';
-    renameButton.onclick = function() {
-      renamePreset(index);
-    };
+        function importPresets() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'application/json';
+            fileInput.onchange = function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const presetsJSON = e.target.result;
+                        const presets = JSON.parse(presetsJSON);
+                        localStorage.setItem('presets', JSON.stringify(presets));
+                        renderPresetButtons(presets);
+                        alert('Presets imported successfully!');
+                    } catch (error) {
+                        alert('Error importing presets: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            fileInput.click();
+        }
 
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.onclick = function() {
-      deletePreset(index);
-    };
+        // Mutator functions
+        function generateMutatorCheckboxes() {
+            const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
+            mutatorCheckboxesContainer.innerHTML = '';
+            
+            mutators.forEach(mutator => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = mutator.name;
+                checkbox.id = `mutator-${mutator.name}`;
+                checkbox.checked = selectedMutators.includes(mutator.name);
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (!selectedMutators.includes(mutator.name)) {
+                            selectedMutators.push(mutator.name);
+                        }
+                    } else {
+                        const index = selectedMutators.indexOf(mutator.name);
+                        if (index !== -1) {
+                            selectedMutators.splice(index, 1);
+                        }
+                    }
+                    updateSelectedMutatorsDisplay();
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = mutator.name;
+                
+                const description = document.createElement('div');
+                description.className = 'item-description';
+                description.textContent = mutator.description;
+                
+                checkboxItem.appendChild(checkbox);
+                checkboxItem.appendChild(label);
+                checkboxItem.appendChild(description);
+                
+                mutatorCheckboxesContainer.appendChild(checkboxItem);
+            });
+            
+            updateSelectedMutatorsDisplay();
+        }
 
-    presetDiv.appendChild(presetNameSpan);
-    presetDiv.appendChild(launchButton);
-    presetDiv.appendChild(renameButton);
-    presetDiv.appendChild(deleteButton);
+        function updateMutatorCheckboxes() {
+            const checkboxes = document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectedMutators.includes(checkbox.value);
+            });
+        }
 
-    presetButtonsContainer.appendChild(presetDiv);
-  });
-}
+        function updateSelectedMutatorsDisplay() {
+            const output = document.getElementById('selectedMutatorsOutput');
+            if (selectedMutators.length === 0) {
+                output.textContent = 'No mutators selected';
+            } else {
+                output.textContent = selectedMutators.join(', ');
+            }
+        }
 
-// Delete Preset
-function deletePreset(index) {
-  const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-  presets.splice(index, 1);
-  localStorage.setItem('presets', JSON.stringify(presets));
-  renderPresetButtons(presets);
-}
+        function searchMutators() {
+            const searchTerm = document.getElementById('mutatorSearch').value.toLowerCase();
+            const checkboxItems = document.querySelectorAll('#mutatorCheckboxes .checkbox-item');
+            
+            checkboxItems.forEach(item => {
+                const label = item.querySelector('label').textContent.toLowerCase();
+                const description = item.querySelector('.item-description').textContent.toLowerCase();
+                
+                if (label.includes(searchTerm) || description.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
 
-// Rename Preset
-function renamePreset(index) {
-  const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-  const newName = prompt('Enter a new name for the preset:', presets[index].name);
-  if (newName) {
-    presets[index].name = newName;
-    localStorage.setItem('presets', JSON.stringify(presets));
-    renderPresetButtons(presets);
-  }
-}
-    // Load presets from local storage on page load
-    window.addEventListener('load', loadPresetsFromStorage);
+        // Mod functions
+        async function fetchMods() {
+            try {
+                const response = await fetch('https://extremelystiff.github.io/ISSS/mods.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                mods = await response.json();
+                generateModCheckboxes();
+                console.log('Fetched mods:', mods);
+            } catch (error) {
+                console.error('Error fetching mods:', error);
+                alert('Failed to fetch mods. Please try again later.');
+                
+                // Fallback to some example mods for testing
+                mods = [
+                    { id: 81844, name: "Example Content", summary: "Example Content from mod kit." },
+                    { id: 89591, name: "Shoot House", summary: "Shoot House" },
+                    { id: 91912, name: "Wolf-land (Nightfall 1.7 Update)", summary: "Update 0.6 - Added Night Lighting Scenario, temporarily disabled Checkpoint, various cover tweaks" },
+                    { id: 92807, name: "M45A1 Wolfpack", summary: "Black variant of the M45A1" }
+                ];
+                generateModCheckboxes();
+            }
+        }
 
-    // Load Preset
-    function loadPreset(index) {
-      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-      const preset = presets[index];
-      if (preset) {
-        document.getElementById('os').value = preset.os;
-        document.getElementById('hostname').value = preset.hostname;
-        document.getElementById('maxPlayers').value = preset.maxPlayers;
-        document.getElementById('port').value = preset.port;
-        document.getElementById('queryPort').value = preset.queryPort;
-        document.getElementById('scenario').value = preset.scenario;
-        document.getElementById('password').value = preset.password;
-        document.getElementById('enableCheats').checked = preset.enableCheats;
-        document.getElementById('gameStatsToken').value = preset.gameStatsToken;
-        document.getElementById('gsltToken').value = preset.gsltToken;
-        document.getElementById('enableGameStats').checked = preset.enableGameStats;
-        document.getElementById('officialRules').checked = preset.officialRules;
-        document.getElementById('mutatorInput').value = preset.mutators;
-      }
-    }
+        function generateModCheckboxes() {
+            const modCheckboxesContainer = document.getElementById('modCheckboxes');
+            modCheckboxesContainer.innerHTML = '';
+            
+            if (!mods || mods.length === 0) {
+                modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
+                return;
+            }
+            
+            mods.forEach(mod => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = mod.id;
+                checkbox.id = `mod-${mod.id}`;
+                checkbox.checked = selectedMods.some(selectedMod => selectedMod.id === mod.id);
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (!selectedMods.some(selectedMod => selectedMod.id === mod.id)) {
+                            selectedMods.push(mod);
+                        }
+                    } else {
+                        selectedMods = selectedMods.filter(selectedMod => selectedMod.id !== mod.id);
+                    }
+                    updateSelectedModsDisplay();
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = mod.name;
+                
+                const description = document.createElement('div');
+                description.className = 'item-description';
+                description.textContent = mod.summary || 'No description available';
+                
+                checkboxItem.appendChild(checkbox);
+                checkboxItem.appendChild(label);
+                checkboxItem.appendChild(description);
+                
+                modCheckboxesContainer.appendChild(checkboxItem);
+            });
+            
+            updateSelectedModsDisplay();
+        }
 
-    // Export Presets
-    function exportPresets() {
-      const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-      const presetsJSON = JSON.stringify(presets, null, 2);
-      const blob = new Blob([presetsJSON], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'presets.json';
-      link.click();
-    }
+        function updateModCheckboxes() {
+            const checkboxes = document.querySelectorAll('#modCheckboxes input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const modId = parseInt(checkbox.value);
+                checkbox.checked = selectedMods.some(mod => mod.id === modId);
+            });
+        }
 
-    // Import Presets
-    function importPresets() {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = 'application/json';
-      fileInput.onchange = function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const presetsJSON = e.target.result;
-          const presets = JSON.parse(presetsJSON);
-          localStorage.setItem('presets', JSON.stringify(presets));
-          renderPresetButtons();
-        };
-        reader.readAsText(file);
-      };
-      fileInput.click();
-    }
+        function updateSelectedModsDisplay() {
+            const output = document.getElementById('selectedModsOutput');
+            if (selectedMods.length === 0) {
+                output.textContent = 'No mods selected';
+            } else {
+                let modInfo = selectedMods.map(mod => `${mod.name} (ID: ${mod.id})`).join('\n');
+                output.textContent = modInfo;
+            }
+        }
 
-	</script>
-</body>
-<head>
-    <title>Map Cycle Configuration</title>
+        function searchMods() {
+            const searchTerm = document.getElementById('modSearch').value.toLowerCase();
+            const checkboxItems = document.querySelectorAll('#modCheckboxes .checkbox-item');
+            
+            checkboxItems.forEach(item => {
+                const label = item.querySelector('label').textContent.toLowerCase();
+                const description = item.querySelector('.item-description').textContent.toLowerCase();
+                
+                if (label.includes(searchTerm) || description.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
 
-
-    <script>
-function selectAll(sectionId) {
-    var checkboxes = document.querySelectorAll('#' + sectionId + ' input[type="checkbox"]');
-    var checkAll = !checkboxes[0].checked;
-    checkboxes.forEach(function(checkbox) {
-        checkbox.checked = checkAll;
-    });
-}
-
-function selectAllGameMode(gameMode) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"][value*="' + gameMode + '"]');
-    var allChecked = Array.from(checkboxes).every(chk => chk.checked);
-    checkboxes.forEach(function(checkbox) {
-        checkbox.checked = !allChecked;
-    });
-}
-
-function selectAllGlobal() {
-    var checkboxes = document.querySelectorAll('#mapCycleForm input[type="checkbox"]');
-    var checkAll = !checkboxes[0].checked;
-    checkboxes.forEach(function(checkbox) {
-        checkbox.checked = checkAll;
-    });
-}
-
+        // GameStats token auto-check enableGameStats
+        document.getElementById('gameStatsToken').addEventListener('input', function(e) {
+            document.getElementById('enableGameStats').checked = !!e.target.value.trim();
+        });
     </script>
-<script>
-	function generateMapCycle() {
-		const form = document.getElementById('mapCycleForm');
-		const output = document.getElementById('output');
-		let scenarios = [];
-		// Loop through all checkboxes
-		for(let i = 0; i < form.elements.length; i++) {
-			if(form.elements[i].type === 'checkbox' && form.elements[i].checked) {
-				scenarios.push(form.elements[i].value);
-			}
-		}
-		// Update the textarea with the selected scenarios
-		output.value = scenarios.join('\n');
-	}
-function downloadMapCycle() {
-    // Generate the map cycle first
-    generateMapCycle();
-
-    // Get the generated map cycle content
-    const mapCycleContent = document.getElementById('output').value;
-
-    // Create a temporary <a> element
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(mapCycleContent));
-    element.setAttribute('download', 'MapCycle.txt');
-    element.style.display = 'none';
-
-    // Append the temporary element to the document body
-    document.body.appendChild(element);
-
-    // Trigger a click event on the temporary element to start the download
-    element.click();
-
-    // Remove the temporary element from the document body
-    document.body.removeChild(element);
-}
-	</script>
-<script>
-// Mutators data
-const mutators = [
-  { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
-  { name: 'AntiMaterielRiflesOnly', description: 'Only anti-materiel rifles are available along with normal equipment and explosives.' },
-  { name: 'BoltActionsOnly', description: 'Only bolt-action rifles are available along with normal equipment and explosives.' },
-  { name: 'Broke', description: 'Start with 0 supply points.' },
-  { name: 'BudgetAntiquing', description: 'Normal equipment and explosives, but limited to old and inexpensive weapons.' },
-  { name: 'BulletSponge', description: 'Health is increased.' },
-  { name: 'Competitive', description: 'Equipment is more expensive, rounds are shorter, and capturing objectives is faster.' },
-  { name: 'CompetitiveLoadouts', description: 'Player classes are replaced with those from Competitive.' },
-  { name: 'FastMovement', description: 'Move Faster.' },
-  { name: 'Frenzy', description: 'Fight against AI enemies who only use melee attacks. Watch out for special enemies.' },
-  { name: 'FullyLoaded', description: 'All weapons, equipment, and explosives in the game are available in the Loadout Menu' },
-  { name: 'Guerrillas', description: 'Start with 5 supply points.' },
-  { name: 'Gunslingers', description: 'Kill the enemy more than they kill you with a big stinkin revolver. And explosives.' },
-  { name: 'Hardcore', description: 'Mutator featuring slower movement speeds and longer capture times.' },
-  { name: 'HeadshotOnly', description: 'Players only take damage when shot in the head.' },
-  { name: 'HotPotato', description: 'A live fragmentation grenade is dropped on death.' },
-  { name: 'LockedAim', description: 'Weapons always point to the center of the screen.' },
-  { name: 'MakarovsOnly', description: 'Makarovs are the only option.' },
-  { name: 'NoAim', description: 'Aiming down sights is disabled.' },
-  { name: 'NoDrops', description: 'No scavenging allowed.' },
-  { name: 'PistolsOnly', description: 'Only pistols are available along with normal equipment and explosives.' },
-  { name: 'Poor', description: 'Start with limited supply.' },
-  { name: 'ShotgunsOnly', description: 'Only Shotguns are available along with normal equipment and explosives.' },
-  { name: 'SlowCaptureTimes', description: 'Objectives will take longer to capture.' },
-  { name: 'SlowMovement', description: 'Move slower.' },
-  { name: 'SoldierOfFortune', description: 'Gain supply points as your score increases.' },
-  { name: 'SpecialOperations', description: 'Start with 30 supply points.' },
-  { name: 'Strapped', description: 'Start with 1 supply point.' },
-  { name: 'Ultralethal', description: 'Everyone dies with one shot.' },
-  { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
-  { name: 'Warlords', description: 'Start with 10 supply points.' }
-];
-
-
-
-// Generate mutator checkboxes
-function generateMutatorCheckboxes() {
-  const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
-  mutators.forEach(mutator => {
-    const mutatorDiv = document.createElement('div');
-    
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = mutator.name;
-    checkbox.id = `mutator-${mutator.name}`;
-    
-    const label = document.createElement('label');
-    label.htmlFor = checkbox.id;
-    label.textContent = mutator.name;
-    
-    const description = document.createElement('span');
-    description.textContent = mutator.description;
-    description.className = 'mutator-description';
-    
-    mutatorDiv.appendChild(checkbox);
-    mutatorDiv.appendChild(label);
-    mutatorDiv.appendChild(description);
-    
-    mutatorCheckboxesContainer.appendChild(mutatorDiv);
-  });
-}
-// Update selected mutators input
-function updateSelectedMutators() {
-  const selectedMutators = Array.from(document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]:checked'))
-    .map(checkbox => checkbox.value);
-  document.getElementById('mutatorInput').value = selectedMutators.join(',');
-}
-async function fetchMods() {
-  try {
-    const response = await fetch('https://raw.githubusercontent.com/extremelystiff/ISSS/main/mods.json');
-    const mods = await response.json();
-    generateModCheckboxes(mods);
-  } catch (error) {
-    console.error('Error fetching mods:', error);
-    alert('Failed to fetch mods. Please try again later.');
-  }
-}
-// Generate mod checkboxes
-function generateModCheckboxes(mods) {
-  const modCheckboxesContainer = document.getElementById('modCheckboxes');
-  modCheckboxesContainer.innerHTML = ''; // Clear existing checkboxes
-  
-  mods.forEach(mod => {
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = mod.id;
-    checkbox.id = `mod-${mod.id}`;
-    
-    const label = document.createElement('label');
-    label.htmlFor = checkbox.id;
-    label.textContent = mod.name;
-    
-    const br = document.createElement('br');
-    
-    modCheckboxesContainer.appendChild(checkbox);
-    modCheckboxesContainer.appendChild(label);
-    modCheckboxesContainer.appendChild(br);
-  });
-}
-
-// Generate Mods.txt content
-function generateModList() {
-  const selectedMods = Array.from(document.querySelectorAll('#modCheckboxes input[type="checkbox"]:checked'))
-    .map(checkbox => checkbox.value);
-  document.getElementById('modListOutput').value = selectedMods.join('\n');
-}
-
-</script>
-	</div>
 </body>
-
 </html>
