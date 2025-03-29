@@ -491,7 +491,167 @@
         let mods = [];
         let selectedMods = [];
         let selectedMutators = [];
+        let customMutators = [];
 
+        function modifyMutatorSection() {
+          // Find the mutator section
+          const mutatorContainer = document.getElementById('mutatorCheckboxes');
+          
+          // Create a custom mutator input form
+          const customMutatorForm = document.createElement('div');
+          customMutatorForm.className = 'custom-mutator-form';
+          customMutatorForm.innerHTML = `
+            <h3>Add Custom Mutator</h3>
+            <div class="form-group">
+              <input type="text" id="customMutatorInput" placeholder="Enter custom mutator name">
+              <button type="button" class="btn btn-primary" onclick="addCustomMutator()">Add</button>
+            </div>
+          `;
+          
+          // Insert the form before the mutator checkboxes
+          mutatorContainer.parentNode.insertBefore(customMutatorForm, mutatorContainer);
+        }
+        
+        function addCustomMutator() {
+          const mutatorInput = document.getElementById('customMutatorInput');
+          const mutatorName = mutatorInput.value.trim();
+          
+          if (!mutatorName) {
+            alert('Please enter a mutator name');
+            return;
+          }
+          
+          // Check if already in standard mutators
+          const existingStandardMutator = mutators.find(m => m.name.toLowerCase() === mutatorName.toLowerCase());
+          if (existingStandardMutator) {
+            alert('This mutator already exists in the standard list');
+            return;
+          }
+          
+          // Check if already in custom mutators
+          const existingCustomMutator = customMutators.find(m => m.name.toLowerCase() === mutatorName.toLowerCase());
+          if (existingCustomMutator) {
+            alert('This custom mutator has already been added');
+            return;
+          }
+          
+          // Add to custom mutators
+          const newMutator = { name: mutatorName, description: 'Custom user-added mutator', isCustom: true };
+          customMutators.push(newMutator);
+          
+          // Save to local storage
+          localStorage.setItem('customMutators', JSON.stringify(customMutators));
+          
+          // Add to selected mutators
+          if (!selectedMutators.includes(mutatorName)) {
+            selectedMutators.push(mutatorName);
+          }
+          
+          // Refresh displays
+          generateMutatorCheckboxes();
+          updateSelectedMutatorsDisplay();
+          
+          // Clear input
+          mutatorInput.value = '';
+          
+          // Optional: Send to GAS backend
+          logCustomMutatorToGAS(mutatorName);
+        }
+        
+        // Load custom mutators from local storage on page load
+        function loadCustomMutators() {
+          const savedMutators = localStorage.getItem('customMutators');
+          if (savedMutators) {
+            customMutators = JSON.parse(savedMutators);
+          }
+        }
+        
+        // Update the generateMutatorCheckboxes function to include custom mutators
+        function generateMutatorCheckboxes() {
+          const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
+          mutatorCheckboxesContainer.innerHTML = '';
+          
+          // Create standard mutators
+          mutators.forEach(mutator => {
+            // Existing code...
+          });
+          
+          // Add a divider if there are custom mutators
+          if (customMutators.length > 0) {
+            const divider = document.createElement('div');
+            divider.className = 'mutator-divider';
+            divider.innerHTML = '<h3>Custom Mutators</h3>';
+            mutatorCheckboxesContainer.appendChild(divider);
+            
+            // Create custom mutator checkboxes
+            customMutators.forEach(mutator => {
+              const checkboxItem = document.createElement('div');
+              checkboxItem.className = 'checkbox-item custom-mutator-item';
+              
+              const checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              checkbox.value = mutator.name;
+              checkbox.id = `mutator-${mutator.name}`;
+              checkbox.checked = selectedMutators.includes(mutator.name);
+              checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                  if (!selectedMutators.includes(mutator.name)) {
+                    selectedMutators.push(mutator.name);
+                  }
+                } else {
+                  const index = selectedMutators.indexOf(mutator.name);
+                  if (index !== -1) {
+                    selectedMutators.splice(index, 1);
+                  }
+                }
+                updateSelectedMutatorsDisplay();
+              });
+              
+              const label = document.createElement('label');
+              label.htmlFor = checkbox.id;
+              label.textContent = mutator.name;
+              
+              const description = document.createElement('div');
+              description.className = 'item-description';
+              description.textContent = mutator.description;
+              
+              const deleteButton = document.createElement('button');
+              deleteButton.className = 'btn btn-danger btn-sm';
+              deleteButton.textContent = 'Delete';
+              deleteButton.onclick = function() {
+                deleteCustomMutator(mutator.name);
+              };
+              
+              checkboxItem.appendChild(checkbox);
+              checkboxItem.appendChild(label);
+              checkboxItem.appendChild(description);
+              checkboxItem.appendChild(deleteButton);
+              
+              mutatorCheckboxesContainer.appendChild(checkboxItem);
+            });
+          }
+          
+          updateSelectedMutatorsDisplay();
+        }
+        
+        function deleteCustomMutator(mutatorName) {
+          // Remove from customMutators array
+          customMutators = customMutators.filter(m => m.name !== mutatorName);
+          
+          // Save to local storage
+          localStorage.setItem('customMutators', JSON.stringify(customMutators));
+          
+          // Remove from selectedMutators if present
+          const index = selectedMutators.indexOf(mutatorName);
+          if (index !== -1) {
+            selectedMutators.splice(index, 1);
+          }
+          
+          // Refresh displays
+          generateMutatorCheckboxes();
+          updateSelectedMutatorsDisplay();
+        }
+        
         // Mutators data
         const mutators = [
             { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
@@ -527,11 +687,37 @@
             { name: 'Warlords', description: 'Start with 10 supply points.' }
         ];
 
+        function logCustomMutatorToGAS(mutatorName) {
+          // Only send if user has mods selected
+          if (selectedMods.length === 0) return;
+          
+          // Prepare data to send
+          const data = {
+            timestamp: new Date().toISOString(),
+            mutator: mutatorName,
+            mods: selectedMods.map(mod => ({ id: mod.id, name: mod.name }))
+          };
+          
+          // Send data to GAS Web App
+          fetch('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL', {
+            method: 'POST',
+            mode: 'no-cors', // Important for GAS web apps
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          }).catch(error => {
+            console.error('Error logging custom mutator:', error);
+            // Silently fail - don't interrupt user experience
+          });
+        }
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            generateMutatorCheckboxes();
-            fetchMods();
-            loadPresetsFromStorage();
+          loadCustomMutators();
+          generateMutatorCheckboxes();
+          fetchMods();
+          loadPresetsFromStorage();
+          modifyMutatorSection(); 
         });
 
         // Tab switching
