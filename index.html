@@ -1319,10 +1319,7 @@ function updateMutatorSuggestions() {
   });
 }
 
-// Fix 7: Better notification function
 function showNotification(message, type = "info") {
-  createNotificationElement();
-  
   const notification = document.getElementById('notification');
   if (!notification) return;
   
@@ -1333,31 +1330,17 @@ function showNotification(message, type = "info") {
   
   // Set the message
   notification.textContent = message;
-  
-  // Set the appropriate style based on type
-  notification.className = "notification";
+  notification.className = "notification show";
   
   // Set color based on type
-  switch (type) {
-    case "success":
-      notification.style.backgroundColor = "#4CAF50";
-      break;
-    case "error":
-      notification.style.backgroundColor = "#F44336";
-      break;
-    case "warning":
-      notification.style.backgroundColor = "#FF9800";
-      break;
-    default:
-      notification.style.backgroundColor = "#2196F3";
-  }
-  
-  // Show the notification
-  notification.style.opacity = '1';
+  notification.style.backgroundColor = 
+    type === "success" ? "#4CAF50" : 
+    type === "error" ? "#F44336" : 
+    type === "warning" ? "#FF9800" : "#2196F3";
   
   // Hide after 3 seconds
   window.notificationTimeout = setTimeout(() => {
-    notification.style.opacity = '0';
+    notification.className = "notification";
   }, 3000);
 }
 
