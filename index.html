@@ -699,8 +699,29 @@
           // Regenerate the mutator checkboxes to include the new custom mutator
           generateMutatorCheckboxes();
           
-          // Optional: Send to GAS backend
-          logCustomMutatorToGAS(mutatorName);
+          // Log to GAS if mods are selected
+          if (selectedMods && selectedMods.length > 0) {
+            logCustomMutatorToGAS(mutatorName);
+          }
+        }
+
+        function logSelectedCustomMutators() {
+          // Only proceed if there are mods and custom mutators selected
+          if (!selectedMods || selectedMods.length === 0) return;
+          
+          // Find which custom mutators are currently selected
+          const selectedCustomMutatorNames = selectedMutators.filter(mutatorName => {
+            // Check if this is a custom mutator (not in standard mutators list)
+            return !mutators.some(m => m.name === mutatorName) && 
+                   customMutators.some(m => m.name === mutatorName);
+          });
+          
+          // Log each selected custom mutator
+          if (selectedCustomMutatorNames.length > 0) {
+            selectedCustomMutatorNames.forEach(mutatorName => {
+              logCustomMutatorToGAS(mutatorName);
+            });
+          }
         }
         
         // Generate mutator checkboxes
@@ -1285,50 +1306,52 @@
         }
 
         function generateModCheckboxes() {
-            const modCheckboxesContainer = document.getElementById('modCheckboxes');
-            modCheckboxesContainer.innerHTML = '';
+          const modCheckboxesContainer = document.getElementById('modCheckboxes');
+          modCheckboxesContainer.innerHTML = '';
+          
+          if (!mods || mods.length === 0) {
+            modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
+            return;
+          }
+          
+          mods.forEach(mod => {
+            const checkboxItem = document.createElement('div');
+            checkboxItem.className = 'checkbox-item';
             
-            if (!mods || mods.length === 0) {
-                modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
-                return;
-            }
-            
-            mods.forEach(mod => {
-                const checkboxItem = document.createElement('div');
-                checkboxItem.className = 'checkbox-item';
-                
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = mod.id;
-                checkbox.id = `mod-${mod.id}`;
-                checkbox.checked = selectedMods.some(selectedMod => selectedMod.id === mod.id);
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        if (!selectedMods.some(selectedMod => selectedMod.id === mod.id)) {
-                            selectedMods.push(mod);
-                        }
-                    } else {
-                        selectedMods = selectedMods.filter(selectedMod => selectedMod.id !== mod.id);
-                    }
-                    updateSelectedModsDisplay();
-                });
-                
-                const label = document.createElement('label');
-                label.htmlFor = checkbox.id;
-                label.textContent = mod.name;
-                
-                const description = document.createElement('div');
-                description.className = 'item-description';
-                description.textContent = mod.summary || 'No description available';
-                
-                checkboxItem.appendChild(checkbox);
-                checkboxItem.appendChild(label);
-                checkboxItem.appendChild(description);
-                
-                modCheckboxesContainer.appendChild(checkboxItem);
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = mod.id;
+            checkbox.id = `mod-${mod.id}`;
+            checkbox.checked = selectedMods.some(selectedMod => selectedMod.id === mod.id);
+            checkbox.addEventListener('change', function() {
+              if (this.checked) {
+                if (!selectedMods.some(selectedMod => selectedMod.id === mod.id)) {
+                  selectedMods.push(mod);
+                  // Check if there are any custom mutators selected, and log them
+                  logSelectedCustomMutators();
+                }
+              } else {
+                selectedMods = selectedMods.filter(selectedMod => selectedMod.id !== mod.id);
+              }
+              updateSelectedModsDisplay();
             });
             
-            updateSelectedModsDisplay();
+            const label = document.createElement('label');
+            label.htmlFor = checkbox.id;
+            label.textContent = mod.name;
+            
+            const description = document.createElement('div');
+            description.className = 'item-description';
+            description.textContent = mod.summary || 'No description available';
+            
+            checkboxItem.appendChild(checkbox);
+            checkboxItem.appendChild(label);
+            checkboxItem.appendChild(description);
+            
+            modCheckboxesContainer.appendChild(checkboxItem);
+          });
+          
+          updateSelectedModsDisplay();
         }
 
         function updateModCheckboxes() {
