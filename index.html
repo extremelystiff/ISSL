@@ -781,7 +781,20 @@
             description: "Makes all weapons available including this mod",
             popularity: 0.75
           },
-          // Add more known relationships here as you discover them
+          
+          // Add ISMC mod suggestions
+          "150867": { 
+            name: "ISMCmod", 
+            suggestedMutator: "ISMC_Casual", 
+            description: "ISMC_Casual is the recommended mutator for ISMCmod",
+            popularity: 0.90
+          },
+          "1516914": { 
+            name: "ISMC Resources", 
+            suggestedMutator: "ISMC_Casual", 
+            description: "ISMC_Casual is the recommended mutator for ISMC Resources",
+            popularity: 0.95
+          }
         };
 
 
@@ -1125,8 +1138,10 @@ function createNotificationElement() {
 
 // Fix 4: Create the suggestions container properly
 function createSuggestionsContainer() {
-  // If it already exists, return
-  if (document.getElementById('mutatorSuggestions')) return;
+  if (document.getElementById('mutatorSuggestions')) {
+    console.log("Suggestions container already exists");
+    return;
+  }
   
   const modsTab = document.getElementById('mods');
   if (!modsTab) {
@@ -1134,14 +1149,20 @@ function createSuggestionsContainer() {
     return;
   }
   
-  // Create container with proper styling
   const suggestionsContainer = document.createElement('div');
   suggestionsContainer.id = 'mutatorSuggestions';
   suggestionsContainer.className = 'mutator-suggestions';
-  suggestionsContainer.style.display = 'none'; // Initially hidden
   
-  const heading = document.createElement('h3');
-  heading.textContent = 'Suggested Mutators ';
+  // Explicit styling to ensure visibility
+  suggestionsContainer.style.marginTop = '20px';
+  suggestionsContainer.style.padding = '15px';
+  suggestionsContainer.style.backgroundColor = '#e3f2fd';
+  suggestionsContainer.style.borderRadius = '4px';
+  suggestionsContainer.style.borderLeft = '4px solid #2196F3';
+  suggestionsContainer.style.display = 'none'; // Initially hidden until we have suggestions
+  
+  const suggestionsTitle = document.createElement('h3');
+  suggestionsTitle.textContent = 'Suggested Mutators ';
   
   const refreshButton = document.createElement('button');
   refreshButton.id = 'refreshSuggestions';
@@ -1149,23 +1170,25 @@ function createSuggestionsContainer() {
   refreshButton.textContent = 'Refresh Suggestions';
   refreshButton.onclick = fetchMutatorSuggestionsFromGAS;
   
-  heading.appendChild(refreshButton);
-  suggestionsContainer.appendChild(heading);
+  suggestionsTitle.appendChild(refreshButton);
+  suggestionsContainer.appendChild(suggestionsTitle);
   
   const suggestionsContent = document.createElement('div');
   suggestionsContent.id = 'suggestionsContent';
   suggestionsContainer.appendChild(suggestionsContent);
   
-  // Find where to insert it - after selectedModsOutput
+  // Find the best place to insert it
   const selectedModsOutput = document.getElementById('selectedModsOutput');
   if (selectedModsOutput && selectedModsOutput.parentNode) {
     selectedModsOutput.parentNode.insertBefore(suggestionsContainer, selectedModsOutput.nextSibling);
+    console.log("Inserted suggestions container after selectedModsOutput");
   } else {
     // Fallback - add to the end of the mods tab
     modsTab.appendChild(suggestionsContainer);
+    console.log("Appended suggestions container to mods tab");
   }
   
-  console.log("Suggestions container created and added to DOM");
+  console.log("Suggestions container created with ID:", suggestionsContainer.id);
 }
 
 // Fix 5: More reliable JSONP handling
@@ -1174,7 +1197,7 @@ function fetchMutatorSuggestionsFromGAS() {
     // Show loading state
     showNotification("Fetching mutator suggestions...", "info");
     
-    // Your published GAS web app URL
+    // Clean URL without any redirects
     const gasUrl = "https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec";
     
     // Generate a unique callback function name
@@ -1185,9 +1208,7 @@ function fetchMutatorSuggestionsFromGAS() {
     
     // Add selected mod IDs to query if available
     if (selectedMods && selectedMods.length > 0) {
-      // Log the mod IDs for debugging
       console.log("Selected mod IDs to send:", selectedMods.map(mod => mod.id));
-      
       const modIds = selectedMods.map(mod => String(mod.id)).join(',');
       queryParams += `&mods=${modIds}`;
     }
@@ -1210,19 +1231,21 @@ function fetchMutatorSuggestionsFromGAS() {
       // Process the data
       console.log("Received suggestions from GAS:", data);
       
-      if (data && data.success && data.suggestions) {
-        // Update our suggestions database with new data
-        Object.assign(modMutatorSuggestions, data.suggestions);
+      if (data && data.success) {
+        if (data.suggestions && Object.keys(data.suggestions).length > 0) {
+          // If we got actual suggestions, update our database
+          console.log("Received new suggestions from GAS:", data.suggestions);
+          Object.assign(modMutatorSuggestions, data.suggestions);
+          showNotification("Mutator suggestions updated!", "success");
+        } else {
+          console.log("No new suggestions in GAS response. Using existing suggestions.");
+          showNotification("Using local suggestions", "info");
+        }
         
-        // Debug log the updated suggestions
-        console.log("Updated modMutatorSuggestions:", modMutatorSuggestions);
+        // Log our current suggestions database
+        console.log("Current modMutatorSuggestions:", modMutatorSuggestions);
         
-        // Update UI
-        updateMutatorSuggestions();
-        
-        showNotification("Mutator suggestions updated!", "success");
-      } else {
-        console.log("No new suggestions returned from GAS. Using existing suggestions.");
+        // Always update UI
         updateMutatorSuggestions();
       }
     };
@@ -1251,7 +1274,6 @@ function updateMutatorSuggestions() {
   // Clear previous suggestions
   suggestionsContent.innerHTML = '';
   
-  // Log for debugging
   console.log("Updating suggestions, selected mods:", selectedMods);
   
   // No selected mods
@@ -1283,7 +1305,8 @@ function updateMutatorSuggestions() {
     return;
   }
   
-  // Display suggestions
+  // Display suggestions - make sure this section is executed
+  console.log("Showing suggestions container");
   suggestionsContainer.style.display = 'block';
   
   relevantSuggestions.forEach(item => {
@@ -1317,6 +1340,10 @@ function updateMutatorSuggestions() {
     
     suggestionsContent.appendChild(suggestionBox);
   });
+  
+  // Force the container to be visible
+  suggestionsContainer.style.removeProperty('display');
+  suggestionsContainer.style.display = 'block';
 }
 
 function showNotification(message, type = "info") {
@@ -1356,7 +1383,28 @@ function showSuggestionInfoModal() {
     }
   }
 }
-
+function checkSuggestionContainerVisibility() {
+  const container = document.getElementById('mutatorSuggestions');
+  if (!container) {
+    console.error("Mutator suggestions container not found!");
+    return;
+  }
+  
+  console.log("Mutator suggestions container:", {
+    display: container.style.display,
+    visibility: window.getComputedStyle(container).visibility,
+    height: window.getComputedStyle(container).height,
+    element: container
+  });
+  
+  // Force visibility
+  container.style.removeProperty('display');
+  container.style.display = 'block';
+  container.style.visibility = 'visible';
+  
+  console.log("Forced visibility on container");
+}
+        
 function closeInfoModal() {
   const modal = document.getElementById('suggestionInfoModal');
   if (modal) {
@@ -2021,6 +2069,57 @@ function logMutatorSelection(mutatorName) {
         document.getElementById('gameStatsToken').addEventListener('input', function(e) {
             document.getElementById('enableGameStats').checked = !!e.target.value.trim();
         });
+
+
+
+
+
+////testing delte this
+function testISMCModSuggestions() {
+  // Test with ISMC mod
+  selectedMods = [{ id: '1516914', name: 'ISMC Resources' }];
+  updateSelectedModsDisplay();
+  
+  // Force suggestion container to be visible
+  const container = document.getElementById('mutatorSuggestions');
+  if (container) {
+    container.style.display = 'block';
+    checkSuggestionContainerVisibility();
+  }
+  
+  // Force update suggestions
+  updateMutatorSuggestions();
+  
+  // Log the current state
+  console.log("modMutatorSuggestions contains:", Object.keys(modMutatorSuggestions));
+  console.log("Looking for suggestions for mod ID:", selectedMods[0].id);
+  console.log("Found suggestion:", modMutatorSuggestions[selectedMods[0].id]);
+}
+
+// Add a button to test this function
+function addTestButton() {
+  const container = document.getElementById('mods');
+  if (!container) return;
+  
+  const testButton = document.createElement('button');
+  testButton.textContent = 'Test ISMC Suggestions';
+  testButton.className = 'btn btn-secondary';
+  testButton.style.marginTop = '10px';
+  testButton.onclick = testISMCModSuggestions;
+  
+  container.appendChild(testButton);
+  console.log("Added test button");
+}
+
+// Call this in your initialization
+document.addEventListener('DOMContentLoaded', function() {
+  // Existing initialization code
+  
+  // Add test button
+  addTestButton();
+});
+/////END TESTING
+
     </script>
 </body>
 </html>
