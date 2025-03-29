@@ -325,50 +325,200 @@
                     <div class="form-group">
                         <label for="scenario">Choose a Scenario:</label>
                         <select name="scenario" id="scenario">
-                            <option value="Bab?Scenario=Scenario_Bab_Checkpoint_Insurgents">Bab Checkpoint Insurgents</option>
-                            <option value="Bab?Scenario=Scenario_Bab_Checkpoint_Security">Bab Checkpoint Security</option>
-                            <option value="Bab?Scenario=Scenario_Bab_Domination">Bab Domination</option>
-                            <option value="Bab?Scenario=Scenario_Bab_Firefight_East">Bab Firefight East</option>
-                            <option value="Bab?Scenario=Scenario_Bab_Outpost">Bab Outpost</option>
-                            <option value="Bab?Scenario=Scenario_Bab_Push_Insurgents">Bab Push Insurgents</option>
-                            <option value="Bab?Scenario=Scenario_Bab_Push_Security">Bab Push Security</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Insurgents">Citadel Checkpoint Insurgents</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Security">Citadel Checkpoint Security</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Domination">Citadel Domination</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Firefight_East">Citadel Firefight East</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Outpost">Citadel Outpost</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Push_Insurgents">Citadel Push Insurgents</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Push_Security">Citadel Push Security</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Survival">Citadel Survival</option>
-                            <option value="Citadel?Scenario=Scenario_Citadel_Defusal">Citadel Defusal</option>
-                            <option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Insurgents">Crossing Checkpoint Insurgents</option>
-                            <option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Security">Crossing Checkpoint Security</option>
-                            <option value="Canyon?Scenario=Scenario_Crossing_Domination">Crossing Domination</option>
-                            <option value="Canyon?Scenario=Scenario_Crossing_Firefight_West">Crossing Firefight West</option>
-                            <option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Insurgents">Farmhouse Checkpoint Insurgents</option>
-                            <option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Security">Farmhouse Checkpoint Security</option>
-                            <option value="Town?Scenario=Scenario_Hideout_Checkpoint_Insurgents">Hideout Checkpoint Insurgents</option>
-                            <option value="Town?Scenario=Scenario_Hideout_Checkpoint_Security">Hideout Checkpoint Security</option>
-                            <option value="Town?Scenario=Scenario_Hideout_Push_Insurgents">Hideout Push Insurgents</option>
-                            <option value="Town?Scenario=Scenario_Hideout_Push_Security">Hideout Push Security</option>
-                            <option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Insurgents">Ministry Checkpoint Insurgents</option>
-                            <option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Security">Ministry Checkpoint Security</option>
-                            <option value="Compound?Scenario=Scenario_Outskirts_Checkpoint_Insurgents">Outskirts Checkpoint Insurgents</option>
-                            <option value="Compound?Scenario=Scenario_Outskirts_Checkpoint_Security">Outskirts Checkpoint Security</option>
-                            <option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Insurgents">Precinct Checkpoint Insurgents</option>
-                            <option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Security">Precinct Checkpoint Security</option>
-                            <option value="Precinct?Scenario=Scenario_Precinct_Push_Insurgents">Precinct Push Insurgents</option>
-                            <option value="Precinct?Scenario=Scenario_Precinct_Push_Security">Precinct Push Security</option>
-                            <option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Insurgents">Refinery Checkpoint Insurgents</option>
-                            <option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Security">Refinery Checkpoint Security</option>
-                            <option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Insurgents">Summit Checkpoint Insurgents</option>
-                            <option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Security">Summit Checkpoint Security</option>
-                            <option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Insurgents">PowerPlant Checkpoint Insurgents</option>
-                            <option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Security">PowerPlant Checkpoint Security</option>
-                            <option value="Tell?Scenario=Scenario_Tell_Checkpoint_Insurgents">Tell Checkpoint Insurgents</option>
-                            <option value="Tell?Scenario=Scenario_Tell_Checkpoint_Security">Tell Checkpoint Security</option>
-                            <option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Insurgents">Tideway Checkpoint Insurgents</option>
-                            <option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Security">Tideway Checkpoint Security</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Insurgents">Bab Checkpoint Insurgents</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Security">Bab Checkpoint Security</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Domination">Bab Domination</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Firefight_East">Bab Firefight East</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Outpost">Bab Outpost</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Push_Insurgents">Bab Push Insurgents</option>
+                			<option value="Bab?Scenario=Scenario_Bab_Push_Security">Bab Push Security</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Ambush">Citadel Ambush</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Insurgents">Citadel Checkpoint Insurgents</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Checkpoint_Security">Citadel Checkpoint Security</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Domination">Citadel Domination</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Firefight_East">Citadel Firefight East</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Outpost">Citadel Outpost</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Push_Insurgents">Citadel Push Insurgents</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Push_Security">Citadel Push Security</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Survival">Citadel Survival</option>
+                			<option value="Citadel?Scenario=Scenario_Citadel_Defusal">Citadel Defusal</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Ambush">Crossing Ambush</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Insurgents">Crossing Checkpoint Insurgents</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Checkpoint_Security">Crossing Checkpoint Security</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Domination">Crossing Domination</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Firefight_West">Crossing Firefight West</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Frontline">Crossing Frontline</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Outpost">Crossing Outpost</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Push_Insurgents">Crossing Push Insurgents</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Push_Security">Crossing Push Security</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Skirmish">Crossing Skirmish</option>
+                			<option value="Canyon?Scenario=Scenario_Crossing_Team_Deathmatch">Crossing Team Deathmatch</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Ambush">Farmhouse Ambush</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Insurgents">Farmhouse Checkpoint Insurgents</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Checkpoint_Security">Farmhouse Checkpoint Security</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Domination">Farmhouse Domination</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Firefight_East">Farmhouse Firefight East</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Firefight_West">Farmhouse Firefight West</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Frontline">Farmhouse Frontline</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Push_Insurgents">Farmhouse Push Insurgents</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Push_Security">Farmhouse Push Security</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Skirmish">Farmhouse Skirmish</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Survival">Farmhouse Survival</option>
+                			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Team_Deathmatch">Farmhouse Team Deathmatch</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Ambush">Gap Ambush</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Checkpoint_Insurgents">Gap Checkpoint Insurgents</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Checkpoint_Security">Gap Checkpoint Security</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Domination">Gap Domination</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Firefight">Gap Firefight</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Frontline">Gap Frontline</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Outpost">Gap Outpost</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Push_Insurgents">Gap Push Insurgents</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Push_Security">Gap Push Security</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Survival">Gap Survival</option>
+                			<option value=Gap?Scenario=Scenario_Gap_Defusal">Gap Defusal</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Ambush">Hideout Ambush</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Checkpoint_Insurgents">Hideout Checkpoint Insurgents</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Checkpoint_Security">Hideout Checkpoint Security</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Domination">Hideout Domination</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Firefight_East">Hideout Firefight East</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Firefight_West">Hideout Firefight West</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Frontline">Hideout Frontline</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Push_Insurgents">Hideout Push Insurgents</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Push_Security">Hideout Push Security</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Skirmish">Hideout Skirmish</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Survival">Hideout Survival</option>
+                			<option value="Town?Scenario=Scenario_Hideout_Team_Deathmatch">Hideout Team Deathmatch</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Ambush">Hillside Ambush</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Checkpoint_Insurgents">Hillside Checkpoint Insurgents</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Checkpoint_Security">Hillside Checkpoint Security</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Domination">Hillside Domination</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Firefight_East">Hillside Firefight East</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Firefight_West">Hillside Firefight West</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Frontline">Hillside Frontline</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Outpost">Hillside Outpost</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Push_Insurgents">Hillside Push Insurgents</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Push_Security">Hillside Push Security (INS2014 layout)</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Skirmish">Hillside Skirmish</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Survival">Hillside Survival</option>
+                			<option value="Sinjar?Scenario=Scenario_Hillside_Team_Deathmatch">Hillside Team Deathmatch</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Push_Security">LastLight Push Security</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Checkpoint_Insurgents">LastLight Checkpoint Insurgents</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Checkpoint_Security">LastLight Checkpoint Security</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Domination">LastLight Domination</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Firefight">LastLight Firefight</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Ambush"LastLight >Ambush</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Survival">LastLight Survival</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Push_Insurgents">LastLight Push Insurgents</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Push_Security">LastLight Push Security</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Outpost">LastLight Outpost</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Defusal">LastLight Defusal</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Frontline">LastLight Frontline</option>
+                			<option value="LastLight?Scenario=Scenario_LastLight_Team_Deathmatch">LastLight Team Deathmatch</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Ambush">Ministry Ambush</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Insurgents">Ministry Checkpoint Insurgents</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Checkpoint_Security">Ministry Checkpoint Security</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Domination">Ministry Domination</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Firefight_A">Ministry Firefight</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Skirmish">Ministry Skirmish</option>
+                			<option value="Ministry?Scenario=Scenario_Ministry_Team_Deathmatch">Ministry Team Deathmatch</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Checkpoint_Insurgents">Outskirts Checkpoint Insurgents</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Checkpoint_Security">Outskirts Checkpoint Security</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Firefight_East">Outskirts Firefight East</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Firefight_West">Outskirts Firefight West</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Frontline">Outskirts Frontline</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Push_Insurgents">Outskirts Push Insurgents</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Push_Security">Outskirts Push Security</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Skirmish">Outskirts Skirmish</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Team_Deathmatch">Outskirts Team Deathmatch</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Survival">Outskirts Survival</option>
+                			<option value=Compound?Scenario=Scenario_Outskirts_Defusal">Outskirts Defusal</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Ambush">PowerPlant Ambush</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Insurgents">PowerPlant Checkpoint Insurgents</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Checkpoint_Security">PowerPlant Checkpoint Security</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Domination">PowerPlant Domination</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Firefight_East">PowerPlant Firefight East</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Firefight_West">PowerPlant Firefight West</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Push_Insurgents">PowerPlant Push Insurgents</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Push_Security">PowerPlant Push Security</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Survival">PowerPlant Survival</option>
+                			<option value="PowerPlant?Scenario=Scenario_PowerPlant_Frontline">PowerPlant Frontline</option>	
+                			<option value="Precinct?Scenario=Scenario_Precinct_Ambush">Precinct Ambush</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Insurgents">Precinct Checkpoint Insurgents</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Checkpoint_Security">Precinct Checkpoint Security</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Firefight_East">Precinct Firefight East</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Firefight_West">Precinct Firefight West</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Frontline">Precinct Frontline</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Push_Insurgents">Precinct Push Insurgents</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Push_Security">Precinct Push Security</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Skirmish">Precinct Skirmish</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Team_Deathmatch">Precinct Team Deathmatch</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Survival">Precinct Survival</option>
+                			<option value="Precinct?Scenario=Scenario_Precinct_Defusal">Precinct Defusal</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Push_Security">Prison Push Security</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Checkpoint_Insurgents">Prison Checkpoint Insurgents</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Checkpoint_Security">Prison Checkpoint Security</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Domination">Prison Domination</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Firefight">Prison Firefight</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Ambush">Prison Ambush</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Survival">Prison Survival</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Push_Insurgents">Prison Push Insurgents</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Push_Security">Prison Push Security</option>
+                			<option value="Prison?Scenario=Scenario_Prison_Defusal">Prison Defusal</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Push_Security">Refinery Push Security</option>    
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Ambush">Refinery Ambush</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Insurgents">Refinery Checkpoint Insurgents</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Checkpoint_Security">Refinery Checkpoint Security</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Domination">Refinery Domination</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Firefight_West">Refinery Firefight West</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Frontline">Refinery Frontline</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Push_Insurgents">Refinery Push Insurgents</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Push_Security">Refinery Push Security</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Skirmish">Refinery Skirmish</option>
+                			<option value="Oilfield?Scenario=Scenario_Refinery_Survival">Refinery Survival</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Ambush">Summit Ambush</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Insurgents">Summit Checkpoint Insurgents</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Checkpoint_Security">Summit Checkpoint Security</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Firefight_East">Summit Firefight East</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Firefight_West">Summit Firefight West</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Frontline">Summit Frontline</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Push_Insurgents">Summit Push Insurgents</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Push_Security">Summit Push Security</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Skirmish">Summit Skirmish</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Team_Deathmatch">Summit Team Deathmatch</option>
+                			<option value="Mountain?Scenario=Scenario_Summit_Survival">Summit Survival</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Ambush">Tell Ambush</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Checkpoint_Insurgents">Tell Checkpoint Insurgents</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Checkpoint_Security">Tell Checkpoint Security</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Domination">Tell Domination</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Firefight_East">Tell Firefight East</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Firefight_West">Tell Firefight West</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Outpost">Tell Outpost</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Push_Insurgents">Tell Push Insurgents</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Push_Security">Tell Push Security</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Survival">Tell Survival</option>
+                			<option value="Tell?Scenario=Scenario_Tell_Frontline">Tell Frontline</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Insurgents">Tideway Checkpoint Insurgents</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Checkpoint_Security">Tideway Checkpoint Security</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Domination">Tideway Domination</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Firefight_West">Tideway Firefight West</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Frontline">Tideway Frontline</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Push_Insurgents">Tideway Push Insurgents</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Push_Security">Tideway Push Security</option>
+                			<option value="Buhriz?Scenario=Scenario_Tideway_Survival">Tideway Survival</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Push_Security">Trainyard Push Security</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Push_Insurgents">Trainyard Push Insurgents</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Firefight_West">Trainyard Firefight West</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Firefight_East">Trainyard Firefight East</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Domination_West">Trainyard Domination West</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Domination_East">Trainyard Domination East</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Frontline">Trainyard Frontline</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Ambush_East">Trainyard Ambush East</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Ambush_West">Trainyard Ambush West</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Defusal_West">Trainyard Defusal West</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Checkpoint_Security">Trainyard Checkpoint Security</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Checkpoint_Insurgents">Trainyard Checkpoint Insurgents</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Outpost">Trainyard Outpost</option>
+                			<option value="Trainyard?Scenario=Scenario_Trainyard_Survival">Trainyard Survival</option>
                         </select>
                     </div>
                     
