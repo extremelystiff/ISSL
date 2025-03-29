@@ -930,30 +930,62 @@
             { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
             { name: 'Warlords', description: 'Start with 10 supply points.' }
         ];
-
+        
         function logCustomMutatorToGAS(mutatorName) {
           // Only send if user has mods selected
-          if (selectedMods.length === 0) return;
+          if (!selectedMods || selectedMods.length === 0) return;
           
-          // Prepare data to send
+          // Basic input validation
+          if (!mutatorName || typeof mutatorName !== 'string' || mutatorName.length > 100) return;
+          
+          // Prepare data to send - limit what we collect
           const data = {
             timestamp: new Date().toISOString(),
             mutator: mutatorName,
-            mods: selectedMods.map(mod => ({ id: mod.id, name: mod.name }))
+            mods: selectedMods.map(mod => ({
+              id: mod.id,
+              name: mod.name.substring(0, 100) // Limit name length
+            })).slice(0, 20) // Limit number of mods to prevent abuse
           };
           
-          // Send data to GAS Web App
-          fetch('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL', {
-            method: 'POST',
-            mode: 'no-cors', // Important for GAS web apps
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          }).catch(error => {
-            console.error('Error logging custom mutator:', error);
-            // Silently fail - don't interrupt user experience
-          });
+          // Add a random delay to prevent timing attacks (50-200ms)
+          const randomDelay = 50 + Math.floor(Math.random() * 150);
+          setTimeout(() => {
+            // Add a nonce to prevent replay attacks
+            const nonce = Math.random().toString(36).substring(2, 15);
+            data.nonce = nonce;
+            
+            // Rate limiting - check if we've sent too many requests recently
+            const recentRequests = localStorage.getItem('recentGASRequests') || '[]';
+            let requests = JSON.parse(recentRequests);
+            const now = Date.now();
+            
+            // Keep only requests from the last minute
+            requests = requests.filter(time => now - time < 60000);
+            
+            // If we've made more than 5 requests in the last minute, don't send another
+            if (requests.length >= 5) {
+              console.log('Rate limited: Too many requests to GAS');
+              return;
+            }
+            
+            // Add this request time
+            requests.push(now);
+            localStorage.setItem('recentGASRequests', JSON.stringify(requests));
+            
+            // Send data to GAS Web App (replace with your actual GAS URL)
+            fetch('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL', {
+              method: 'POST',
+              mode: 'no-cors', // Important for GAS web apps
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            }).catch(error => {
+              console.error('Error logging custom mutator:', error);
+              // Silently fail - don't interrupt user experience
+            });
+          }, randomDelay);
         }
 
         // Tab switching
