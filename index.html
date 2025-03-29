@@ -1046,15 +1046,28 @@
                 }
             });
         }
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-          // Initialize custom mutators
-          initializeCustomMutators();
-          
-          // Continue with other initializations
-          fetchMods();
-          loadPresetsFromStorage();
-        });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize custom mutators
+  initializeCustomMutators();
+  
+  // Create suggestions container
+  createSuggestionsContainer();
+  
+  // Fetch mods
+  fetchMods();
+  
+  // Load presets
+  loadPresetsFromStorage();
+  
+  // Initial suggestions update (will be empty until mods are selected)
+  updateMutatorSuggestions();
+  
+  // Show suggestion info modal
+  showSuggestionInfoModal();
+  
+  console.log("Initialization complete");
+});
         
 // This code integrates with your Google App Script backend
 // to fetch popular mutator suggestions based on collected data
@@ -1112,39 +1125,38 @@ function createNotificationElement() {
 
 // Fix 4: Create the suggestions container properly
 function createSuggestionsContainer() {
+  // If it already exists, return
   if (document.getElementById('mutatorSuggestions')) return;
   
   const modsTab = document.getElementById('mods');
-  if (!modsTab) return;
+  if (!modsTab) {
+    console.error("Mods tab not found!");
+    return;
+  }
   
+  // Create container with proper styling
   const suggestionsContainer = document.createElement('div');
   suggestionsContainer.id = 'mutatorSuggestions';
   suggestionsContainer.className = 'mutator-suggestions';
-  suggestionsContainer.style.marginTop = '20px';
-  suggestionsContainer.style.padding = '15px';
-  suggestionsContainer.style.backgroundColor = '#e3f2fd';
-  suggestionsContainer.style.borderRadius = '4px';
-  suggestionsContainer.style.display = 'none'; // Hide initially
-  suggestionsContainer.style.borderLeft = '4px solid #2196F3';
+  suggestionsContainer.style.display = 'none'; // Initially hidden
   
-  const suggestionsTitle = document.createElement('h3');
-  suggestionsTitle.textContent = 'Suggested Mutators ';
+  const heading = document.createElement('h3');
+  heading.textContent = 'Suggested Mutators ';
   
   const refreshButton = document.createElement('button');
   refreshButton.id = 'refreshSuggestions';
   refreshButton.className = 'btn btn-secondary btn-sm';
   refreshButton.textContent = 'Refresh Suggestions';
-  refreshButton.style.marginLeft = '10px';
   refreshButton.onclick = fetchMutatorSuggestionsFromGAS;
   
-  suggestionsTitle.appendChild(refreshButton);
-  suggestionsContainer.appendChild(suggestionsTitle);
+  heading.appendChild(refreshButton);
+  suggestionsContainer.appendChild(heading);
   
   const suggestionsContent = document.createElement('div');
   suggestionsContent.id = 'suggestionsContent';
   suggestionsContainer.appendChild(suggestionsContent);
   
-  // Find the best place to insert it
+  // Find where to insert it - after selectedModsOutput
   const selectedModsOutput = document.getElementById('selectedModsOutput');
   if (selectedModsOutput && selectedModsOutput.parentNode) {
     selectedModsOutput.parentNode.insertBefore(suggestionsContainer, selectedModsOutput.nextSibling);
@@ -1152,6 +1164,8 @@ function createSuggestionsContainer() {
     // Fallback - add to the end of the mods tab
     modsTab.appendChild(suggestionsContainer);
   }
+  
+  console.log("Suggestions container created and added to DOM");
 }
 
 // Fix 5: More reliable JSONP handling
@@ -1160,7 +1174,7 @@ function fetchMutatorSuggestionsFromGAS() {
     // Show loading state
     showNotification("Fetching mutator suggestions...", "info");
     
-    // Your published GAS web app URL - replace with your actual URL
+    // Your published GAS web app URL
     const gasUrl = "https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec";
     
     // Generate a unique callback function name
@@ -1171,9 +1185,14 @@ function fetchMutatorSuggestionsFromGAS() {
     
     // Add selected mod IDs to query if available
     if (selectedMods && selectedMods.length > 0) {
-      const modIds = selectedMods.map(mod => mod.id).join(',');
+      // Log the mod IDs for debugging
+      console.log("Selected mod IDs to send:", selectedMods.map(mod => mod.id));
+      
+      const modIds = selectedMods.map(mod => String(mod.id)).join(',');
       queryParams += `&mods=${modIds}`;
     }
+    
+    console.log("Fetching from GAS with URL:", gasUrl + queryParams);
     
     // Create a script element for JSONP
     const script = document.createElement('script');
@@ -1195,6 +1214,9 @@ function fetchMutatorSuggestionsFromGAS() {
         // Update our suggestions database with new data
         Object.assign(modMutatorSuggestions, data.suggestions);
         
+        // Debug log the updated suggestions
+        console.log("Updated modMutatorSuggestions:", modMutatorSuggestions);
+        
         // Update UI
         updateMutatorSuggestions();
         
@@ -1203,34 +1225,6 @@ function fetchMutatorSuggestionsFromGAS() {
         console.log("No new suggestions returned from GAS. Using existing suggestions.");
         updateMutatorSuggestions();
       }
-    };
-    
-    // Set a timeout to handle failed requests
-    const timeoutId = setTimeout(() => {
-      if (window[callbackName]) {
-        // Clean up if callback wasn't called
-        if (script.parentNode) {
-          document.head.removeChild(script);
-        }
-        delete window[callbackName];
-        
-        console.log("GAS request timed out. Using existing suggestions.");
-        updateMutatorSuggestions();
-        showNotification("Using local suggestions data", "warning");
-      }
-    }, 8000);
-    
-    // Handle script loading errors
-    script.onerror = function() {
-      clearTimeout(timeoutId);
-      if (script.parentNode) {
-        document.head.removeChild(script);
-      }
-      delete window[callbackName];
-      
-      console.log("Error loading suggestions from GAS. Using existing suggestions.");
-      updateMutatorSuggestions();
-      showNotification("Using local suggestions data", "warning");
     };
     
     // Add the script to the document to start the request
@@ -1244,7 +1238,6 @@ function fetchMutatorSuggestionsFromGAS() {
     updateMutatorSuggestions();
   }
 }
-
 // Fix 6: Improved updateMutatorSuggestions function
 function updateMutatorSuggestions() {
   const suggestionsContainer = document.getElementById('mutatorSuggestions');
@@ -1258,8 +1251,11 @@ function updateMutatorSuggestions() {
   // Clear previous suggestions
   suggestionsContent.innerHTML = '';
   
+  // Log for debugging
+  console.log("Updating suggestions, selected mods:", selectedMods);
+  
   // No selected mods
-  if (!window.selectedMods || window.selectedMods.length === 0) {
+  if (!selectedMods || selectedMods.length === 0) {
     suggestionsContainer.style.display = 'none';
     return;
   }
@@ -1270,6 +1266,7 @@ function updateMutatorSuggestions() {
   selectedMods.forEach(mod => {
     // Convert mod.id to string to handle both numeric and string IDs
     const modId = String(mod.id);
+    console.log("Checking suggestions for mod:", modId, mod.name, modMutatorSuggestions[modId]);
     if (modMutatorSuggestions[modId]) {
       relevantSuggestions.push({
         mod: mod,
@@ -1277,6 +1274,8 @@ function updateMutatorSuggestions() {
       });
     }
   });
+  
+  console.log("Relevant suggestions found:", relevantSuggestions);
   
   // If no suggestions, hide the container
   if (relevantSuggestions.length === 0) {
@@ -1290,36 +1289,22 @@ function updateMutatorSuggestions() {
   relevantSuggestions.forEach(item => {
     const suggestionBox = document.createElement('div');
     suggestionBox.className = 'suggestion-box';
-    suggestionBox.style.marginBottom = '10px';
-    suggestionBox.style.padding = '12px';
-    suggestionBox.style.backgroundColor = '#fff';
-    suggestionBox.style.borderRadius = '4px';
-    suggestionBox.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
     
     const modName = document.createElement('div');
     modName.className = 'suggestion-mod-name';
-    modName.style.fontWeight = 'bold';
-    modName.style.marginBottom = '3px';
     modName.textContent = `For mod: ${item.mod.name}`;
     
     const mutatorName = document.createElement('div');
     mutatorName.className = 'suggestion-mutator-name';
-    mutatorName.style.color = '#0d47a1';
     mutatorName.textContent = `Suggested mutator: ${item.suggestion.suggestedMutator}`;
     
     const description = document.createElement('div');
     description.className = 'suggestion-description';
-    description.style.fontSize = '0.9em';
-    description.style.color = '#666';
-    description.style.marginTop = '5px';
-    description.style.marginBottom = '10px';
     description.textContent = item.suggestion.description || 
                              `Used by ${Math.round((item.suggestion.popularity || 0) * 100)}% of players with this mod`;
     
     const applyButton = document.createElement('button');
-    applyButton.className = 'btn btn-primary btn-sm';
-    applyButton.style.padding = '5px 10px';
-    applyButton.style.fontSize = '0.85em';
+    applyButton.className = 'btn btn-primary btn-sm apply-suggestion';
     applyButton.textContent = 'Apply This Mutator';
     applyButton.onclick = function() {
       applyMutatorSuggestion(item.suggestion.suggestedMutator);
@@ -1332,9 +1317,6 @@ function updateMutatorSuggestions() {
     
     suggestionsContent.appendChild(suggestionBox);
   });
-  
-  // Scroll to the suggestions if needed
-  suggestionsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Fix 7: Better notification function
@@ -1527,13 +1509,6 @@ function initMutatorSuggestions() {
   updateMutatorSuggestions();
 }
 
-// Fix 11: Start everything when the DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initMutatorSuggestions);
-} else {
-  // DOM is already ready
-  initMutatorSuggestions();
-}
 
 // 4. Function to log when a user applies a suggested mutator
 function logMutatorSelection(mutatorName) {
@@ -2024,14 +1999,23 @@ function logMutatorSelection(mutatorName) {
             });
         }
 
+        // Modify the updateSelectedModsDisplay function to trigger suggestion updates
         function updateSelectedModsDisplay() {
-            const output = document.getElementById('selectedModsOutput');
-            if (selectedMods.length === 0) {
-                output.textContent = 'No mods selected';
-            } else {
-                let modInfo = selectedMods.map(mod => `${mod.name} (ID: ${mod.id})`).join('\n');
-                output.textContent = modInfo;
-            }
+          const output = document.getElementById('selectedModsOutput');
+          if (selectedMods.length === 0) {
+            output.textContent = 'No mods selected';
+          } else {
+            let modInfo = selectedMods.map(mod => `${mod.name} (ID: ${mod.id})`).join('\n');
+            output.textContent = modInfo;
+          }
+          
+          // Always update mutator suggestions when mod selection changes
+          updateMutatorSuggestions();
+          
+          // If mods are selected, fetch the latest suggestions
+          if (selectedMods.length > 0) {
+            fetchMutatorSuggestionsFromGAS();
+          }
         }
 
         function searchMods() {
