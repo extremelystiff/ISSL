@@ -492,31 +492,18 @@
         let selectedMods = [];
         let selectedMutators = [];
         let customMutators = [];
-
-        function modifyMutatorSection() {
-          // Find the mutator section
-          const mutatorContainer = document.getElementById('mutatorCheckboxes');
-          
-          // Create a custom mutator input form
-          const customMutatorForm = document.createElement('div');
-          customMutatorForm.className = 'custom-mutator-form';
-          customMutatorForm.innerHTML = `
-            <h3>Add Custom Mutator</h3>
-            <div class="form-group">
-              <input type="text" id="customMutatorInput" placeholder="Enter custom mutator name">
-              <button type="button" class="btn btn-primary" onclick="addCustomMutator()">Add</button>
-            </div>
-          `;
-          
-          // Insert the form before the mutator checkboxes
-          mutatorContainer.parentNode.insertBefore(customMutatorForm, mutatorContainer);
-        }
-        
+      
         // Load custom mutators from local storage on page load
         function loadCustomMutators() {
-          const savedMutators = localStorage.getItem('customMutators');
-          if (savedMutators) {
-            customMutators = JSON.parse(savedMutators);
+          try {
+            const savedMutators = localStorage.getItem('customMutators');
+            if (savedMutators) {
+              customMutators = JSON.parse(savedMutators);
+              console.log('Loaded custom mutators:', customMutators);
+            }
+          } catch (error) {
+            console.error('Error loading custom mutators:', error);
+            customMutators = [];
           }
         }
         
@@ -796,11 +783,19 @@
         }
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+          // First load any saved custom mutators
+          loadCustomMutators();
+          
+          // Then add the custom mutator input form
+          initializeCustomMutators();
+          
+          // Generate mutator checkboxes (which will now include any loaded custom mutators)
           generateMutatorCheckboxes();
+          
+          // Continue with other initializations
           fetchMods();
           loadPresetsFromStorage();
-          initializeCustomMutators();
-        });
+        }); 
 
         // Tab switching
         function openTab(evt, tabName) {
