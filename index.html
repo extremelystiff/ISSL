@@ -1573,6 +1573,118 @@ function logMutatorSelection(mutatorName) {
 
 
 
+
+
+// 8. Initialize everything
+document.addEventListener('DOMContentLoaded', function() {
+  // Create the notification element if it doesn't exist
+  if (!document.getElementById('notification')) {
+    const notificationElement = document.createElement('div');
+    notificationElement.id = 'notification';
+    notificationElement.className = 'notification';
+    document.body.appendChild(notificationElement);
+  }
+  
+  // Create the modal if it doesn't exist
+  if (!document.getElementById('suggestionInfoModal')) {
+    const modalHTML = `
+      <div id="suggestionInfoModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
+        <div class="modal-content" style="background-color: white; margin: 15% auto; padding: 20px; border-radius: 5px; width: 80%; max-width: 600px;">
+          <span class="close" style="float: right; cursor: pointer; font-size: 24px;">&times;</span>
+          <h2>Mod-Based Mutator Suggestions</h2>
+          <p>Many Insurgency: Sandstorm mods require specific mutators to be enabled to work correctly.</p>
+          <p>This feature will automatically suggest appropriate mutators based on the mods you select.</p>
+          <p>When you select a mod that needs a special mutator, you'll see suggestions appear.</p>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="dontShowAgain"> Don't show this message again
+            </label>
+          </div>
+          <button class="btn btn-primary" onclick="closeInfoModal()">Got it!</button>
+        </div>
+      </div>
+    `;
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = modalHTML;
+    document.body.appendChild(modalContainer.firstElementChild);
+    
+    // Add event listener for close button
+    document.querySelector('#suggestionInfoModal .close').addEventListener('click', closeInfoModal);
+  }
+  
+  // Add event listener for refresh button
+  const refreshButton = document.getElementById('refreshSuggestions');
+  if (refreshButton) {
+    refreshButton.addEventListener('click', fetchMutatorSuggestionsFromGAS);
+  }
+  
+  // Create the suggestions container if it doesn't exist
+  if (!document.getElementById('mutatorSuggestions')) {
+    const modsTab = document.getElementById('mods');
+    if (modsTab) {
+      const suggestionsContainer = document.createElement('div');
+      suggestionsContainer.id = 'mutatorSuggestions';
+      suggestionsContainer.className = 'mutator-suggestions';
+      suggestionsContainer.style.marginTop = '20px';
+      suggestionsContainer.style.padding = '15px';
+      suggestionsContainer.style.backgroundColor = '#e3f2fd';
+      suggestionsContainer.style.borderRadius = '4px';
+      suggestionsContainer.style.display = 'none'; // Hide initially
+      suggestionsContainer.style.borderLeft = '4px solid #2196F3';
+      
+      const suggestionsTitle = document.createElement('h3');
+      suggestionsTitle.textContent = 'Suggested Mutators ';
+      
+      const refreshButton = document.createElement('button');
+      refreshButton.id = 'refreshSuggestions';
+      refreshButton.className = 'btn btn-secondary btn-sm';
+      refreshButton.textContent = 'Refresh Suggestions';
+      refreshButton.style.marginLeft = '10px';
+      refreshButton.onclick = fetchMutatorSuggestionsFromGAS;
+      
+      suggestionsTitle.appendChild(refreshButton);
+      suggestionsContainer.appendChild(suggestionsTitle);
+      
+      const suggestionsContent = document.createElement('div');
+      suggestionsContent.id = 'suggestionsContent';
+      suggestionsContainer.appendChild(suggestionsContent);
+      
+      // Place it after the selected mods output
+      const selectedModsOutput = document.getElementById('selectedModsOutput');
+      if (selectedModsOutput) {
+        selectedModsOutput.parentNode.insertBefore(suggestionsContainer, selectedModsOutput.nextSibling);
+      } else {
+        // If selectedModsOutput doesn't exist, add it to the end of the mods tab
+        modsTab.appendChild(suggestionsContainer);
+      }
+    }
+  }
+  
+  // Hook into existing mod selection change event
+  // We need to extend the existing updateSelectedModsDisplay function
+  const originalUpdateSelectedModsDisplay = window.updateSelectedModsDisplay || function(){};
+  window.updateSelectedModsDisplay = function() {
+    // Call original function
+    originalUpdateSelectedModsDisplay.apply(this, arguments);
+    
+    // Then update mutator suggestions based on selected mods
+    updateMutatorSuggestions();
+    
+    // If selected mods change, refresh suggestions data
+    if (selectedMods && selectedMods.length > 0) {
+      fetchMutatorSuggestionsFromGAS();
+    }
+  };
+  
+  // Fetch suggestions when the page loads if mods are already selected
+  if (window.selectedMods && window.selectedMods.length > 0) {
+    fetchMutatorSuggestionsFromGAS();
+  }
+  
+  // Show the info modal after a short delay (to let the page finish loading)
+  setTimeout(showSuggestionInfoModal, 1000);
+});
+
         
 
         
