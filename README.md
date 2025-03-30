@@ -6,7 +6,6 @@ Welcome to the Insurgency: Sandstorm Server Launcher! This repository contains a
 
 - **One-Click Server Launch**: With just a single click, you can launch your Insurgency: Sandstorm server and start playing with your friends or community.
 - **Easy Server Configuration**: The web interface provides a simple and intuitive way to configure your server settings, including game mode, map rotation, player count, and more.
-- **Comprehensive Map Cycle Management**: The built-in Map Cycle Configuration tool enables you to customize your map rotation by selecting specific scenarios for each map.
 - **Mutators and Mods Support**: Enhance your gameplay by enabling various mutators and mods directly from the web interface, adding new challenges and experiences to your server.
 - **Server Configuration Presets**:
  - **Create Presets**: Configure your server settings and click the "Save Preset" button to create a new preset with a custom name.
@@ -28,17 +27,6 @@ To use the Insurgency: Sandstorm Server Launcher, you need to have the following
 
 1. [Webpage](https://extremelystiff.github.io/ISSS/)
 
-
-## Map Cycle Configuration
-
-The Map Cycle Configuration section allows you to customize your server's map rotation. Simply check the desired scenarios for each map and click the "Generate MapCycle.txt" button. You can also download the generated `MapCycle.txt`.
-
-To manually set up the map cycle, follow these steps:
-
-1. Open your Steam library and navigate to the Insurgency: Sandstorm server directory (e.g., `C:\Program Files (x86)\Steam\steamapps\common\sandstorm_server`).
-2. Inside the `Insurgency` folder, create a new folder named `Config`.
-3. Inside the `Config` folder, create a new folder named `Server`.
-4. Copy the generated `MapCycle.txt` file and paste it into the `Server` folder.
 
 ## Contributing
 
