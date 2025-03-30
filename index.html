@@ -227,7 +227,7 @@
             margin-left: 25px;
         }
 
-        #selectedModsOutput, #selectedMutatorsOutput {
+        #selectedModsOutput {
             margin-top: 10px;
             width: 100%;
             min-height: 100px;
@@ -268,6 +268,74 @@
             border-bottom: 1px dotted #666;
             cursor: help;
         }
+		
+/* ============================================ */
+/* == FORCE MUTATOR CHECKBOX VISIBILITY FIX === */
+/* ============================================ */
+
+/* Ensure the main mutators tab content is visible when active */
+#mutators.tab-content.active {
+  display: block !important; /* Or flex if you use flexbox layout */
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important; /* Allow height to adjust */
+  overflow: visible !important; /* Prevent accidental clipping */
+}
+
+/* Ensure the checkbox container itself is always visible */
+#mutatorCheckboxes {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 100px !important; /* Crucial */
+  height: auto !important;      /* Let it grow naturally */
+  max-height: 400px !important; /* Limit growth */
+  overflow-y: auto !important;   /* Add scrollbar if needed */
+  overflow-x: hidden !important;
+  padding: 10px !important;
+  /* border: 3px dashed red !important;  <-- DELETE OR COMMENT OUT THIS LINE */
+  background-color: #fffafa !important; /* Light background */
+  width: 98% !important; /* Ensure it has width */
+  margin-top: 10px !important; /* Add some top margin */
+}
+
+/* Ensure each individual checkbox item is visible */
+#mutatorCheckboxes .checkbox-item {
+  display: flex !important;
+  align-items: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 30px !important;
+  height: auto !important;
+  width: 100% !important;
+  padding: 8px !important;
+  border-bottom: 1px solid #eee !important;
+  background-color: #ffffff !important;
+}
+
+/* Make labels and inputs visible within the item */
+#mutatorCheckboxes .checkbox-item input[type="checkbox"],
+#mutatorCheckboxes .checkbox-item label,
+#mutatorCheckboxes .checkbox-item .item-description {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure the "Selected Mutators" output is also visible */
+#selectedMutatorsOutput {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 50px !important; /* Give it some space */
+}
+
+/* ============================================ */
+/* == END VISIBILITY FIX                 ==== */
+/* ============================================ */
+		
+		
   /* Mutator Suggestions Styling */
   .mutator-suggestions {
     margin-top: 20px;
@@ -360,6 +428,44 @@
     font-size: 0.8em;
     white-space: normal;
   }
+
+  #suggestionInfoModal {
+    display: none;
+    position: absolute; /* Changed from fixed */
+    top: 0; /* Will be set by JS */
+    left: 0; /* Will be set by JS */
+    width: 100%; /* Keep this for overlay effect if needed, or remove if just popup */
+    height: 100%; /* Keep this for overlay effect if needed, or remove */
+    /* background-color: rgba(0,0,0,0.5); */ /* Optional: remove background overlay if distracting */
+    z-index: 1000;
+    /* Remove centering margin */
+  }
+
+  #suggestionInfoModal .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%; /* Adjusted for potentially smaller absolute box */
+    max-width: 450px; /* Adjusted max width */
+    position: relative; /* Needed for absolute positioning inside */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Add shadow for floating effect */
+    border: 1px solid #ccc;
+    /* Remove margin: 15% auto; */
+  }
+
+  .modal-pointer {
+    position: absolute;
+    bottom: -10px; /* Position below the modal box */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white; /* Same color as modal background */
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); /* Optional shadow for pointer */
+  }
+
     </style>
 </head>
 <body>
@@ -702,56 +808,35 @@
                 <div>
                     <h3>Selected Mods:</h3>
                     <div id="selectedModsOutput"></div>
-                </div
-
-                <div id="mutatorSuggestions" class="mutator-suggestions" style="display: none;">
-                  <h3>Suggested Mutators <button id="refreshSuggestions" class="btn btn-secondary btn-sm">Refresh Suggestions</button></h3>
-                  <div id="suggestionsContent"></div>
                 </div>
+            </div> <!-- This closes #mods -->
 
-            </div>
-            
             <div id="mutators" class="tab-content">
                 <h2>Mutators</h2>
                 <div class="info-box">
                     Select mutators to enable on your server. Mutators change gameplay mechanics and rules.
                 </div>
-                
                 <div class="search-box">
                     <input type="text" id="mutatorSearch" placeholder="Search mutators..." onkeyup="searchMutators()">
                     <button type="button" class="btn btn-primary" onclick="searchMutators()">Search</button>
                 </div>
-                
                 <div id="mutatorCheckboxes">
                     <!-- Mutator checkboxes will be dynamically generated here -->
                 </div>
-                
-                <div>
-                    <h3>Selected Mutators:</h3>
-                    <div id="selectedMutatorsOutput"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+                <div> <!-- Consider removing this wrapper if not needed -->
+				    <h3>Selected Mutators:</h3>
+				    <div id="selectedMutatorsOutput">
+				    </div>
+			    </div> <!-- Closes potential wrapper -->
+		    </div> <!-- This closes #mutators -->
+
+        </div> <!-- MOVED HERE: This now correctly closes .main-content -->
+
+    </div> <!-- This closes .container -->
+
     <div id="notification" class="notification"></div>
     
 
-    <div id="suggestionInfoModal" class="modal" style="display: none;">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Mod-Based Mutator Suggestions</h2>
-        <p>Many Insurgency: Sandstorm mods require specific mutators to be enabled to work correctly.</p>
-        <p>This feature will automatically suggest appropriate mutators based on the mods you select.</p>
-        <p>When you select a mod that needs a special mutator, you'll see suggestions appear here.</p>
-        <div class="form-group">
-          <label>
-            <input type="checkbox" id="dontShowAgain"> Don't show this message again
-          </label>
-        </div>
-        <button class="btn btn-primary" onclick="closeInfoModal()">Got it!</button>
-      </div>
-    </div>
 
     <script>
         // Global variables
@@ -759,6 +844,7 @@
         let selectedMods = [];
         let customMutators = [];
         let selectedMutators = [];
+		
 
         let modMutatorSuggestions = {
           // Format: modId: { name, suggestedMutator, description, popularity }
@@ -881,109 +967,136 @@
         }
         
         // Generate mutator checkboxes
-        function generateMutatorCheckboxes() {
-          const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
-          mutatorCheckboxesContainer.innerHTML = '';
-          
-          // Create standard mutators
-          mutators.forEach(mutator => {
-            const checkboxItem = document.createElement('div');
-            checkboxItem.className = 'checkbox-item';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = mutator.name;
-            checkbox.id = `mutator-${mutator.name}`;
-            checkbox.checked = selectedMutators.includes(mutator.name);
-            checkbox.addEventListener('change', function() {
-              if (this.checked) {
-                if (!selectedMutators.includes(mutator.name)) {
-                  selectedMutators.push(mutator.name);
-                }
-              } else {
-                const index = selectedMutators.indexOf(mutator.name);
-                if (index !== -1) {
-                  selectedMutators.splice(index, 1);
-                }
-              }
-              updateSelectedMutatorsDisplay();
-            });
-            
-            const label = document.createElement('label');
-            label.htmlFor = checkbox.id;
-            label.textContent = mutator.name;
-            
-            const description = document.createElement('div');
-            description.className = 'item-description';
-            description.textContent = mutator.description;
-            
-            checkboxItem.appendChild(checkbox);
-            checkboxItem.appendChild(label);
-            checkboxItem.appendChild(description);
-            
-            mutatorCheckboxesContainer.appendChild(checkboxItem);
-          });
-          
-          // Add custom mutators if any exist
-          if (customMutators && customMutators.length > 0) {
-            // Add a divider
-            const divider = document.createElement('div');
-            divider.className = 'mutator-divider';
-            divider.innerHTML = '<h3>Custom Mutators</h3>';
-            mutatorCheckboxesContainer.appendChild(divider);
-            
-            // Add each custom mutator
-            customMutators.forEach(mutator => {
-              const checkboxItem = document.createElement('div');
-              checkboxItem.className = 'checkbox-item custom-mutator-item';
-              
-              const checkbox = document.createElement('input');
-              checkbox.type = 'checkbox';
-              checkbox.value = mutator.name;
-              checkbox.id = `mutator-custom-${mutator.name}`;
-              checkbox.checked = selectedMutators.includes(mutator.name);
-              checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                  if (!selectedMutators.includes(mutator.name)) {
-                    selectedMutators.push(mutator.name);
-                  }
-                } else {
-                  const index = selectedMutators.indexOf(mutator.name);
-                  if (index !== -1) {
-                    selectedMutators.splice(index, 1);
-                  }
-                }
-                updateSelectedMutatorsDisplay();
-              });
-              
-              const label = document.createElement('label');
-              label.htmlFor = checkbox.id;
-              label.textContent = mutator.name;
-              
-              const description = document.createElement('div');
-              description.className = 'item-description';
-              description.textContent = mutator.description || 'Custom user-added mutator';
-              
-              const deleteButton = document.createElement('button');
-              deleteButton.className = 'btn btn-danger btn-sm';
-              deleteButton.textContent = 'Delete';
-              deleteButton.style.marginLeft = '10px';
-              deleteButton.onclick = function(e) {
-                e.preventDefault(); // Prevent event bubbling
-                deleteCustomMutator(mutator.name);
-              };
-              
-              checkboxItem.appendChild(checkbox);
-              checkboxItem.appendChild(label);
-              checkboxItem.appendChild(deleteButton);
-              checkboxItem.appendChild(description);
-              
-              mutatorCheckboxesContainer.appendChild(checkboxItem);
-            });
-          }
-          
-          updateSelectedMutatorsDisplay();
+function generateMutatorCheckboxes() {
+  console.log("Generating mutator checkboxes");
+  const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
+  
+  if (!mutatorCheckboxesContainer) {
+    console.error("Mutator checkboxes container not found!");
+    return;
+  }
+  
+  // Clear previous content
+  mutatorCheckboxesContainer.innerHTML = '';
+  
+  console.log("Generating checkboxes for " + mutators.length + " standard mutators");
+  
+  // Create standard mutators
+  mutators.forEach((mutator, index) => {
+    const checkboxItem = document.createElement('div');
+    checkboxItem.className = 'checkbox-item';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = mutator.name;
+    checkbox.id = `mutator-${mutator.name}`;
+    checkbox.checked = selectedMutators.includes(mutator.name);
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        if (!selectedMutators.includes(mutator.name)) {
+          selectedMutators.push(mutator.name);
         }
+      } else {
+        const index = selectedMutators.indexOf(mutator.name);
+        if (index !== -1) {
+          selectedMutators.splice(index, 1);
+        }
+      }
+      updateSelectedMutatorsDisplay();
+    });
+    
+    const label = document.createElement('label');
+    label.htmlFor = checkbox.id;
+    label.textContent = mutator.name;
+    
+    const description = document.createElement('div');
+    description.className = 'item-description';
+    description.textContent = mutator.description;
+    
+    checkboxItem.appendChild(checkbox);
+    checkboxItem.appendChild(label);
+    checkboxItem.appendChild(description);
+    
+    mutatorCheckboxesContainer.appendChild(checkboxItem);
+    
+    // Debug every 10th item to avoid console spam
+    if (index % 10 === 0) {
+      console.log(`Added mutator checkbox ${index}: ${mutator.name}`);
+    }
+  });
+  
+  // Add custom mutators if any exist
+  if (customMutators && customMutators.length > 0) {
+    console.log("Adding " + customMutators.length + " custom mutators");
+    
+    // Add a divider
+    const divider = document.createElement('div');
+    divider.className = 'mutator-divider';
+    divider.innerHTML = '<h3>Custom Mutators</h3>';
+    mutatorCheckboxesContainer.appendChild(divider);
+    
+    // Add each custom mutator
+    customMutators.forEach(mutator => {
+      const checkboxItem = document.createElement('div');
+      checkboxItem.className = 'checkbox-item custom-mutator-item';
+      
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = mutator.name;
+      checkbox.id = `mutator-custom-${mutator.name}`;
+      checkbox.checked = selectedMutators.includes(mutator.name);
+      checkbox.addEventListener('change', function() {
+        if (this.checked) {
+          if (!selectedMutators.includes(mutator.name)) {
+            selectedMutators.push(mutator.name);
+          }
+        } else {
+          const index = selectedMutators.indexOf(mutator.name);
+          if (index !== -1) {
+            selectedMutators.splice(index, 1);
+          }
+        }
+        updateSelectedMutatorsDisplay();
+      });
+      
+      const label = document.createElement('label');
+      label.htmlFor = checkbox.id;
+      label.textContent = mutator.name;
+      
+      const description = document.createElement('div');
+      description.className = 'item-description';
+      description.textContent = mutator.description || 'Custom user-added mutator';
+      
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn btn-danger btn-sm';
+      deleteButton.textContent = 'Delete';
+      deleteButton.style.marginLeft = '10px';
+      deleteButton.onclick = function(e) {
+        e.preventDefault(); // Prevent event bubbling
+        deleteCustomMutator(mutator.name);
+      };
+      
+      checkboxItem.appendChild(checkbox);
+      checkboxItem.appendChild(label);
+      checkboxItem.appendChild(deleteButton);
+      checkboxItem.appendChild(description);
+      
+      mutatorCheckboxesContainer.appendChild(checkboxItem);
+    });
+  }
+  
+  // Final check to ensure elements were added
+  console.log("Mutator checkboxes container now contains " + 
+              mutatorCheckboxesContainer.children.length + " elements");
+  
+  updateSelectedMutatorsDisplay();
+}
+function forceRegenerateMutators() {
+  console.log("Forcing regeneration of mutator checkboxes");
+  generateMutatorCheckboxes();
+  alert("Mutator checkboxes have been regenerated.");
+}
+
         
         // Function to delete custom mutator
         function deleteCustomMutator(mutatorName) {
@@ -1004,29 +1117,35 @@
         }
         
         // Initialize custom mutators form
-        function initializeCustomMutators() {
-          // First load any saved custom mutators
-          loadCustomMutators();
-          
-          // Add the custom mutator input form
-          const mutatorContainer = document.getElementById('mutatorCheckboxes');
-          const customMutatorForm = document.createElement('div');
-          customMutatorForm.className = 'custom-mutator-form';
-          customMutatorForm.style.marginBottom = '20px';
-          customMutatorForm.innerHTML = `
-            <h3>Add Custom Mutator</h3>
-            <div class="form-group" style="display: flex; gap: 10px;">
-              <input type="text" id="customMutatorInput" placeholder="Enter custom mutator name" style="flex: 1;">
-              <button type="button" class="btn btn-primary" onclick="addCustomMutator()">Add</button>
-            </div>
-          `;
-          
-          // Insert before the mutator checkboxes
-          mutatorContainer.parentNode.insertBefore(customMutatorForm, mutatorContainer);
-          
-          // Generate mutator checkboxes (which will now include any loaded custom mutators)
-          generateMutatorCheckboxes();
-        }
+function initializeCustomMutators() {
+  // First load any saved custom mutators
+  loadCustomMutators();
+  
+  // Add the custom mutator input form
+  const mutatorContainer = document.getElementById('mutatorCheckboxes');
+  if (!mutatorContainer) {
+    console.error("Mutator container not found!");
+    return;
+  }
+  
+  const customMutatorForm = document.createElement('div');
+  customMutatorForm.className = 'custom-mutator-form';
+  customMutatorForm.style.marginBottom = '20px';
+  customMutatorForm.innerHTML = `
+    <h3>Add Custom Mutator</h3>
+    <div class="form-group" style="display: flex; gap: 10px;">
+      <input type="text" id="customMutatorInput" placeholder="Enter custom mutator name" style="flex: 1;">
+      <button type="button" class="btn btn-primary" onclick="addCustomMutator()">Add</button>
+    </div>
+  `;
+  
+  // Insert before the mutator checkboxes
+  mutatorContainer.parentNode.insertBefore(customMutatorForm, mutatorContainer);
+  
+  // Generate mutator checkboxes (which will now include any loaded custom mutators)
+  // This call is important to ensure mutators appear
+  generateMutatorCheckboxes();
+}
 
         function updateMutatorCheckboxes() {
             const checkboxes = document.querySelectorAll('#mutatorCheckboxes input[type="checkbox"]');
@@ -1061,24 +1180,31 @@
         }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize custom mutators
+  // Initialize custom mutators (this also calls generateMutatorCheckboxes)
   initializeCustomMutators();
-  
-  // Create suggestions container
+
+  // Create suggestions container but don't show modal yet
   createSuggestionsContainer();
-  
+
   // Fetch mods
   fetchMods();
-  
+
   // Load presets
   loadPresetsFromStorage();
-  
+
   // Initial suggestions update (will be empty until mods are selected)
   updateMutatorSuggestions();
-  
-  // Show suggestion info modal
-  showSuggestionInfoModal();
-  
+
+  // Add test button (REMOVE FOR PRODUCTION)
+  addTestButton();
+
+  // --- Calls related to Modio & Suggestions (can stay grouped) ---
+  setupModTabBehavior(); // Sets up tab clicks for Modio/Suggestions
+  initMutatorSuggestions(); // Initializes suggestion fetching/display logic
+
+  // Add a slight delay before checking mod availability (Modio)
+  setTimeout(checkModAvailability, 500);
+
   console.log("Initialization complete");
 });
         
@@ -1086,26 +1212,101 @@ document.addEventListener('DOMContentLoaded', function() {
 // to fetch popular mutator suggestions based on collected data
 
 function createInfoModal() {
-  if (document.getElementById('suggestionInfoModal')) return;
+  if (document.getElementById('suggestionInfoModal')) {
+    // If the modal already exists, just return (we'll show it elsewhere)
+    return;
+  }
   
   const modalHTML = `
-    <div id="suggestionInfoModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
-      <div class="modal-content" style="background-color: white; margin: 15% auto; padding: 20px; border-radius: 5px; width: 80%; max-width: 600px; position: relative;">
-        <span class="close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">&times;</span>
+    <div id="suggestionInfoModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
         <h2>Mod-Based Mutator Suggestions</h2>
         <p>Many Insurgency: Sandstorm mods require specific mutators to be enabled to work correctly.</p>
         <p>This feature will automatically suggest appropriate mutators based on the mods you select.</p>
-        <p>When you select a mod that needs a special mutator, you'll see suggestions appear.</p>
-        <div class="form-group" style="margin-top: 15px;">
+        
+        <div class="suggestion-examples">
+          <h3>Common Mod-Mutator Combinations:</h3>
+          <ul>
+            <li><strong>ISMC Mods</strong> → Use with <code>ISMC_Casual</code> mutator</li>
+            <li><strong>Shoot House</strong> → Use with <code>Competitive</code> mutator</li>
+            <li><strong>Night Maps</strong> → Often work best with <code>Hardcore</code> mutator</li>
+          </ul>
+        </div>
+        
+        <div class="form-group" style="margin-top: 20px;">
           <label>
             <input type="checkbox" id="dontShowAgain"> Don't show this message again
           </label>
         </div>
-        <button class="btn btn-primary" style="margin-top: 15px;" onclick="closeInfoModal()">Got it!</button>
+        <button class="btn btn-primary" style="margin-top: 15px; float: right;" onclick="closeInfoModal()">Got it!</button>
       </div>
     </div>
   `;
   
+  // Add some additional styling
+  const modalStyle = document.createElement('style');
+  modalStyle.textContent = `
+    #suggestionInfoModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    
+    #suggestionInfoModal .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    #suggestionInfoModal .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #666;
+    }
+    
+    #suggestionInfoModal .close:hover {
+      color: #000;
+    }
+    
+    .suggestion-examples {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+    
+    .suggestion-examples ul {
+      padding-left: 20px;
+    }
+    
+    .suggestion-examples li {
+      margin-bottom: 8px;
+    }
+    
+    .suggestion-examples code {
+      background-color: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  `;
+  
+  // Append the modal and styles to the document
+  document.head.appendChild(modalStyle);
   const modalContainer = document.createElement('div');
   modalContainer.innerHTML = modalHTML;
   document.body.appendChild(modalContainer.firstElementChild);
@@ -1113,6 +1314,7 @@ function createInfoModal() {
   // Add event listener for close button
   document.querySelector('#suggestionInfoModal .close').addEventListener('click', closeInfoModal);
 }
+
 
 // Fix 3: Improve the notification system
 function createNotificationElement() {
@@ -1288,7 +1490,6 @@ function updateMutatorSuggestions() {
   selectedMods.forEach(mod => {
     // Convert mod.id to string to handle both numeric and string IDs
     const modId = String(mod.id);
-    console.log("Checking suggestions for mod:", modId, mod.name, modMutatorSuggestions[modId]);
     if (modMutatorSuggestions[modId]) {
       relevantSuggestions.push({
         mod: mod,
@@ -1297,53 +1498,127 @@ function updateMutatorSuggestions() {
     }
   });
   
-  console.log("Relevant suggestions found:", relevantSuggestions);
-  
   // If no suggestions, hide the container
   if (relevantSuggestions.length === 0) {
     suggestionsContainer.style.display = 'none';
     return;
   }
   
-  // Display suggestions - make sure this section is executed
-  console.log("Showing suggestions container");
+  // Display suggestions with improved styling
   suggestionsContainer.style.display = 'block';
+  suggestionsContainer.style.visibility = 'visible';
+  
+  // Add a header with instructions
+  const header = document.createElement('div');
+  header.className = 'suggestions-header';
+  header.innerHTML = `
+    <p>We've found ${relevantSuggestions.length} recommended mutator${relevantSuggestions.length > 1 ? 's' : ''} for your selected mods:</p>
+  `;
+  suggestionsContent.appendChild(header);
+  
+  // Create a container for the suggestion cards
+  const cardsContainer = document.createElement('div');
+  cardsContainer.className = 'suggestion-cards';
+  cardsContainer.style.display = 'flex';
+  cardsContainer.style.flexWrap = 'wrap';
+  cardsContainer.style.gap = '15px';
+  cardsContainer.style.marginTop = '15px';
   
   relevantSuggestions.forEach(item => {
     const suggestionBox = document.createElement('div');
     suggestionBox.className = 'suggestion-box';
+    suggestionBox.style.flex = '1 1 300px';
+    suggestionBox.style.minWidth = '250px';
+    suggestionBox.style.borderRadius = '8px';
+    suggestionBox.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+    suggestionBox.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+    suggestionBox.style.overflow = 'hidden';
     
-    const modName = document.createElement('div');
-    modName.className = 'suggestion-mod-name';
-    modName.textContent = `For mod: ${item.mod.name}`;
+    // Make the card interactive
+    suggestionBox.addEventListener('mouseover', function() {
+      this.style.transform = 'translateY(-3px)';
+      this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
+    });
+    
+    suggestionBox.addEventListener('mouseout', function() {
+      this.style.transform = 'translateY(0)';
+      this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+    });
+    
+    // Create a colored header for the mod name
+    const header = document.createElement('div');
+    header.className = 'suggestion-header';
+    header.style.padding = '12px 15px';
+    header.style.backgroundColor = '#3498db';
+    header.style.color = 'white';
+    header.style.fontWeight = 'bold';
+    header.textContent = item.mod.name;
+    
+    // Create the content area
+    const content = document.createElement('div');
+    content.className = 'suggestion-content';
+    content.style.padding = '15px';
+    content.style.backgroundColor = 'white';
     
     const mutatorName = document.createElement('div');
     mutatorName.className = 'suggestion-mutator-name';
-    mutatorName.textContent = `Suggested mutator: ${item.suggestion.suggestedMutator}`;
+    mutatorName.style.fontSize = '1.1em';
+    mutatorName.style.fontWeight = 'bold';
+    mutatorName.style.color = '#0d47a1';
+    mutatorName.style.marginBottom = '10px';
+    mutatorName.textContent = `Suggested Mutator: ${item.suggestion.suggestedMutator}`;
     
     const description = document.createElement('div');
     description.className = 'suggestion-description';
+    description.style.color = '#555';
+    description.style.marginBottom = '15px';
     description.textContent = item.suggestion.description || 
-                             `Used by ${Math.round((item.suggestion.popularity || 0) * 100)}% of players with this mod`;
+                           `This mutator is used by ${Math.round((item.suggestion.popularity || 0) * 100)}% of players with this mod.`;
     
+    // Create a styled button
     const applyButton = document.createElement('button');
-    applyButton.className = 'btn btn-primary btn-sm apply-suggestion';
+    applyButton.className = 'btn btn-primary apply-suggestion';
+    applyButton.style.width = '100%';
+    applyButton.style.padding = '8px 15px';
     applyButton.textContent = 'Apply This Mutator';
     applyButton.onclick = function() {
       applyMutatorSuggestion(item.suggestion.suggestedMutator);
     };
     
-    suggestionBox.appendChild(modName);
-    suggestionBox.appendChild(mutatorName);
-    suggestionBox.appendChild(description);
-    suggestionBox.appendChild(applyButton);
+    // Assemble the card
+    content.appendChild(mutatorName);
+    content.appendChild(description);
+    content.appendChild(applyButton);
     
-    suggestionsContent.appendChild(suggestionBox);
+    suggestionBox.appendChild(header);
+    suggestionBox.appendChild(content);
+    
+    cardsContainer.appendChild(suggestionBox);
   });
   
-  // Force the container to be visible
-  suggestionsContainer.style.removeProperty('display');
-  suggestionsContainer.style.display = 'block';
+  suggestionsContent.appendChild(cardsContainer);
+  
+  // Add some animation to draw attention
+  suggestionsContainer.style.animation = 'fadeIn 0.5s ease-out';
+  
+  // Add the animation keyframes
+  if (!document.getElementById('suggestionAnimations')) {
+    const style = document.createElement('style');
+    style.id = 'suggestionAnimations';
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes highlight-pulse {
+        0% { background-color: #ffffff; }
+        50% { background-color: #e3f2fd; }
+        100% { background-color: #ffffff; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 }
 
 function showNotification(message, type = "info") {
@@ -1380,6 +1655,12 @@ function showSuggestionInfoModal() {
     const modal = document.getElementById('suggestionInfoModal');
     if (modal) {
       modal.style.display = 'block';
+      modal.style.opacity = '0';
+      
+      setTimeout(() => {
+        modal.style.transition = 'opacity 0.3s ease';
+        modal.style.opacity = '1';
+      }, 50);
     }
   }
 }
@@ -1408,7 +1689,14 @@ function checkSuggestionContainerVisibility() {
 function closeInfoModal() {
   const modal = document.getElementById('suggestionInfoModal');
   if (modal) {
-    modal.style.display = 'none';
+    // Animate the modal closing
+    modal.style.transition = 'opacity 0.3s ease';
+    modal.style.opacity = '0';
+    
+    // After animation completes, hide the modal
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 300);
     
     // Check if "don't show again" is checked
     const dontShowAgain = document.getElementById('dontShowAgain');
@@ -1678,19 +1966,37 @@ function logMutatorSelection(mutatorName) {
         }
 
         // Tab switching
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tab");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tab-content" and hide them
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+        // Remove the active class from all content divs
+        tabcontent[i].classList.remove("active");
+    }
+
+    // Get all elements with class="tab" and remove the class "active"
+    tablinks = document.getElementsByClassName("tab");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+
+    // Get the specific tab content element to show
+    const currentTabContent = document.getElementById(tabName);
+
+    // Show the current tab content, and add an "active" class to it
+    if (currentTabContent) {
+        currentTabContent.style.display = "block";
+        currentTabContent.classList.add("active");
+    }
+
+    // Add the "active" class to the button that opened the tab
+    if (evt && evt.currentTarget) {
+      evt.currentTarget.classList.add("active");
+    }
+}
 
         // Server configuration functions
         function generateConfig() {
@@ -2111,15 +2417,184 @@ function addTestButton() {
   console.log("Added test button");
 }
 
-// Call this in your initialization
-document.addEventListener('DOMContentLoaded', function() {
-  // Existing initialization code
-  
-  // Add test button
-  addTestButton();
-});
+
 /////END TESTING
 
     </script>
+	
+<script>
+// Modio info
+
+// Add these functions to your existing JavaScript code
+
+// 1. Function to automatically show the suggestion modal when the mods tab is clicked
+function setupModTabBehavior() {
+  // Get all tab buttons
+  const tabButtons = document.querySelectorAll('.tab');
+  
+  // Find the mods tab button
+  tabButtons.forEach(button => {
+    if (button.textContent.trim() === 'Mods') {
+      // Add a click event listener that will run after the tab is opened
+      button.addEventListener('click', function() {
+        // Wait a short moment for the tab to fully open
+        setTimeout(function() {
+          // Show the suggestion info modal
+          showSuggestionInfoModal();
+          
+          // Show the API setup helper if no API token is configured
+          checkAndShowApiSetupHelper();
+        }, 300);
+      });
+    }
+  });
+}
+
+// 2. Function to check if API token is configured and show helper
+function checkAndShowApiSetupHelper() {
+  // Check if we have an API token saved
+  const hasApiToken = localStorage.getItem('modioApiToken');
+  
+  if (!hasApiToken) {
+    showApiSetupHelper();
+  }
+}
+
+// 3. Create a helper dialog for API setup
+function showApiSetupHelper() {
+  // Create the modal if it doesn't exist
+  if (document.getElementById('apiSetupModal')) {
+    document.getElementById('apiSetupModal').style.display = 'block';
+    return;
+  }
+  
+  const modalHTML = `
+    <div id="apiSetupModal" class="modal" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
+      <div class="modal-content" style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 5px; width: 80%; max-width: 700px; position: relative;">
+        <span class="close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">&times;</span>
+        <h2>Mod.io API Setup Helper</h2>
+        <p>To use mods with your server, you need to set up a Mod.io API token.</p>
+        
+        <div class="setup-steps">
+          <h3>Step 1: Get your API token</h3>
+          <ol>
+            <li>Create or sign in to your <a href="https://mod.io" target="_blank">Mod.io account</a></li>
+            <li>Click your username at the top right, then click "API Access" from the left navigation</li>
+            <li>Under "OAuth 2 Management", look for "Generate Access Token"</li>
+            <li>Enter a name for your token (e.g., "My Sandstorm Server") and set it to "Read" access</li>
+            <li>Click "Create Token" and copy the generated token</li>
+          </ol>
+          
+          <h3>Step 2: Enter your API token</h3>
+          <div class="form-group">
+            <input type="text" id="apiTokenInput" placeholder="Paste your API token here" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+          </div>
+          
+          <h3>Step 3: Save to GameUserSettings.ini</h3>
+          <p>Your token must be saved in this file:</p>
+          <code style="display: block; background: #f5f5f5; padding: 10px; margin: 10px 0; word-break: break-all;">
+            \\sandstorm_server\\Insurgency\\Saved\\Config\\WindowsServer\\GameUserSettings.ini
+          </code>
+          
+          <div class="generated-config" style="background: #f0f0f0; padding: 15px; margin: 15px 0; border-left: 3px solid #3498db;">
+            <h4>Copy this text to your GameUserSettings.ini file:</h4>
+            <pre id="iniConfigOutput" style="white-space: pre-wrap; word-break: break-all;"></pre>
+            <button id="copyIniConfig" class="btn btn-primary">Copy to Clipboard</button>
+          </div>
+        </div>
+        
+        <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
+          <button class="btn btn-secondary" onclick="document.getElementById('apiSetupModal').style.display='none';">Remind Me Later</button>
+          <button id="saveApiToken" class="btn btn-primary">Save Token</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const modalContainer = document.createElement('div');
+  modalContainer.innerHTML = modalHTML;
+  document.body.appendChild(modalContainer.firstElementChild);
+  
+  // Add event listeners
+  document.querySelector('#apiSetupModal .close').addEventListener('click', function() {
+    document.getElementById('apiSetupModal').style.display = 'none';
+  });
+  
+  document.getElementById('apiTokenInput').addEventListener('input', updateIniConfig);
+  document.getElementById('saveApiToken').addEventListener('click', saveApiToken);
+  document.getElementById('copyIniConfig').addEventListener('click', copyIniConfig);
+  
+  // Initialize the INI config display
+  updateIniConfig();
+}
+
+// 4. Update the INI config preview based on the entered token
+function updateIniConfig() {
+  const token = document.getElementById('apiTokenInput').value.trim();
+  const iniConfig = `[/Script/ModKit.ModIOClient]
+bHasUserAcceptedTerms=True
+AccessToken=${token || 'YOUR_TOKEN_HERE'}`;
+  
+  document.getElementById('iniConfigOutput').textContent = iniConfig;
+}
+
+// 5. Copy the INI config to clipboard
+function copyIniConfig() {
+  const configText = document.getElementById('iniConfigOutput').textContent;
+  navigator.clipboard.writeText(configText).then(function() {
+    showNotification('Configuration copied to clipboard!', 'success');
+  }).catch(function(err) {
+    console.error('Could not copy text: ', err);
+    showNotification('Failed to copy. Please select and copy manually.', 'error');
+  });
+}
+
+// 6. Save the API token to localStorage
+function saveApiToken() {
+  const token = document.getElementById('apiTokenInput').value.trim();
+  if (!token) {
+    showNotification('Please enter a valid token', 'error');
+    return;
+  }
+  
+  localStorage.setItem('modioApiToken', token);
+  document.getElementById('apiSetupModal').style.display = 'none';
+  showNotification('API token saved successfully!', 'success');
+}
+
+// 7. Add a function to check if mods are available based on API token
+function checkModAvailability() {
+  const modContainer = document.getElementById('modCheckboxes');
+  const apiToken = localStorage.getItem('modioApiToken');
+  
+  if (!apiToken) {
+    // Show a warning in the mods tab if no API token is configured
+    modContainer.innerHTML = `
+      <div class="info-box" style="background-color: #fff3cd; color: #856404; border-left: 4px solid #ffc107;">
+        <h3>API Token Not Configured</h3>
+        <p>You need to set up your Mod.io API token to use mods with your server.</p>
+        <button class="btn btn-primary" onclick="showApiSetupHelper()">Set Up API Token</button>
+      </div>
+      <p style="margin-top: 15px;">If you've already configured your token in GameUserSettings.ini, you can ignore this message and continue.</p>
+    `;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
 </body>
 </html>
