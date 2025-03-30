@@ -945,7 +945,7 @@
           
           // Log to GAS if mods are selected
           if (selectedMods && selectedMods.length > 0) {
-            // logCustomMutatorToGAS(mutatorName);
+            logCustomMutatorToGAS(mutatorName);
           }
         }
 
@@ -1728,7 +1728,7 @@ function applyMutatorSuggestion(mutatorName, buttonElement, suggestingMod) { // 
         buttonElement.style.color = 'white';
 
         showNotification(`Applied mutator: ${mutatorName}`, "success");
-        // logMutatorSelection(mutatorName); // Log if needed
+        logMutatorSelection(mutatorName); // Log if needed
     }
 
     // Update the underlying data and regenerate lists
@@ -1992,7 +1992,6 @@ function openTab(evt, tabName) {
                 const modIds = selectedMods.map(mod => mod.id).join(',');
                 modsParam = ` -mods -CmdModList=${modIds}`;
             }
-			logFinalConfigurationToGAS('generate_config');
 
             configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}${mutatorParam}${modsParam}`;
 
@@ -2000,20 +1999,8 @@ function openTab(evt, tabName) {
         }
 
         function launchServer() {
-            // --- NEW: Generate config first to ensure all data is current ---
-            generateConfig(); // This now includes the logFinalConfigurationToGAS call
-
-            // --- REMOVED: Duplicate logging call removed as generateConfig now handles it ---
-            // logFinalConfigurationToGAS('launch'); // No longer needed here
-
-             // Get the already generated config string (optional, could recalculate too)
-             const configStringForLaunch = document.getElementById('configOutput').value;
-             console.log("Using generated config for launch:", configStringForLaunch)
-
-
-            // --- MODIFIED: Use the config string parts for Steam URL if easier ---
-            // It might be simpler to just construct the necessary part for the steam URL
-            // directly here again, rather than parsing the full command string back.
+            generateConfig();
+            
             const scenario = document.getElementById('scenario').value;
             const maxPlayers = document.getElementById('maxPlayers').value;
             const port = document.getElementById('port').value;
@@ -2026,33 +2013,27 @@ function openTab(evt, tabName) {
             const enableGameStats = document.getElementById('enableGameStats').checked;
             const officialRules = document.getElementById('officialRules').checked;
 
-            let serverParams = `${scenario}?MaxPlayers=${maxPlayers}`; // Base travel params
+            let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
+
             if (password) serverParams += `?Password=${password}`;
+            if (enableCheats) serverParams += ' -EnableCheats';
+            if (gameStatsToken && enableGameStats) serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
+            if (gsltToken) serverParams += ` -GSLTToken=${gsltToken}`;
+            if (officialRules) serverParams += ' -ruleset=OfficialRules';
+            
+            // Add mutators parameter
+            if (selectedMutators.length > 0) {
+                serverParams += ` -Mutators=${selectedMutators.join(',')}`;
+            }
+            
+            // Add mods parameter
+            if (selectedMods.length > 0) {
+                const modIds = selectedMods.map(mod => mod.id).join(',');
+                serverParams += ` -mods -CmdModList=${modIds}`;
+            }
 
-            // Add command line args AFTER travel params, separated by space
-             serverParams += ` -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
-             if (enableCheats) serverParams += ' -EnableCheats';
-             if (gameStatsToken && enableGameStats) serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
-             if (gsltToken) serverParams += ` -GSLTToken=${gsltToken}`;
-             if (officialRules) serverParams += ' -OfficialRules'; // Use -OfficialRules
-
-             // Add selected mutators
-             if (selectedMutators.length > 0) {
-                 serverParams += ` -Mutators=${selectedMutators.join(',')}`;
-             }
-
-             // Add selected mods
-             if (selectedMods.length > 0) {
-                 const modIds = selectedMods.map(mod => mod.id).join(',');
-                 // Ensure -mods is present if using CmdModList
-                 serverParams += ` -mods -CmdModList=${modIds}`;
-             }
-
-             // Construct the final Steam URL
-             const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
-             console.log("Attempting to launch via Steam URL:", steamURL);
-             window.location.href = steamURL;
-             // --- END MODIFIED ---
+            const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
+            window.location.href = steamURL;
         }
 
         function quickStart() {
@@ -2324,7 +2305,7 @@ function openTab(evt, tabName) {
 						const modToAdd = sortedMods.find(m => m.id === modId);
 						if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
 							selectedMods.push(modToAdd);
-							// logSelectedCustomMutators(); // Keep if needed
+							logSelectedCustomMutators(); // Keep if needed
 						}
 					} else {
 						selectedMods = selectedMods.filter(sm => sm.id !== modId);
@@ -2651,68 +2632,7 @@ function checkModAvailability() {
 
 
 
-/**
- * Logs the final selected configuration (mods and *custom* mutators)
- * to Google Apps Script when the user intends to use it (Launch/Generate).
- */
-function logFinalConfigurationToGAS(source) { // source can be 'launch' or 'generate'
-    // Identify selected custom mutators
-    const selectedCustomMutators = selectedMutators.filter(mutatorName => {
-        // Check if it's NOT in the standard 'mutators' list
-        return !mutators.some(standardMutator => standardMutator.name === mutatorName);
-    });
 
-    // Only send data if there are selected mods AND selected custom mutators
-    if (selectedMods.length === 0 || selectedCustomMutators.length === 0) {
-        console.log("Skipping final config logging: No mods or no custom mutators selected.");
-        return;
-    }
-
-    console.log(`Logging final config (Source: ${source}). Mods:`, selectedMods.map(m=>m.id), "Custom Mutators:", selectedCustomMutators);
-
-    // Prepare data payload
-    const data = {
-        timestamp: new Date().toISOString(),
-        source: source, // Indicate trigger point
-        mods: selectedMods.map(mod => ({
-            id: mod.id,
-            name: mod.name.substring(0, 100) // Limit name length
-        })).slice(0, 30), // Limit number of mods slightly more generously here
-        customMutators: selectedCustomMutators.slice(0, 30), // Limit number of mutators
-        nonce: Math.random().toString(36).substring(2, 15) // Add nonce
-    };
-
-    // Optional: Simple Rate Limiting ( reused logic from logCustomMutatorToGAS)
-    const recentRequestsKey = 'recentFinalConfigGASRequests';
-    const recentRequests = localStorage.getItem(recentRequestsKey) || '[]';
-    let requests = JSON.parse(recentRequests);
-    const now = Date.now();
-    requests = requests.filter(time => now - time < 60000); // Keep last minute
-    if (requests.length >= 3) { // Allow slightly fewer final logs per minute
-      console.log('Rate limited (Final Config): Too many requests to GAS');
-      return;
-    }
-    requests.push(now);
-    localStorage.setItem(recentRequestsKey, JSON.stringify(requests));
-    // End Rate Limiting
-
-    // Send data to GAS Web App
-    fetch('https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec', { 
-        method: 'POST',
-        mode: 'no-cors', // Keep no-cors for simple logging
-        headers: {
-            // 'Content-Type': 'application/json' // Not strictly needed with no-cors, but good practice if switching mode
-             'Content-Type': 'text/plain', // Often works better with no-cors POST to GAS
-        },
-        // body: JSON.stringify(data) // Stringify if using application/json
-         body: JSON.stringify(data) // Send as string for text/plain
-    }).then(() => {
-      console.log("Final config data sent (or attempted) to GAS.");
-    }).catch(error => {
-        console.error('Error logging final configuration:', error);
-        // Silently fail for the user
-    });
-}
 
 
 
