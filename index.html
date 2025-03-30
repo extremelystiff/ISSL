@@ -844,6 +844,8 @@
         let selectedMods = [];
         let customMutators = [];
         let selectedMutators = [];
+		// Store the global mods array alphabetically once fetched/defined
+		let sortedMods = [];
 		
 
         let modMutatorSuggestions = {
@@ -943,7 +945,7 @@
           
           // Log to GAS if mods are selected
           if (selectedMods && selectedMods.length > 0) {
-            logCustomMutatorToGAS(mutatorName);
+            // logCustomMutatorToGAS(mutatorName);
           }
         }
 
@@ -967,130 +969,162 @@
         }
         
         // Generate mutator checkboxes
-function generateMutatorCheckboxes() {
-  console.log("Generating mutator checkboxes");
-  const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
-  
-  if (!mutatorCheckboxesContainer) {
-    console.error("Mutator checkboxes container not found!");
-    return;
-  }
-  
-  // Clear previous content
-  mutatorCheckboxesContainer.innerHTML = '';
-  
-  console.log("Generating checkboxes for " + mutators.length + " standard mutators");
-  
-  // Create standard mutators
-  mutators.forEach((mutator, index) => {
-    const checkboxItem = document.createElement('div');
-    checkboxItem.className = 'checkbox-item';
-    
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = mutator.name;
-    checkbox.id = `mutator-${mutator.name}`;
-    checkbox.checked = selectedMutators.includes(mutator.name);
-    checkbox.addEventListener('change', function() {
-      if (this.checked) {
-        if (!selectedMutators.includes(mutator.name)) {
-          selectedMutators.push(mutator.name);
-        }
-      } else {
-        const index = selectedMutators.indexOf(mutator.name);
-        if (index !== -1) {
-          selectedMutators.splice(index, 1);
-        }
-      }
-      updateSelectedMutatorsDisplay();
-    });
-    
-    const label = document.createElement('label');
-    label.htmlFor = checkbox.id;
-    label.textContent = mutator.name;
-    
-    const description = document.createElement('div');
-    description.className = 'item-description';
-    description.textContent = mutator.description;
-    
-    checkboxItem.appendChild(checkbox);
-    checkboxItem.appendChild(label);
-    checkboxItem.appendChild(description);
-    
-    mutatorCheckboxesContainer.appendChild(checkboxItem);
-    
-    // Debug every 10th item to avoid console spam
-    if (index % 10 === 0) {
-      console.log(`Added mutator checkbox ${index}: ${mutator.name}`);
-    }
-  });
-  
-  // Add custom mutators if any exist
-  if (customMutators && customMutators.length > 0) {
-    console.log("Adding " + customMutators.length + " custom mutators");
-    
-    // Add a divider
-    const divider = document.createElement('div');
-    divider.className = 'mutator-divider';
-    divider.innerHTML = '<h3>Custom Mutators</h3>';
-    mutatorCheckboxesContainer.appendChild(divider);
-    
-    // Add each custom mutator
-    customMutators.forEach(mutator => {
-      const checkboxItem = document.createElement('div');
-      checkboxItem.className = 'checkbox-item custom-mutator-item';
-      
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.value = mutator.name;
-      checkbox.id = `mutator-custom-${mutator.name}`;
-      checkbox.checked = selectedMutators.includes(mutator.name);
-      checkbox.addEventListener('change', function() {
-        if (this.checked) {
-          if (!selectedMutators.includes(mutator.name)) {
-            selectedMutators.push(mutator.name);
-          }
-        } else {
-          const index = selectedMutators.indexOf(mutator.name);
-          if (index !== -1) {
-            selectedMutators.splice(index, 1);
-          }
-        }
-        updateSelectedMutatorsDisplay();
-      });
-      
-      const label = document.createElement('label');
-      label.htmlFor = checkbox.id;
-      label.textContent = mutator.name;
-      
-      const description = document.createElement('div');
-      description.className = 'item-description';
-      description.textContent = mutator.description || 'Custom user-added mutator';
-      
-      const deleteButton = document.createElement('button');
-      deleteButton.className = 'btn btn-danger btn-sm';
-      deleteButton.textContent = 'Delete';
-      deleteButton.style.marginLeft = '10px';
-      deleteButton.onclick = function(e) {
-        e.preventDefault(); // Prevent event bubbling
-        deleteCustomMutator(mutator.name);
-      };
-      
-      checkboxItem.appendChild(checkbox);
-      checkboxItem.appendChild(label);
-      checkboxItem.appendChild(deleteButton);
-      checkboxItem.appendChild(description);
-      
-      mutatorCheckboxesContainer.appendChild(checkboxItem);
-    });
-  }
-  
-  // Final check to ensure elements were added
-  console.log("Mutator checkboxes container now contains " + 
-              mutatorCheckboxesContainer.children.length + " elements");
-  
-  updateSelectedMutatorsDisplay();
-}
+		// Generate mutator checkboxes, sorting selected to the top
+		// Generate mutator checkboxes, sorting selected to top, and grouping custom
+		function generateMutatorCheckboxes() {
+			console.log("Generating mutator checkboxes (sorted + grouped)");
+			const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
+
+			if (!mutatorCheckboxesContainer) {
+				console.error("Mutator checkboxes container not found!");
+				return;
+			}
+			mutatorCheckboxesContainer.innerHTML = ''; // Clear previous
+
+			// --- NEW: Four lists for detailed sorting ---
+			const enabledStandardItems = [];
+			const enabledCustomItems = [];
+			const availableStandardItems = [];
+			const availableCustomItems = [];
+
+			// Combine standard and custom into one list for iteration
+			const allMutatorsData = [
+				...mutators.map(m => ({ ...m, isCustom: false })),
+				...customMutators.map(m => ({ ...m, isCustom: true }))
+			];
+
+			allMutatorsData.forEach(mutator => {
+				const isSelected = selectedMutators.includes(mutator.name);
+				const checkboxItem = document.createElement('div');
+				checkboxItem.className = 'checkbox-item';
+				if (mutator.isCustom) {
+					checkboxItem.classList.add('custom-mutator-item');
+				}
+
+				const checkbox = document.createElement('input');
+				checkbox.type = 'checkbox';
+				checkbox.value = mutator.name;
+				checkbox.id = mutator.isCustom ? `mutator-custom-${mutator.name}` : `mutator-${mutator.name}`;
+				checkbox.checked = isSelected;
+
+				checkbox.addEventListener('change', function() {
+					const mutatorName = this.value;
+					if (this.checked) {
+						if (!selectedMutators.includes(mutatorName)) {
+							selectedMutators.push(mutatorName);
+						}
+					} else {
+						const index = selectedMutators.indexOf(mutatorName);
+						if (index !== -1) {
+							selectedMutators.splice(index, 1);
+						}
+					}
+					updateSelectedMutatorsDisplay();
+					generateMutatorCheckboxes(); // Re-render this list to sort/group
+					updateMutatorSuggestions(); // Re-render suggestions for button states
+				});
+
+				const label = document.createElement('label');
+				label.htmlFor = checkbox.id;
+				label.textContent = mutator.name;
+
+				const description = document.createElement('div');
+				description.className = 'item-description';
+				description.textContent = mutator.description || (mutator.isCustom ? 'Custom user-added mutator' : '');
+				 // Align description better when delete button is present
+				 description.style.flexGrow = '1';
+				 description.style.marginLeft = '10px'; // Add some space after label/button
+
+				checkboxItem.appendChild(checkbox);
+				checkboxItem.appendChild(label);
+
+				// Add delete button for custom mutators (before description)
+				if (mutator.isCustom) {
+					const deleteButton = document.createElement('button');
+					deleteButton.className = 'btn btn-danger btn-sm';
+					deleteButton.textContent = 'Delete';
+					deleteButton.style.marginLeft = 'auto'; // Push button to the right
+					deleteButton.style.marginRight = '10px'; // Space before description
+					deleteButton.onclick = function(e) {
+						e.preventDefault();
+						deleteCustomMutator(mutator.name);
+					};
+					checkboxItem.appendChild(deleteButton);
+				}
+
+				checkboxItem.appendChild(description);
+
+				// Assign to the correct temporary list
+				if (isSelected) {
+					if (mutator.isCustom) {
+						enabledCustomItems.push(checkboxItem);
+					} else {
+						enabledStandardItems.push(checkboxItem);
+					}
+				} else {
+					if (mutator.isCustom) {
+						availableCustomItems.push(checkboxItem);
+					} else {
+						availableStandardItems.push(checkboxItem);
+					}
+				}
+			});
+
+			// --- Append sorted and grouped items ---
+			const hasEnabled = enabledStandardItems.length > 0 || enabledCustomItems.length > 0;
+			const hasAvailable = availableStandardItems.length > 0 || availableCustomItems.length > 0;
+
+			// 1. Enabled Section
+			if (hasEnabled) {
+				const enabledHeader = document.createElement('h4');
+				enabledHeader.textContent = "Enabled Mutators";
+				enabledHeader.style.marginTop = '15px';
+				enabledHeader.style.marginBottom = '5px';
+				mutatorCheckboxesContainer.appendChild(enabledHeader);
+
+				enabledStandardItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
+				// Add custom enabled after standard enabled
+				if (enabledCustomItems.length > 0) {
+					 // Optional: Add a small sub-header or just let them list
+					enabledCustomItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
+				}
+			}
+
+			// 2. Separator
+			if (hasEnabled && hasAvailable) {
+				const separator = document.createElement('hr');
+				separator.style.margin = '20px 0';
+				mutatorCheckboxesContainer.appendChild(separator);
+			}
+
+			// 3. Available Section
+			if (hasAvailable) {
+				const availableHeader = document.createElement('h4');
+				availableHeader.textContent = "Available Mutators";
+				if (!hasEnabled) { // Add top margin if no enabled section
+					availableHeader.style.marginTop = '15px';
+				}
+				availableHeader.style.marginBottom = '5px';
+				mutatorCheckboxesContainer.appendChild(availableHeader);
+
+				availableStandardItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
+				// Add custom available after standard available
+				if (availableCustomItems.length > 0) {
+					const customSeparator = document.createElement('div');
+					customSeparator.textContent = '--- Custom ---'; // Simple text separator
+					customSeparator.style.textAlign = 'center';
+					customSeparator.style.margin = '10px 0 5px 0';
+					customSeparator.style.color = '#666';
+					customSeparator.style.fontSize = '0.9em';
+					mutatorCheckboxesContainer.appendChild(customSeparator);
+					availableCustomItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
+				}
+			}
+			// --- END Appending Logic ---
+
+			updateSelectedMutatorsDisplay(); // Update the text list below
+			console.log("Mutator checkboxes container generated with sorting/grouping.");
+		}
 function forceRegenerateMutators() {
   console.log("Forcing regeneration of mutator checkboxes");
   generateMutatorCheckboxes();
@@ -1464,161 +1498,92 @@ function fetchMutatorSuggestionsFromGAS() {
   }
 }
 // Fix 6: Improved updateMutatorSuggestions function
+// Update the display of mutator suggestions, attaching mod data to buttons
 function updateMutatorSuggestions() {
-  const suggestionsContainer = document.getElementById('mutatorSuggestions');
-  const suggestionsContent = document.getElementById('suggestionsContent');
-  
-  if (!suggestionsContainer || !suggestionsContent) {
-    console.error("Suggestions container or content element not found");
-    return;
-  }
-  
-  // Clear previous suggestions
-  suggestionsContent.innerHTML = '';
-  
-  console.log("Updating suggestions, selected mods:", selectedMods);
-  
-  // No selected mods
-  if (!selectedMods || selectedMods.length === 0) {
-    suggestionsContainer.style.display = 'none';
-    return;
-  }
-  
-  // Find suggestions based on selected mods
-  const relevantSuggestions = [];
-  
-  selectedMods.forEach(mod => {
-    // Convert mod.id to string to handle both numeric and string IDs
-    const modId = String(mod.id);
-    if (modMutatorSuggestions[modId]) {
-      relevantSuggestions.push({
-        mod: mod,
-        suggestion: modMutatorSuggestions[modId]
-      });
+    const suggestionsContainer = document.getElementById('mutatorSuggestions');
+    const suggestionsContent = document.getElementById('suggestionsContent');
+
+    if (!suggestionsContainer || !suggestionsContent) {
+        console.error("Suggestions container or content element not found");
+        return;
     }
-  });
-  
-  // If no suggestions, hide the container
-  if (relevantSuggestions.length === 0) {
-    suggestionsContainer.style.display = 'none';
-    return;
-  }
-  
-  // Display suggestions with improved styling
-  suggestionsContainer.style.display = 'block';
-  suggestionsContainer.style.visibility = 'visible';
-  
-  // Add a header with instructions
-  const header = document.createElement('div');
-  header.className = 'suggestions-header';
-  header.innerHTML = `
-    <p>We've found ${relevantSuggestions.length} recommended mutator${relevantSuggestions.length > 1 ? 's' : ''} for your selected mods:</p>
-  `;
-  suggestionsContent.appendChild(header);
-  
-  // Create a container for the suggestion cards
-  const cardsContainer = document.createElement('div');
-  cardsContainer.className = 'suggestion-cards';
-  cardsContainer.style.display = 'flex';
-  cardsContainer.style.flexWrap = 'wrap';
-  cardsContainer.style.gap = '15px';
-  cardsContainer.style.marginTop = '15px';
-  
-  relevantSuggestions.forEach(item => {
-    const suggestionBox = document.createElement('div');
-    suggestionBox.className = 'suggestion-box';
-    suggestionBox.style.flex = '1 1 300px';
-    suggestionBox.style.minWidth = '250px';
-    suggestionBox.style.borderRadius = '8px';
-    suggestionBox.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-    suggestionBox.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
-    suggestionBox.style.overflow = 'hidden';
-    
-    // Make the card interactive
-    suggestionBox.addEventListener('mouseover', function() {
-      this.style.transform = 'translateY(-3px)';
-      this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
+    suggestionsContent.innerHTML = ''; // Clear previous
+
+    if (!selectedMods || selectedMods.length === 0) {
+        suggestionsContainer.style.display = 'none';
+        return;
+    }
+
+    const relevantSuggestions = [];
+    selectedMods.forEach(mod => {
+        const modIdStr = String(mod.id);
+        if (modMutatorSuggestions[modIdStr]) {
+            relevantSuggestions.push({
+                mod: mod, // Keep the whole mod object
+                suggestion: modMutatorSuggestions[modIdStr]
+            });
+        }
     });
-    
-    suggestionBox.addEventListener('mouseout', function() {
-      this.style.transform = 'translateY(0)';
-      this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+
+    if (relevantSuggestions.length === 0) {
+        suggestionsContainer.style.display = 'none';
+        return;
+    }
+
+    suggestionsContainer.style.display = 'block';
+    suggestionsContent.innerHTML = `<p>Recommended mutators for your selected mods:</p>`;
+    const cardsContainer = document.createElement('div');
+    cardsContainer.className = 'suggestion-cards';
+    cardsContainer.style.display = 'flex';
+    cardsContainer.style.flexWrap = 'wrap';
+    cardsContainer.style.gap = '15px';
+    cardsContainer.style.marginTop = '10px';
+
+    relevantSuggestions.forEach(item => {
+        const mutatorName = item.suggestion.suggestedMutator;
+        const isApplied = selectedMutators.includes(mutatorName);
+
+        const suggestionBox = document.createElement('div');
+        suggestionBox.className = 'suggestion-box';
+        suggestionBox.innerHTML = `
+            <div class="suggestion-mod-name">Mod: ${item.mod.name}</div>
+            <div class="suggestion-mutator-name">Suggests: ${mutatorName}</div>
+            <div class="suggestion-description">${item.suggestion.description || 'Recommended for this mod.'}</div>
+        `;
+
+        const applyButton = document.createElement('button');
+        applyButton.dataset.mutatorName = mutatorName;
+        applyButton.className = 'btn apply-suggestion';
+
+        // --- NEW: Attach suggesting mod data to the button ---
+        applyButton.suggestingModData = { // Store necessary mod info
+             name: item.mod.name,
+             summary: item.mod.summary || '' // Include summary if available
+        };
+        // --- END NEW ---
+
+        if (isApplied) {
+            applyButton.textContent = 'Applied';
+            applyButton.classList.add('btn-success');
+            applyButton.style.backgroundColor = '#28a745';
+            applyButton.style.color = 'white';
+        } else {
+            applyButton.textContent = 'Apply This Mutator';
+            applyButton.classList.add('btn-primary');
+        }
+
+        // --- MODIFIED: Pass the mod data in the onclick call ---
+        applyButton.onclick = function() {
+            // Pass mutator name, button element, and the attached mod data
+            applyMutatorSuggestion(this.dataset.mutatorName, this, this.suggestingModData);
+        };
+        // --- END MODIFIED ---
+
+        suggestionBox.appendChild(applyButton);
+        cardsContainer.appendChild(suggestionBox);
     });
-    
-    // Create a colored header for the mod name
-    const header = document.createElement('div');
-    header.className = 'suggestion-header';
-    header.style.padding = '12px 15px';
-    header.style.backgroundColor = '#3498db';
-    header.style.color = 'white';
-    header.style.fontWeight = 'bold';
-    header.textContent = item.mod.name;
-    
-    // Create the content area
-    const content = document.createElement('div');
-    content.className = 'suggestion-content';
-    content.style.padding = '15px';
-    content.style.backgroundColor = 'white';
-    
-    const mutatorName = document.createElement('div');
-    mutatorName.className = 'suggestion-mutator-name';
-    mutatorName.style.fontSize = '1.1em';
-    mutatorName.style.fontWeight = 'bold';
-    mutatorName.style.color = '#0d47a1';
-    mutatorName.style.marginBottom = '10px';
-    mutatorName.textContent = `Suggested Mutator: ${item.suggestion.suggestedMutator}`;
-    
-    const description = document.createElement('div');
-    description.className = 'suggestion-description';
-    description.style.color = '#555';
-    description.style.marginBottom = '15px';
-    description.textContent = item.suggestion.description || 
-                           `This mutator is used by ${Math.round((item.suggestion.popularity || 0) * 100)}% of players with this mod.`;
-    
-    // Create a styled button
-    const applyButton = document.createElement('button');
-    applyButton.className = 'btn btn-primary apply-suggestion';
-    applyButton.style.width = '100%';
-    applyButton.style.padding = '8px 15px';
-    applyButton.textContent = 'Apply This Mutator';
-    applyButton.onclick = function() {
-      applyMutatorSuggestion(item.suggestion.suggestedMutator);
-    };
-    
-    // Assemble the card
-    content.appendChild(mutatorName);
-    content.appendChild(description);
-    content.appendChild(applyButton);
-    
-    suggestionBox.appendChild(header);
-    suggestionBox.appendChild(content);
-    
-    cardsContainer.appendChild(suggestionBox);
-  });
-  
-  suggestionsContent.appendChild(cardsContainer);
-  
-  // Add some animation to draw attention
-  suggestionsContainer.style.animation = 'fadeIn 0.5s ease-out';
-  
-  // Add the animation keyframes
-  if (!document.getElementById('suggestionAnimations')) {
-    const style = document.createElement('style');
-    style.id = 'suggestionAnimations';
-    style.textContent = `
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      
-      @keyframes highlight-pulse {
-        0% { background-color: #ffffff; }
-        50% { background-color: #e3f2fd; }
-        100% { background-color: #ffffff; }
-      }
-    `;
-    document.head.appendChild(style);
-  }
+
+    suggestionsContent.appendChild(cardsContainer);
 }
 
 function showNotification(message, type = "info") {
@@ -1707,88 +1672,68 @@ function closeInfoModal() {
 }
 
 // Fix 9: Function to apply a suggested mutator
-function applyMutatorSuggestion(mutatorName) {
-  // First determine if this is a standard or custom mutator
-  const isStandardMutator = mutators.some(m => m.name === mutatorName);
-  
-  if (isStandardMutator) {
-    // If it's a standard mutator, select it in the list
-    const mutatorCheckbox = document.getElementById(`mutator-${mutatorName}`);
-    if (mutatorCheckbox) {
-      mutatorCheckbox.checked = true;
-      
-      // Make sure it's in the selectedMutators array
-      if (!selectedMutators.includes(mutatorName)) {
-        selectedMutators.push(mutatorName);
-      }
-      
-      // Update display
-      updateSelectedMutatorsDisplay();
-      
-      // Feedback to user
-      showNotification(`Applied mutator: ${mutatorName}`, "success");
-      
-      // Switch to mutators tab
-      openTab({ currentTarget: document.querySelector('.tab[onclick*="mutators"]') }, 'mutators');
-      
-      // Highlight the selected mutator
-      mutatorCheckbox.parentNode.style.backgroundColor = '#e3f2fd';
-      setTimeout(() => {
-        mutatorCheckbox.parentNode.style.backgroundColor = '';
-      }, 2000);
-    } else {
-      console.error(`Mutator checkbox for ${mutatorName} not found`);
-      showNotification(`Could not find mutator: ${mutatorName}`, "error");
-    }
-  } else {
-    // It's a custom mutator
-    if (!selectedMutators.includes(mutatorName)) {
-      // Check if already in custom mutators
-      const existingCustomMutator = customMutators.find(m => m.name === mutatorName);
-      
-      if (!existingCustomMutator) {
-        // Add to custom mutators
-        const newMutator = { 
-          name: mutatorName, 
-          description: 'Added from mod suggestion', 
-          isCustom: true 
-        };
-        customMutators.push(newMutator);
-        
-        // Save to local storage
-        localStorage.setItem('customMutators', JSON.stringify(customMutators));
-      }
-      
-      // Add to selected mutators
-      selectedMutators.push(mutatorName);
-      
-      // Regenerate mutator checkboxes
-      if (typeof generateMutatorCheckboxes === 'function') {
-        generateMutatorCheckboxes();
-      }
-      
-      // Switch to mutators tab
-      openTab({ currentTarget: document.querySelector('.tab[onclick*="mutators"]') }, 'mutators');
-      
-      // Highlight the newly added mutator
-      setTimeout(() => {
-        const mutatorCheckbox = document.getElementById(`mutator-custom-${mutatorName}`);
-        if (mutatorCheckbox) {
-          mutatorCheckbox.parentNode.style.backgroundColor = '#e3f2fd';
-          setTimeout(() => {
-            mutatorCheckbox.parentNode.style.backgroundColor = '';
-          }, 2000);
+// Apply a suggested mutator - MODIFIED to use suggesting mod info for new descriptions
+function applyMutatorSuggestion(mutatorName, buttonElement, suggestingMod) { // Added suggestingMod parameter
+    const isAlreadyApplied = selectedMutators.includes(mutatorName);
+
+    if (isAlreadyApplied) {
+        // Deselect logic (optional, as implemented before)
+        const index = selectedMutators.indexOf(mutatorName);
+        if (index !== -1) {
+            selectedMutators.splice(index, 1);
         }
-      }, 100);
-      
-      showNotification(`Added custom mutator: ${mutatorName}`, "success");
+        buttonElement.textContent = 'Apply This Mutator';
+        buttonElement.classList.remove('btn-success');
+        buttonElement.style.backgroundColor = '';
+        buttonElement.classList.add('btn-primary');
+        showNotification(`Deselected mutator: ${mutatorName}`, "info");
+
     } else {
-      showNotification(`Mutator ${mutatorName} already selected`, "info");
+        // Apply the mutator
+        const isStandard = mutators.some(m => m.name === mutatorName);
+        const isCustom = customMutators.some(m => m.name === mutatorName);
+
+        // --- MODIFIED: Create specific description if adding a new custom mutator ---
+        if (!isStandard && !isCustom) {
+            let newDescription = 'Added via suggestion'; // Default fallback
+            if (suggestingMod && suggestingMod.name) {
+                 newDescription = `Suggested for mod: ${suggestingMod.name}`;
+                 // Optional: Add summary if you want it too
+                 // if (suggestingMod.summary) {
+                 //     newDescription += ` (${suggestingMod.summary})`;
+                 // }
+            }
+
+            const newMutator = {
+                name: mutatorName,
+                description: newDescription, // Use the specific description
+                isCustom: true
+            };
+            customMutators.push(newMutator);
+            localStorage.setItem('customMutators', JSON.stringify(customMutators));
+            console.log(`Added new custom mutator '${mutatorName}' with description: ${newDescription}`);
+        }
+        // --- END MODIFIED ---
+
+        // Add to selected list if not already there
+        if (!selectedMutators.includes(mutatorName)) {
+            selectedMutators.push(mutatorName);
+        }
+
+        // Update the button state
+        buttonElement.textContent = 'Applied';
+        buttonElement.classList.remove('btn-primary');
+        buttonElement.classList.add('btn-success');
+        buttonElement.style.backgroundColor = '#28a745';
+        buttonElement.style.color = 'white';
+
+        showNotification(`Applied mutator: ${mutatorName}`, "success");
+        // logMutatorSelection(mutatorName); // Log if needed
     }
-  }
-  
-  // Log this selection
-  logMutatorSelection(mutatorName);
+
+    // Update the underlying data and regenerate lists
+    updateSelectedMutatorsDisplay();
+    generateMutatorCheckboxes(); // Regenerate checkbox list on Mutators tab
 }
 
 // Fix 10: Initialize everything properly
@@ -2047,6 +1992,7 @@ function openTab(evt, tabName) {
                 const modIds = selectedMods.map(mod => mod.id).join(',');
                 modsParam = ` -mods -CmdModList=${modIds}`;
             }
+			logFinalConfigurationToGAS('generate_config');
 
             configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}${mutatorParam}${modsParam}`;
 
@@ -2054,8 +2000,20 @@ function openTab(evt, tabName) {
         }
 
         function launchServer() {
-            generateConfig();
-            
+            // --- NEW: Generate config first to ensure all data is current ---
+            generateConfig(); // This now includes the logFinalConfigurationToGAS call
+
+            // --- REMOVED: Duplicate logging call removed as generateConfig now handles it ---
+            // logFinalConfigurationToGAS('launch'); // No longer needed here
+
+             // Get the already generated config string (optional, could recalculate too)
+             const configStringForLaunch = document.getElementById('configOutput').value;
+             console.log("Using generated config for launch:", configStringForLaunch)
+
+
+            // --- MODIFIED: Use the config string parts for Steam URL if easier ---
+            // It might be simpler to just construct the necessary part for the steam URL
+            // directly here again, rather than parsing the full command string back.
             const scenario = document.getElementById('scenario').value;
             const maxPlayers = document.getElementById('maxPlayers').value;
             const port = document.getElementById('port').value;
@@ -2068,27 +2026,33 @@ function openTab(evt, tabName) {
             const enableGameStats = document.getElementById('enableGameStats').checked;
             const officialRules = document.getElementById('officialRules').checked;
 
-            let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
-
+            let serverParams = `${scenario}?MaxPlayers=${maxPlayers}`; // Base travel params
             if (password) serverParams += `?Password=${password}`;
-            if (enableCheats) serverParams += ' -EnableCheats';
-            if (gameStatsToken && enableGameStats) serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
-            if (gsltToken) serverParams += ` -GSLTToken=${gsltToken}`;
-            if (officialRules) serverParams += ' -ruleset=OfficialRules';
-            
-            // Add mutators parameter
-            if (selectedMutators.length > 0) {
-                serverParams += ` -Mutators=${selectedMutators.join(',')}`;
-            }
-            
-            // Add mods parameter
-            if (selectedMods.length > 0) {
-                const modIds = selectedMods.map(mod => mod.id).join(',');
-                serverParams += ` -mods -CmdModList=${modIds}`;
-            }
 
-            const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
-            window.location.href = steamURL;
+            // Add command line args AFTER travel params, separated by space
+             serverParams += ` -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
+             if (enableCheats) serverParams += ' -EnableCheats';
+             if (gameStatsToken && enableGameStats) serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
+             if (gsltToken) serverParams += ` -GSLTToken=${gsltToken}`;
+             if (officialRules) serverParams += ' -OfficialRules'; // Use -OfficialRules
+
+             // Add selected mutators
+             if (selectedMutators.length > 0) {
+                 serverParams += ` -Mutators=${selectedMutators.join(',')}`;
+             }
+
+             // Add selected mods
+             if (selectedMods.length > 0) {
+                 const modIds = selectedMods.map(mod => mod.id).join(',');
+                 // Ensure -mods is present if using CmdModList
+                 serverParams += ` -mods -CmdModList=${modIds}`;
+             }
+
+             // Construct the final Steam URL
+             const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
+             console.log("Attempting to launch via Steam URL:", steamURL);
+             window.location.href = steamURL;
+             // --- END MODIFIED ---
         }
 
         function quickStart() {
@@ -2263,81 +2227,171 @@ function openTab(evt, tabName) {
 
 
         // Mod functions
+		// Function to fetch mods and sort them immediately
+        // Mod functions
         async function fetchMods() {
             try {
                 // Add timestamp as query parameter to prevent caching
                 const timestamp = new Date().getTime();
+                // Ensure the URL is correct and accessible
                 const response = await fetch(`https://extremelystiff.github.io/ISSL/mods.json?t=${timestamp}`);
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    // More specific error for debugging
+                    throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
                 }
-                
-                mods = await response.json();
-                generateModCheckboxes();
-                console.log('Fetched mods:', mods);
+
+                let fetchedMods = await response.json();
+
+                // --- Sort fetched mods alphabetically by name ---
+                // Add safety check here too, just in case fetched data is inconsistent
+                 sortedMods = fetchedMods.sort((a, b) => {
+                     const nameA = (a && typeof a.name === 'string') ? a.name : '';
+                     const nameB = (b && typeof b.name === 'string') ? b.name : '';
+                     return nameA.localeCompare(nameB);
+                 });
+                // --- END ---
+
+                generateModCheckboxes(); // Generate using the sorted list
+                console.log('Fetched and sorted mods:', sortedMods);
+
             } catch (error) {
-                console.error('Error fetching mods:', error);
-                alert('Failed to fetch mods. Please try again later.');
-                
-                // Fallback to some example mods for testing
-                mods = [
-                    { id: 81844, name: "Example Content", summary: "Example Content from mod kit." },
-                    { id: 89591, name: "Shoot House", summary: "Shoot House" },
-                    { id: 91912, name: "Wolf-land (Nightfall 1.7 Update)", summary: "Update 0.6 - Added Night Lighting Scenario, temporarily disabled Checkpoint, various cover tweaks" },
-                    { id: 92807, name: "M45A1 Wolfpack", summary: "Black variant of the M45A1" }
+                // Log the specific error that occurred during fetch/parse
+                console.error('Error fetching or parsing mods:', error);
+                alert('Failed to fetch mods. Using default list. Please check console for errors.');
+
+                // Fallback list
+                let fallbackMods = [
+                     { id: 81844, name: "Example Content", summary: "Example Content from mod kit." },
+                     { id: 89591, name: "Shoot House", summary: "Shoot House" },
+                     { id: 91912, name: "Wolf-land (Nightfall 1.7 Update)", summary: "Update 0.6 - Added Night Lighting Scenario, temporarily disabled Checkpoint, various cover tweaks" },
+                     { id: 92807, name: "M45A1 Wolfpack", summary: "Black variant of the M45A1" }
                 ];
-                generateModCheckboxes();
+
+                // --- MODIFIED: Sort fallback mods safely ---
+                sortedMods = fallbackMods.sort((a, b) => {
+                    // Safety checks: Ensure a/b are objects and a.name/b.name are strings
+                    const nameA = (a && typeof a.name === 'string') ? a.name : '';
+                    const nameB = (b && typeof b.name === 'string') ? b.name : '';
+                    // Compare the safe names (defaults to '' if invalid)
+                    return nameA.localeCompare(nameB);
+                });
+                // --- END MODIFIED ---
+
+                console.log('Using fallback mods (sorted):', sortedMods);
+                generateModCheckboxes(); // Generate using the sorted fallback list
             }
         }
 
-        function generateModCheckboxes() {
-          const modCheckboxesContainer = document.getElementById('modCheckboxes');
-          modCheckboxesContainer.innerHTML = '';
-          
-          if (!mods || mods.length === 0) {
-            modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
-            return;
-          }
-          
-          mods.forEach(mod => {
-            const checkboxItem = document.createElement('div');
-            checkboxItem.className = 'checkbox-item';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = mod.id;
-            checkbox.id = `mod-${mod.id}`;
-            checkbox.checked = selectedMods.some(selectedMod => selectedMod.id === mod.id);
-            checkbox.addEventListener('change', function() {
-              if (this.checked) {
-                if (!selectedMods.some(selectedMod => selectedMod.id === mod.id)) {
-                  selectedMods.push(mod);
-                  // Check if there are any custom mutators selected, and log them
-                  logSelectedCustomMutators();
-                }
-              } else {
-                selectedMods = selectedMods.filter(selectedMod => selectedMod.id !== mod.id);
-              }
-              updateSelectedModsDisplay();
-            });
-            
-            const label = document.createElement('label');
-            label.htmlFor = checkbox.id;
-            label.textContent = mod.name;
-            
-            const description = document.createElement('div');
-            description.className = 'item-description';
-            description.textContent = mod.summary || 'No description available';
-            
-            checkboxItem.appendChild(checkbox);
-            checkboxItem.appendChild(label);
-            checkboxItem.appendChild(description);
-            
-            modCheckboxesContainer.appendChild(checkboxItem);
-          });
-          
-          updateSelectedModsDisplay();
-        }
+		// Generate mod checkboxes using the pre-sorted 'sortedMods' list
+		function generateModCheckboxes() {
+			const modCheckboxesContainer = document.getElementById('modCheckboxes');
+			modCheckboxesContainer.innerHTML = ''; // Clear previous
+
+			// Use the globally sorted 'sortedMods' array
+			if (!sortedMods || sortedMods.length === 0) {
+				modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
+				return;
+			}
+
+			// --- NEW: Create separate containers for visual grouping ---
+			const enabledModsSection = document.createElement('div');
+			enabledModsSection.id = 'enabledModsSection';
+			enabledModsSection.style.marginBottom = '25px'; // Space below enabled mods
+
+			const availableModsSection = document.createElement('div');
+			availableModsSection.id = 'availableModsSection';
+
+			const enabledModItems = [];
+			const availableModItems = [];
+			// --- END NEW ---
+
+
+			sortedMods.forEach(mod => {
+				const isSelected = selectedMods.some(selectedMod => selectedMod.id === mod.id);
+
+				// Create the checkbox item (same logic as before)
+				const checkboxItem = document.createElement('div');
+				checkboxItem.className = 'checkbox-item mod-item'; // Add 'mod-item' for search
+
+				const checkbox = document.createElement('input');
+				checkbox.type = 'checkbox';
+				checkbox.value = mod.id;
+				checkbox.id = `mod-${mod.id}`;
+				checkbox.checked = isSelected;
+				checkbox.addEventListener('change', function() {
+					const modId = parseInt(this.value); // Ensure ID is number for comparison if needed
+					if (this.checked) {
+						const modToAdd = sortedMods.find(m => m.id === modId);
+						if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
+							selectedMods.push(modToAdd);
+							// logSelectedCustomMutators(); // Keep if needed
+						}
+					} else {
+						selectedMods = selectedMods.filter(sm => sm.id !== modId);
+					}
+					updateSelectedModsDisplay(); // This triggers suggestion updates
+					generateModCheckboxes(); // Re-render the list to move the item between sections
+				});
+
+				const label = document.createElement('label');
+				label.htmlFor = checkbox.id;
+				label.textContent = mod.name;
+
+				const description = document.createElement('div');
+				description.className = 'item-description';
+				description.textContent = mod.summary || 'No description available';
+				description.style.marginLeft = '10px'; // Space after label
+
+				checkboxItem.appendChild(checkbox);
+				checkboxItem.appendChild(label);
+				checkboxItem.appendChild(description);
+
+				// --- NEW: Add to the correct list/section ---
+				if (isSelected) {
+					enabledModItems.push(checkboxItem);
+				} else {
+					availableModItems.push(checkboxItem);
+				}
+				// --- END NEW ---
+			});
+
+			// --- NEW: Append items to their respective sections with headers ---
+			// 1. Enabled Section
+			if (enabledModItems.length > 0) {
+				const enabledHeader = document.createElement('h4');
+				enabledHeader.textContent = `Enabled Mods (${enabledModItems.length})`;
+				enabledHeader.style.marginBottom = '10px';
+				enabledModsSection.appendChild(enabledHeader);
+				// Style this section slightly differently?
+				enabledModsSection.style.border = '1px solid #d1ecf1';
+				enabledModsSection.style.backgroundColor = '#f8f9fa';
+				enabledModsSection.style.padding = '15px';
+				enabledModsSection.style.borderRadius = '5px';
+
+				enabledModItems.forEach(item => enabledModsSection.appendChild(item));
+				modCheckboxesContainer.appendChild(enabledModsSection); // Add section to main container
+			}
+
+			// 2. Available Section
+			if (availableModItems.length > 0) {
+				 const availableHeader = document.createElement('h4');
+				 availableHeader.textContent = 'Available Mods';
+				 // Add margin top only if there *was* an enabled section
+				 if (enabledModItems.length > 0) {
+					 availableHeader.style.marginTop = '20px';
+				 }
+				 availableHeader.style.marginBottom = '10px';
+				 availableModsSection.appendChild(availableHeader);
+
+				availableModItems.forEach(item => availableModsSection.appendChild(item));
+				modCheckboxesContainer.appendChild(availableModsSection); // Add section to main container
+			}
+			// --- END NEW ---
+
+			// We still call updateSelectedModsDisplay to update the separate text list below
+			updateSelectedModsDisplay();
+			console.log("Mod checkboxes generated with enabled/available sections.");
+		}
 
         function updateModCheckboxes() {
             const checkboxes = document.querySelectorAll('#modCheckboxes input[type="checkbox"]');
@@ -2366,21 +2420,24 @@ function openTab(evt, tabName) {
           }
         }
 
-        function searchMods() {
-            const searchTerm = document.getElementById('modSearch').value.toLowerCase();
-            const checkboxItems = document.querySelectorAll('#modCheckboxes .checkbox-item');
-            
-            checkboxItems.forEach(item => {
-                const label = item.querySelector('label').textContent.toLowerCase();
-                const description = item.querySelector('.item-description').textContent.toLowerCase();
-                
-                if (label.includes(searchTerm) || description.includes(searchTerm)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
+		// Update search function to look in both sections if they exist
+		function searchMods() {
+			const searchTerm = document.getElementById('modSearch').value.toLowerCase();
+
+			// Target all items within both potential sections
+			const checkboxItems = document.querySelectorAll('#enabledModsSection .mod-item, #availableModsSection .mod-item');
+
+			checkboxItems.forEach(item => {
+				const label = item.querySelector('label')?.textContent.toLowerCase() || ''; // Safe access
+				const description = item.querySelector('.item-description')?.textContent.toLowerCase() || ''; // Safe access
+
+				if (label.includes(searchTerm) || description.includes(searchTerm)) {
+					item.style.display = ''; // Show if matches
+				} else {
+					item.style.display = 'none'; // Hide if doesn't match
+				}
+			});
+		}
 
         // GameStats token auto-check enableGameStats
         document.getElementById('gameStatsToken').addEventListener('input', function(e) {
@@ -2594,7 +2651,68 @@ function checkModAvailability() {
 
 
 
+/**
+ * Logs the final selected configuration (mods and *custom* mutators)
+ * to Google Apps Script when the user intends to use it (Launch/Generate).
+ */
+function logFinalConfigurationToGAS(source) { // source can be 'launch' or 'generate'
+    // Identify selected custom mutators
+    const selectedCustomMutators = selectedMutators.filter(mutatorName => {
+        // Check if it's NOT in the standard 'mutators' list
+        return !mutators.some(standardMutator => standardMutator.name === mutatorName);
+    });
 
+    // Only send data if there are selected mods AND selected custom mutators
+    if (selectedMods.length === 0 || selectedCustomMutators.length === 0) {
+        console.log("Skipping final config logging: No mods or no custom mutators selected.");
+        return;
+    }
+
+    console.log(`Logging final config (Source: ${source}). Mods:`, selectedMods.map(m=>m.id), "Custom Mutators:", selectedCustomMutators);
+
+    // Prepare data payload
+    const data = {
+        timestamp: new Date().toISOString(),
+        source: source, // Indicate trigger point
+        mods: selectedMods.map(mod => ({
+            id: mod.id,
+            name: mod.name.substring(0, 100) // Limit name length
+        })).slice(0, 30), // Limit number of mods slightly more generously here
+        customMutators: selectedCustomMutators.slice(0, 30), // Limit number of mutators
+        nonce: Math.random().toString(36).substring(2, 15) // Add nonce
+    };
+
+    // Optional: Simple Rate Limiting ( reused logic from logCustomMutatorToGAS)
+    const recentRequestsKey = 'recentFinalConfigGASRequests';
+    const recentRequests = localStorage.getItem(recentRequestsKey) || '[]';
+    let requests = JSON.parse(recentRequests);
+    const now = Date.now();
+    requests = requests.filter(time => now - time < 60000); // Keep last minute
+    if (requests.length >= 3) { // Allow slightly fewer final logs per minute
+      console.log('Rate limited (Final Config): Too many requests to GAS');
+      return;
+    }
+    requests.push(now);
+    localStorage.setItem(recentRequestsKey, JSON.stringify(requests));
+    // End Rate Limiting
+
+    // Send data to GAS Web App
+    fetch('https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec', { 
+        method: 'POST',
+        mode: 'no-cors', // Keep no-cors for simple logging
+        headers: {
+            // 'Content-Type': 'application/json' // Not strictly needed with no-cors, but good practice if switching mode
+             'Content-Type': 'text/plain', // Often works better with no-cors POST to GAS
+        },
+        // body: JSON.stringify(data) // Stringify if using application/json
+         body: JSON.stringify(data) // Send as string for text/plain
+    }).then(() => {
+      console.log("Final config data sent (or attempted) to GAS.");
+    }).catch(error => {
+        console.error('Error logging final configuration:', error);
+        // Silently fail for the user
+    });
+}
 
 
 
