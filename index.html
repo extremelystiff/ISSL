@@ -2256,7 +2256,7 @@ function openTab(evt, tabName) {
             try {
                 // Add timestamp as query parameter to prevent caching
                 const timestamp = new Date().getTime();
-                const response = await fetch(`https://extremelystiff.github.io/ISSS/mods.json?t=${timestamp}`);
+                const response = await fetch(`https://extremelystiff.github.io/ISSL/mods.json?t=${timestamp}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
