@@ -769,6 +769,7 @@
                     <div class="form-actions">
                         <button type="button" class="btn btn-primary btn-large" onclick="launchServer()">Launch Server</button>
                         <button type="button" class="btn btn-secondary" onclick="generateConfig()">Generate Config</button>
+			<button type="button" class="btn btn-info" onclick="generateShareLink()" style="margin-left: 10px;">Share Configuration</button>
                     </div>
                 </form>
                 
@@ -1213,33 +1214,140 @@ function initializeCustomMutators() {
             });
         }
 
+// Add this function somewhere in your <script> block
+function applyUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("Checking for URL parameters:", window.location.search);
+
+    // Helper function to set value if param exists and element is found
+    const setInputValue = (id, paramName) => {
+        if (urlParams.has(paramName)) {
+            const element = document.getElementById(id);
+            if (element) {
+                try {
+                    element.value = decodeURIComponent(urlParams.get(paramName)); // Decode potential encoding
+                    console.log(`Set ${id} from param '${paramName}' to: ${element.value}`);
+                } catch (e) {
+                    console.error(`Error decoding parameter ${paramName} for ${id}:`, e);
+                    // Fallback to raw value if decoding fails
+                    element.value = urlParams.get(paramName);
+                }
+            } else {
+                console.warn(`Element with ID ${id} not found for param ${paramName}`);
+            }
+        }
+    };
+
+    // Helper function for checkboxes
+    const setCheckboxValue = (id, paramName) => {
+        if (urlParams.has(paramName)) {
+            const element = document.getElementById(id);
+            if (element) {
+                // Treat 'true' or existence of param (with empty value) as checked
+                const paramValue = urlParams.get(paramName).toLowerCase();
+                element.checked = (paramValue === 'true' || paramValue === '');
+                console.log(`Set ${id} checked state from param '${paramName}' to: ${element.checked}`);
+            } else {
+                console.warn(`Element with ID ${id} not found for param ${paramName}`);
+            }
+        }
+    };
+
+    // --- Apply to Standard Form Fields ---
+    setInputValue('os', 'os');
+    setInputValue('hostname', 'hostname');
+    setInputValue('maxPlayers', 'maxPlayers');
+    setInputValue('port', 'port');
+    setInputValue('queryPort', 'queryPort');
+    setInputValue('scenario', 'scenario');
+    setInputValue('password', 'password');
+    setInputValue('gameStatsToken', 'gameStatsToken');
+    setInputValue('gsltToken', 'gsltToken');
+
+    // --- Apply to Checkboxes ---
+    setCheckboxValue('enableGameStats', 'enableGameStats');
+    setCheckboxValue('officialRules', 'officialRules');
+    setCheckboxValue('enableCheats', 'enableCheats');
+
+    // --- Handle Mods ---
+    // Needs to run AFTER mods have been fetched and 'sortedMods' is populated
+    if (urlParams.has('mods')) {
+        const modIdsParam = urlParams.get('mods');
+        if (modIdsParam && sortedMods.length > 0) { // Ensure mods are loaded
+            const modIds = modIdsParam.split(',')
+                                    .map(id => parseInt(id.trim()))
+                                    .filter(id => !isNaN(id));
+            console.log("Applying mod IDs from URL:", modIds);
+
+            // Filter the fetched mods based on the IDs from the URL
+            selectedMods = sortedMods.filter(mod => mod && modIds.includes(mod.id));
+            console.log("Selected mods after URL processing:", selectedMods);
+
+        } else if (modIdsParam === '') { // Handle empty mods param "?mods="
+             selectedMods = [];
+             console.log("Cleared mods due to empty URL parameter.");
+        }
+        // Update UI AFTER processing mods
+        generateModCheckboxes(); // Regenerate to show selections correctly
+        updateSelectedModsDisplay();
+    } else {
+        // If no 'mods' param, ensure initial mod UI state is correct (might be redundant if fetchMods already did this)
+        // generateModCheckboxes(); // Usually called after fetchMods anyway
+        // updateSelectedModsDisplay();
+    }
+
+
+    // --- Handle Mutators ---
+    if (urlParams.has('mutators')) {
+        const mutatorsParam = urlParams.get('mutators');
+         if (mutatorsParam) {
+            selectedMutators = mutatorsParam.split(',')
+                                         .map(m => decodeURIComponent(m.trim())) // Decode mutator names
+                                         .filter(m => m !== '');
+            console.log("Applying mutators from URL:", selectedMutators);
+         } else { // Handle empty mutators param "?mutators="
+             selectedMutators = [];
+             console.log("Cleared mutators due to empty URL parameter.");
+         }
+         // Update UI AFTER processing mutators
+         generateMutatorCheckboxes(); // Regenerate checkboxes to reflect selection
+         updateSelectedMutatorsDisplay();
+    } else {
+        // If no 'mutators' param, ensure initial mutator UI state is correct
+        // generateMutatorCheckboxes(); // Usually called by initializeCustomMutators
+        // updateSelectedMutatorsDisplay();
+    }
+
+    // --- Final UI Updates ---
+    // Trigger generation of the config string based on prefilled values
+    generateConfig();
+    // Update suggestions based on potentially prefilled mods/mutators
+    updateMutatorSuggestions();
+    console.log("URL parameter application complete.");
+}
+
+// Modify your DOMContentLoaded listener to call applyUrlParameters appropriately
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize custom mutators (this also calls generateMutatorCheckboxes)
-  initializeCustomMutators();
+    // Keep your existing initialization
+    loadPresetsFromStorage();
+    initializeCustomMutators(); // Generates initial mutator list
+    initMutatorSuggestions();
+    setupModTabBehavior();
+    setTimeout(checkModAvailability, 500);
 
-  // Create suggestions container but don't show modal yet
-  createSuggestionsContainer();
+    // Fetch mods, THEN apply URL parameters (important for mods)
+    fetchMods().then(() => {
+        console.log("Mods fetched, now applying URL parameters.");
+        applyUrlParameters(); // Apply params after mods are loaded and sortedMods is ready
+        // Check if suggestions need updating *after* params applied
+        updateMutatorSuggestions();
+    }).catch(error => {
+        console.error("Error fetching mods during init:", error);
+        // Still try to apply other parameters even if mods fail
+        applyUrlParameters();
+    });
 
-  // Fetch mods
-  fetchMods();
-
-  // Load presets
-  loadPresetsFromStorage();
-
-  // Initial suggestions update (will be empty until mods are selected)
-  updateMutatorSuggestions();
-
-  // Add test button (REMOVE FOR PRODUCTION)
-  // addTestButton();
-
-  // --- Calls related to Modio & Suggestions (can stay grouped) ---
-  setupModTabBehavior(); // Sets up tab clicks for Modio/Suggestions
-  initMutatorSuggestions(); // Initializes suggestion fetching/display logic
-
-  // Add a slight delay before checking mod availability (Modio)
-  setTimeout(checkModAvailability, 500);
-
-  console.log("Initialization complete");
+    console.log("Initial DOM Content Loaded setup complete.");
 });
         
 // This code integrates with your Google App Script backend
@@ -2633,10 +2741,178 @@ function checkModAvailability() {
 
 
 
+function applyUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("Checking for URL parameters:", window.location.search);
+
+    // Helper function to set value if param exists and element is found
+    const setInputValue = (id, paramName) => {
+        if (urlParams.has(paramName)) {
+            const element = document.getElementById(id);
+            if (element) {
+                try {
+                    element.value = decodeURIComponent(urlParams.get(paramName)); // Decode potential encoding
+                    console.log(`Set ${id} from param '${paramName}' to: ${element.value}`);
+                } catch (e) {
+                    console.error(`Error decoding parameter ${paramName} for ${id}:`, e);
+                    // Fallback to raw value if decoding fails
+                    element.value = urlParams.get(paramName);
+                }
+            } else {
+                console.warn(`Element with ID ${id} not found for param ${paramName}`);
+            }
+        }
+    };
+
+    // Helper function for checkboxes
+    const setCheckboxValue = (id, paramName) => {
+        if (urlParams.has(paramName)) {
+            const element = document.getElementById(id);
+            if (element) {
+                // Treat 'true' or existence of param (with empty value) as checked
+                const paramValue = urlParams.get(paramName).toLowerCase();
+                element.checked = (paramValue === 'true' || paramValue === '');
+                console.log(`Set ${id} checked state from param '${paramName}' to: ${element.checked}`);
+            } else {
+                console.warn(`Element with ID ${id} not found for param ${paramName}`);
+            }
+        }
+    };
+
+    // --- Apply to Standard Form Fields ---
+    setInputValue('os', 'os');
+    setInputValue('hostname', 'hostname');
+    setInputValue('maxPlayers', 'maxPlayers');
+    setInputValue('port', 'port');
+    setInputValue('queryPort', 'queryPort');
+    setInputValue('scenario', 'scenario');
+    setInputValue('password', 'password');
+    setInputValue('gameStatsToken', 'gameStatsToken');
+    setInputValue('gsltToken', 'gsltToken');
+
+    // --- Apply to Checkboxes ---
+    setCheckboxValue('enableGameStats', 'enableGameStats');
+    setCheckboxValue('officialRules', 'officialRules');
+    setCheckboxValue('enableCheats', 'enableCheats');
+
+    // --- Handle Mods ---
+    // Needs to run AFTER mods have been fetched and 'sortedMods' is populated
+    if (urlParams.has('mods')) {
+        const modIdsParam = urlParams.get('mods');
+        if (modIdsParam && sortedMods.length > 0) { // Ensure mods are loaded
+            const modIds = modIdsParam.split(',')
+                                    .map(id => parseInt(id.trim()))
+                                    .filter(id => !isNaN(id));
+            console.log("Applying mod IDs from URL:", modIds);
+
+            // Filter the fetched mods based on the IDs from the URL
+            selectedMods = sortedMods.filter(mod => mod && modIds.includes(mod.id));
+            console.log("Selected mods after URL processing:", selectedMods);
+
+        } else if (modIdsParam === '') { // Handle empty mods param "?mods="
+             selectedMods = [];
+             console.log("Cleared mods due to empty URL parameter.");
+        }
+        // Update UI AFTER processing mods
+        generateModCheckboxes(); // Regenerate to show selections correctly
+        updateSelectedModsDisplay();
+    } else {
+        // If no 'mods' param, ensure initial mod UI state is correct (might be redundant if fetchMods already did this)
+        // generateModCheckboxes(); // Usually called after fetchMods anyway
+        // updateSelectedModsDisplay();
+    }
+
+
+    // --- Handle Mutators ---
+    if (urlParams.has('mutators')) {
+        const mutatorsParam = urlParams.get('mutators');
+         if (mutatorsParam) {
+            selectedMutators = mutatorsParam.split(',')
+                                         .map(m => decodeURIComponent(m.trim())) // Decode mutator names
+                                         .filter(m => m !== '');
+            console.log("Applying mutators from URL:", selectedMutators);
+         } else { // Handle empty mutators param "?mutators="
+             selectedMutators = [];
+             console.log("Cleared mutators due to empty URL parameter.");
+         }
+         // Update UI AFTER processing mutators
+         generateMutatorCheckboxes(); // Regenerate checkboxes to reflect selection
+         updateSelectedMutatorsDisplay();
+    } else {
+        // If no 'mutators' param, ensure initial mutator UI state is correct
+        // generateMutatorCheckboxes(); // Usually called by initializeCustomMutators
+        // updateSelectedMutatorsDisplay();
+    }
+
+    // --- Final UI Updates ---
+    // Trigger generation of the config string based on prefilled values
+    generateConfig();
+    // Update suggestions based on potentially prefilled mods/mutators
+    updateMutatorSuggestions();
+    console.log("URL parameter application complete.");
+}
 
 
 
 
+function generateShareLink() {
+    const params = new URLSearchParams();
+
+    // Read current values from the form - use encodeURIComponent for safety
+    params.set('os', document.getElementById('os').value);
+    params.set('hostname', encodeURIComponent(document.getElementById('hostname').value));
+    params.set('maxPlayers', document.getElementById('maxPlayers').value);
+    params.set('port', document.getElementById('port').value);
+    params.set('queryPort', document.getElementById('queryPort').value);
+    params.set('scenario', encodeURIComponent(document.getElementById('scenario').value)); // Scenario might have special chars
+
+    const password = document.getElementById('password').value;
+    if (password) params.set('password', encodeURIComponent(password));
+
+    const gameStatsToken = document.getElementById('gameStatsToken').value;
+    if (gameStatsToken) params.set('gameStatsToken', gameStatsToken); // Tokens usually don't need encoding, but doesn't hurt
+
+    const gsltToken = document.getElementById('gsltToken').value;
+    if (gsltToken) params.set('gsltToken', gsltToken); // Tokens usually don't need encoding
+
+    // Checkboxes - only include if true for cleaner URLs
+    if (document.getElementById('enableGameStats').checked) params.set('enableGameStats', 'true');
+    if (document.getElementById('officialRules').checked) params.set('officialRules', 'true');
+    if (document.getElementById('enableCheats').checked) params.set('enableCheats', 'true');
+
+    // Mods - make sure selectedMods contains valid objects with 'id'
+    if (selectedMods && selectedMods.length > 0) {
+         const validModIds = selectedMods.filter(mod => mod && typeof mod.id !== 'undefined').map(mod => mod.id);
+         if (validModIds.length > 0) {
+            params.set('mods', validModIds.join(','));
+         }
+    }
+
+    // Mutators - encode each mutator name
+    if (selectedMutators && selectedMutators.length > 0) {
+        params.set('mutators', selectedMutators.map(m => encodeURIComponent(m)).join(','));
+    }
+
+    // Construct the full URL (without the hash part)
+    const baseUrl = window.location.origin + window.location.pathname;
+    const shareUrl = `${baseUrl}?${params.toString()}`;
+
+    // --- Present the URL to the user ---
+    // Attempt to copy to clipboard (preferred)
+    if (navigator.clipboard && window.isSecureContext) { // Clipboard API needs secure context (HTTPS)
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showNotification('Shareable link copied to clipboard!', 'success');
+            // Optional: Briefly show the link in a prompt anyway for visibility
+            // setTimeout(() => prompt('Shareable Link (copied to clipboard):', shareUrl), 100);
+        }).catch(err => {
+            console.error('Failed to copy link automatically: ', err);
+            prompt('Copy this shareable link:', shareUrl); // Fallback to prompt
+        });
+    } else {
+        // Fallback for non-secure contexts or older browsers
+        prompt('Copy this shareable link:', shareUrl);
+    }
+}
 
 
 
