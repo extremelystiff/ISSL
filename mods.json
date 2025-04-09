@@ -10440,5 +10440,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4858240,
+    "name": "NoRestrictPlus",
+    "summary": "Removes Restricted/Playable/Volume Area Collisions",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/norestrictplus",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
