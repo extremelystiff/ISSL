@@ -10453,5 +10453,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4858578,
+    "name": "V2_Start",
+    "summary": "testing ground",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/v2-start",
+    "modfile": {
+      "id": 0,
+      "version": "Ver.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
