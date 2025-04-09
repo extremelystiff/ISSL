@@ -2585,25 +2585,49 @@ function addTestButton() {
 // Add these functions to your existing JavaScript code
 
 // 1. Function to automatically show the suggestion modal when the mods tab is clicked
+// Modify setupModTabBehavior
 function setupModTabBehavior() {
-  // Get all tab buttons
   const tabButtons = document.querySelectorAll('.tab');
-  
-  // Find the mods tab button
   tabButtons.forEach(button => {
+    // Attach listener to the Mods tab button
     if (button.textContent.trim() === 'Mods') {
-      // Add a click event listener that will run after the tab is opened
       button.addEventListener('click', function() {
-        // Wait a short moment for the tab to fully open
-        setTimeout(function() {
-          // Show the suggestion info modal
-          showSuggestionInfoModal();
-          
-          // Show the API setup helper if no API token is configured
-          checkAndShowApiSetupHelper();
-        }, 300);
+        // 1. Attempt to display the mod list immediately
+        const modCheckboxesContainer = document.getElementById('modCheckboxes');
+        if (!modCheckboxesContainer) return;
+
+        if (sortedMods && sortedMods.length > 0) {
+          // If mods are already loaded (from initial fetch), generate the checkboxes
+          generateModCheckboxes();
+          console.log("Mods tab clicked: Regenerated mod list from existing data.");
+        } else {
+          // If mods aren't loaded yet (e.g., fetch failed or is slow), show loading/error
+          // And potentially trigger fetch again
+          modCheckboxesContainer.innerHTML = '<p>Loading mod list...</p>';
+          console.log("Mods tab clicked: Mods not ready, showing loading. Attempting fetch.");
+          fetchMods().then(() => {
+             generateModCheckboxes(); // Try generating again after fetch attempt
+             // Now check for API helper AFTER trying to load list
+             checkAndShowApiSetupHelper();
+          }).catch(err => {
+             modCheckboxesContainer.innerHTML = '<p>Failed to load mod list. Please refresh the page.</p>';
+             console.error("Error fetching mods on tab click:", err);
+             // Still check for API helper even if list fails, as it's separate info
+             checkAndShowApiSetupHelper();
+          });
+          // Don't check for API helper immediately in this case, wait for fetch attempt
+          return; // Exit early, checkAndShowApiSetupHelper called in .then/.catch
+        }
+
+        // 2. If mods were displayed instantly, now check if the API helper needs showing
+        // Use a minimal timeout just to ensure tab rendering is complete
+        setTimeout(() => {
+            checkAndShowApiSetupHelper();
+        }, 50); // Small delay
       });
     }
+    // Add listeners for other tabs if needed
+    // else if (button.textContent.trim() === 'Other Tab') { ... }
   });
 }
 
@@ -2617,21 +2641,42 @@ function checkAndShowApiSetupHelper() {
   }
 }
 
-// 3. Create a helper dialog for API setup
+function ensureModListIsVisible() {
+    console.log("Ensuring mod list is visible after modal close/action.");
+    const modCheckboxesContainer = document.getElementById('modCheckboxes');
+    if (!modCheckboxesContainer) {
+        console.error("Mod checkboxes container not found in ensureModListIsVisible.");
+        return;
+    }
+
+    // If mods were successfully loaded previously, regenerate the list view
+    if (sortedMods && sortedMods.length > 0) {
+        generateModCheckboxes();
+    } else {
+        // If mods haven't loaded or failed, display an appropriate message
+        // This state should ideally be rare if fetchMods ran correctly on load/tab click
+        modCheckboxesContainer.innerHTML = '<p>Mod list could not be loaded. Please try refreshing the page.</p>';
+        console.warn("ensureModListIsVisible: sortedMods data is missing.");
+    }
+}
+
+// Modify showApiSetupHelper to add ensureModListIsVisible() to close actions
+
 function showApiSetupHelper() {
   // Create the modal if it doesn't exist
   if (document.getElementById('apiSetupModal')) {
     document.getElementById('apiSetupModal').style.display = 'block';
     return;
   }
-  
+
   const modalHTML = `
     <div id="apiSetupModal" class="modal" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
       <div class="modal-content" style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 5px; width: 80%; max-width: 700px; position: relative;">
-        <span class="close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">&times;</span>
-        <h2>Mod.io API Setup Helper</h2>
-        <p>To use mods with your server, you need to set up a Mod.io API token.</p>
-        
+        <span class="close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">×</span>
+        <h2>Mod.io API Setup (Optional for this Tool)</h2>
+        <p><strong>Note:</strong> An API token is needed for your <strong>game server</strong> to use mods, but this tool can list mods without it.</p>
+        <p>Follow these steps if you want to set up your server:</p>
+
         <div class="setup-steps">
           <h3>Step 1: Get your API token</h3>
           <ol>
@@ -2641,46 +2686,55 @@ function showApiSetupHelper() {
             <li>Enter a name for your token (e.g., "My Sandstorm Server") and set it to "Read" access</li>
             <li>Click "Create Token" and copy the generated token</li>
           </ol>
-          
-          <h3>Step 2: Enter your API token</h3>
+
+          <h3>Step 2: Enter your API token (Optional Storage)</h3>
+           <p>You can paste your token here to generate the config snippet, but it's primarily needed in your server's INI file.</p>
           <div class="form-group">
             <input type="text" id="apiTokenInput" placeholder="Paste your API token here" style="width: 100%; padding: 8px; margin-bottom: 10px;">
           </div>
-          
+
           <h3>Step 3: Save to GameUserSettings.ini</h3>
-          <p>Your token must be saved in this file:</p>
+          <p>Your token <strong>must</strong> be saved in this file on your server:</p>
           <code style="display: block; background: #f5f5f5; padding: 10px; margin: 10px 0; word-break: break-all;">
             \\sandstorm_server\\Insurgency\\Saved\\Config\\WindowsServer\\GameUserSettings.ini
           </code>
-          
+
           <div class="generated-config" style="background: #f0f0f0; padding: 15px; margin: 15px 0; border-left: 3px solid #3498db;">
             <h4>Copy this text to your GameUserSettings.ini file:</h4>
             <pre id="iniConfigOutput" style="white-space: pre-wrap; word-break: break-all;"></pre>
             <button id="copyIniConfig" class="btn btn-primary">Copy to Clipboard</button>
           </div>
         </div>
-        
+
         <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
-          <button class="btn btn-secondary" onclick="document.getElementById('apiSetupModal').style.display='none';">Remind Me Later</button>
-          <button id="saveApiToken" class="btn btn-primary">Save Token</button>
+          <button id="remindLaterButton" class="btn btn-secondary">Close Helper</button>
+          <button id="saveApiToken" class="btn btn-primary">Save Token Locally & Close</button>
         </div>
       </div>
     </div>
   `;
-  
+
   const modalContainer = document.createElement('div');
   modalContainer.innerHTML = modalHTML;
   document.body.appendChild(modalContainer.firstElementChild);
-  
+
   // Add event listeners
   document.querySelector('#apiSetupModal .close').addEventListener('click', function() {
     document.getElementById('apiSetupModal').style.display = 'none';
+    ensureModListIsVisible(); // <<< ADDED HERE
   });
-  
+
+  // Changed button ID and text for clarity
+  document.getElementById('remindLaterButton').addEventListener('click', function() {
+      document.getElementById('apiSetupModal').style.display = 'none';
+      ensureModListIsVisible(); // <<< ADDED HERE
+  });
+
+
   document.getElementById('apiTokenInput').addEventListener('input', updateIniConfig);
-  document.getElementById('saveApiToken').addEventListener('click', saveApiToken);
+  document.getElementById('saveApiToken').addEventListener('click', saveApiToken); // saveApiToken will call ensureModListIsVisible
   document.getElementById('copyIniConfig').addEventListener('click', copyIniConfig);
-  
+
   // Initialize the INI config display
   updateIniConfig();
 }
@@ -2709,33 +2763,41 @@ function copyIniConfig() {
 // 6. Save the API token to localStorage
 function saveApiToken() {
   const token = document.getElementById('apiTokenInput').value.trim();
-  if (!token) {
-    showNotification('Please enter a valid token', 'error');
-    return;
-  }
-  
-  localStorage.setItem('modioApiToken', token);
-  document.getElementById('apiSetupModal').style.display = 'none';
-  showNotification('API token saved successfully!', 'success');
-}
+//   if (!token) { // Allow saving empty token if user wants to clear it
+//     // showNotification('Please enter a valid token', 'error');
+//     // return;
+//   }
 
-// 7. Add a function to check if mods are available based on API token
-function checkModAvailability() {
-  const modContainer = document.getElementById('modCheckboxes');
-  const apiToken = localStorage.getItem('modioApiToken');
-  
-  if (!apiToken) {
-    // Show a warning in the mods tab if no API token is configured
-    modContainer.innerHTML = `
-      <div class="info-box" style="background-color: #fff3cd; color: #856404; border-left: 4px solid #ffc107;">
-        <h3>API Token Not Configured</h3>
-        <p>You need to set up your Mod.io API token to use mods with your server.</p>
-        <button class="btn btn-primary" onclick="showApiSetupHelper()">Set Up API Token</button>
-      </div>
-      <p style="margin-top: 15px;">If you've already configured your token in GameUserSettings.ini, you can ignore this message and continue.</p>
-    `;
+  if (token) {
+      localStorage.setItem('modioApiToken', token);
+      showNotification('API token saved locally!', 'success');
+  } else {
+      localStorage.removeItem('modioApiToken'); // Clear token if field is empty
+      showNotification('Local API token cleared.', 'info');
   }
+
+  document.getElementById('apiSetupModal').style.display = 'none';
+  ensureModListIsVisible(); // <<< ADDED HERE (runs after saving or clearing)
 }
+// Remove this function entirely or comment it out.
+// function checkModAvailability() {
+// /*
+//   const modContainer = document.getElementById('modCheckboxes');
+//   const apiToken = localStorage.getItem('modioApiToken');
+
+//   if (!apiToken && modContainer) { // Check modContainer exists
+//     // OLD CODE - DO NOT USE: Replaces the mod list content
+//     // modContainer.innerHTML = `
+//     //   <div class="info-box" style="background-color: #fff3cd; color: #856404; border-left: 4px solid #ffc107;">
+//     //     <h3>API Token Not Configured</h3>
+//     //     <p>You need to set up your Mod.io API token to use mods with your server.</p>
+//     //     <button class="btn btn-primary" onclick="showApiSetupHelper()">Set Up API Token</button>
+//     //   </div>
+//     //   <p style="margin-top: 15px;">If you've already configured your token in GameUserSettings.ini, you can ignore this message and continue.</p>
+//     // `;
+//   }
+// */
+// }
 
 
 
