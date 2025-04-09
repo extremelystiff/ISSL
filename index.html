@@ -1332,23 +1332,30 @@ document.addEventListener('DOMContentLoaded', function() {
     loadPresetsFromStorage();
     initializeCustomMutators(); // Generates initial mutator list
     initMutatorSuggestions();
-    setupModTabBehavior();
-    setTimeout(checkModAvailability, 500);
 
     // Fetch mods, THEN apply URL parameters (important for mods)
     fetchMods().then(() => {
-        console.log("Mods fetched, now applying URL parameters.");
-        applyUrlParameters(); // Apply params after mods are loaded and sortedMods is ready
-        // Check if suggestions need updating *after* params applied
-        updateMutatorSuggestions();
-    }).catch(error => {
-        console.error("Error fetching mods during init:", error);
-        // Still try to apply other parameters even if mods fail
+        console.log("Initial mods fetch successful.");
+        // Mods are loaded, now apply URL parameters which might depend on mod list
         applyUrlParameters();
+        // Update suggestions based on potentially pre-filled mods
+        updateMutatorSuggestions();
+        // Setup tab behavior AFTER mods are likely loaded
+        setupModTabBehavior();
+    }).catch(error => {
+        console.error("Initial mods fetch failed:", error);
+        // Still apply URL params for other fields
+        applyUrlParameters();
+        // Update suggestions based on potentially pre-filled mods (might be empty)
+        updateMutatorSuggestions();
+        // Setup tab behavior even if mods failed, tab needs to be clickable
+        setupModTabBehavior();
+        // Optionally show an error in the mods tab placeholder here
+        const modCheckboxesContainer = document.getElementById('modCheckboxes');
+        if(modCheckboxesContainer) {
+            modCheckboxesContainer.innerHTML = '<p>Error loading initial mod list. Please try refreshing.</p>';
+        }
     });
-
-    console.log("Initial DOM Content Loaded setup complete.");
-});
         
 // This code integrates with your Google App Script backend
 // to fetch popular mutator suggestions based on collected data
