@@ -1541,7 +1541,7 @@ function fetchMutatorSuggestionsFromGAS() {
     showNotification("Fetching mutator suggestions...", "info");
     
     // Clean URL without any redirects
-    const gasUrl = "https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec";
+    const gasUrl = "https://script.google.com/macros/s/AKfycbyNTg4bdelp719MfGOBZePkX64zrYuQe8y9uMTlHFcwIVuO1yTcKwic33amzMD66Dex/exec";
     
     // Generate a unique callback function name
     const callbackName = 'gasCallback_' + Math.floor(Math.random() * 1000000);
@@ -1904,7 +1904,7 @@ function logMutatorSelection(mutatorName) {
   data.nonce = nonce;
   
   // Send data to GAS Web App
-  fetch('https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbyNTg4bdelp719MfGOBZePkX64zrYuQe8y9uMTlHFcwIVuO1yTcKwic33amzMD66Dex/exec', {
     method: 'POST',
     mode: 'no-cors', // Important for GAS web apps
     headers: {
@@ -2014,7 +2014,7 @@ function logMutatorSelection(mutatorName) {
             localStorage.setItem('recentGASRequests', JSON.stringify(requests));
             
             // Send data to GAS Web App (replace with your actual GAS URL)
-            fetch('https://script.google.com/macros/s/AKfycbxC5iMl7xgb4OmsGJD43XREDzAlsdKwchghdVCjhJpmewcU8ygBKEOa1VFt3VjmGaFm7Q/exec', {
+            fetch('https://script.google.com/macros/s/AKfycbyNTg4bdelp719MfGOBZePkX64zrYuQe8y9uMTlHFcwIVuO1yTcKwic33amzMD66Dex/exec', {
               method: 'POST',
               mode: 'no-cors', // Important for GAS web apps
               headers: {
