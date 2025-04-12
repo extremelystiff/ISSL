@@ -10479,5 +10479,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4865949,
+    "name": "TestChannel",
+    "summary": "Do Not Subscribe",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testchannel",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
