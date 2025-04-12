@@ -10466,5 +10466,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4865785,
+    "name": "AdminCommands",
+    "summary": "Quick Admin Chat Commands",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/admincommands",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
