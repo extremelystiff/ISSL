@@ -10502,5 +10502,22 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4873290,
+    "name": "Chama Theatre",
+    "summary": "A custom competitive Firefight theater mod designed for the Chama community.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/chamatheatre",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
