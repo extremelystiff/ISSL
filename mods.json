@@ -10529,5 +10529,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4880480,
+    "name": "ThermalScope",
+    "summary": "Thermal Scope",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/thermalscope",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
