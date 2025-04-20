@@ -10542,5 +10542,17 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4799200,
+    "name": "IVN2",
+    "summary": "IVN Mission 2",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ivnm2",
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
