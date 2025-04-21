@@ -10566,5 +10566,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4884533,
+    "name": "ChamaCompCallouts",
+    "summary": "Callouts for maps",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/chamacompcallouts",
+    "modfile": {
+      "id": 0,
+      "version": 2
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
