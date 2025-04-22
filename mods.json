@@ -10593,5 +10593,15 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4890778,
+    "name": "PKP",
+    "summary": "PKP Pecheneg machine gun",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/pkp",
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
