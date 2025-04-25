@@ -10613,5 +10613,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4895058,
+    "name": "Red_Dead",
+    "summary": "Red_Dead",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/red-dead",
+    "modfile": {
+      "id": 0,
+      "version": "v1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
