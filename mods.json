@@ -10628,5 +10628,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4899698,
+    "name": "TestingStuff",
+    "summary": "only a test SMILE",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/shrtestingstuff",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
