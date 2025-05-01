@@ -10691,5 +10691,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4907752,
+    "name": "Path",
+    "summary": "Custom checkpoint scenarios on official maps",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/pasi-1",
+    "modfile": {
+      "id": 0,
+      "version": "v0.09"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
