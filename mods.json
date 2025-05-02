@@ -10706,5 +10706,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 112207,
+    "name": "Vix's Testing Grounds #2",
+    "summary": "Vix's testing grounds for his new maps and toys.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testfrontiermod",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
