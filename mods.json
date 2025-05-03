@@ -10719,5 +10719,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4910599,
+    "name": "Goosehonk",
+    "summary": "Goosehonk Scenario_GooseHonk_Checkpoint",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosehonk",
+    "modfile": {
+      "id": 0,
+      "version": 8
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
