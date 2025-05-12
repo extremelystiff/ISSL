@@ -10768,5 +10768,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4935645,
+    "name": "CHAMA_PROMOD",
+    "summary": "CHAMA_PROMOD",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/chama-promod",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
