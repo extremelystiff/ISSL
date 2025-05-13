@@ -10794,5 +10794,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4918318,
+    "name": "test23489",
+    "summary": "test setup",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/test23489",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
