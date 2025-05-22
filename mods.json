@@ -10877,5 +10877,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 4954895,
+    "name": "FriendlyAIBotRespawner (WIP)",
+    "summary": "Respawns friendly ai in checkpoint. Big Thanks to Peglegswansoon for help with this!",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/friendlyaibotrespawner",
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
