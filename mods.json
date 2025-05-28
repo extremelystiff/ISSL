@@ -10906,5 +10906,20 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 4969368,
+    "name": "Shenyang",
+    "summary": "A rebel group has taken over the forbidden city! Play the role of the Chinese Special Operation Forces, and fight through the historic streets of ancient China and regain control of the world renowned UNESCO heritage site!",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/shenyangsof",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
