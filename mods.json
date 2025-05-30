@@ -10936,5 +10936,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4976179,
+    "name": "TestMod55",
+    "summary": "dont download",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testmod55",
+    "modfile": {
+      "id": 0,
+      "version": "v0.2"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
