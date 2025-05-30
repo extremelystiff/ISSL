@@ -10921,5 +10921,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4975713,
+    "name": "TestMod123",
+    "summary": "Don't download.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testmod123",
+    "modfile": {
+      "id": 0,
+      "version": "v0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
