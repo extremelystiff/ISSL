@@ -10951,5 +10951,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 3626522,
+    "name": "Don't Subscribe  (Test Only-2)",
+    "summary": "Only for testing",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testonly-2",
+    "modfile": {
+      "id": 0,
+      "version": "test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
