@@ -10976,5 +10976,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4993747,
+    "name": "IntegrationTestProject",
+    "summary": "Some scenarios and logic must be tested in an independent test environment.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/integrationtestproject",
+    "modfile": {
+      "id": 0,
+      "version": "a1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
