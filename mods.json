@@ -11001,5 +11001,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5016223,
+    "name": "SimpleAmmoHPBar",
+    "summary": "AmmoHPBar",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ammo-hp-bar",
+    "modfile": {
+      "id": 0,
+      "version": "0.1 Beta"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
