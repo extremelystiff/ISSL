@@ -11031,5 +11031,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5053222,
+    "name": "EBS AI",
+    "summary": "Yet another AI mod",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ebs-ai",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
