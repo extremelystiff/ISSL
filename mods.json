@@ -11046,5 +11046,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5081003,
+    "name": "View Profile Button",
+    "summary": "Re-adds the \"View Profile\" button",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/view-profile-button",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
