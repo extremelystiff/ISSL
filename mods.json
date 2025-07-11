@@ -11061,5 +11061,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5084457,
+    "name": "SimpleAmmoBar",
+    "summary": "SimpleAmmoBar",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/simpleammobar",
+    "modfile": {
+      "id": 0,
+      "version": "0.1Beta"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
