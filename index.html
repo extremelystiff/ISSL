@@ -864,6 +864,35 @@
 
 
     <script>
+// Redirect logic to handle shared launch links for platforms like Discord
+(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+
+    // Check if the URL is intended for launching the game
+    if (action === 'launch') {
+        const serverParams = urlParams.get('params');
+        if (serverParams) {
+            // Display a user-friendly launching message
+            document.body.innerHTML = `
+                <div style="font-family: 'Roboto', sans-serif; text-align: center; padding-top: 50px; color: #333;">
+                    <h1>Launching Insurgency: Sandstorm...</h1>
+                    <p>Your game should open shortly. If nothing happens, please ensure Steam is running and that your browser has permission to open steam:// links.</p>
+                    <p style="font-size: 0.8em; color: #666;">You can close this tab.</p>
+                </div>
+            `;
+            // The serverParams from the URL are already URI-encoded.
+            const steamUrl = 'steam://rungameid/581330//' + serverParams;
+            
+            // Perform the redirect
+            window.location.href = steamUrl;
+        } else {
+             document.body.innerHTML = '<h1>Error: Launch parameters were not found in the link.</h1>';
+        }
+        // Stop the rest of the script from executing on this redirect page
+        throw new Error("Redirecting to Steam link. Halting further script execution.");
+    }
+})();
         // Global variables
         let mods = [];
         let selectedMods = [];
@@ -2092,80 +2121,23 @@ function logMutatorSelection(mutatorName) {
          * AND the steam:// launch URL for the launch link. This is now the
          * single source of truth for the server command line.
          */
-        function generateConfig() {
-            // Get all form values, providing defaults for empty fields
-            const os = document.getElementById('os').value;
-            const hostname = document.getElementById('hostname').value || "My Insurgency Server";
-            const maxPlayers = document.getElementById('maxPlayers').value || "24";
-            const port = document.getElementById('port').value || "27102";
-            const queryPort = document.getElementById('queryPort').value || "27131";
-            const scenario = document.getElementById('scenario').value;
-            const password = document.getElementById('password').value;
-            const enableCheats = document.getElementById('enableCheats').checked;
-            const gameStatsToken = document.getElementById('gameStatsToken').value;
-            const gsltToken = document.getElementById('gsltToken').value;
-            const enableGameStats = document.getElementById('enableGameStats').checked;
-            const officialRules = document.getElementById('officialRules').checked;
+function generateConfig() {
+    const os = document.getElementById('os').value;
+    const steamParamsString = getServerParamsString(); // Use the helper
+    const launchLink = document.getElementById('launchLink');
+    const baseCommand = os === "windows" ?
+        "InsurgencyServer.exe" :
+        "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
+    
+    // Update the text area
+    document.getElementById('configOutput').value = `${baseCommand} ${steamParamsString}`;
 
-            // Build the travel URL part (e.g., MapName?Param1=Value?Param2=Value)
-            let travelUrl = scenario;
-            const travelUrlParams = [];
-            travelUrlParams.push(`MaxPlayers=${maxPlayers}`);
-            if (password) {
-                travelUrlParams.push(`Password=${password}`);
-            }
-
-            if (travelUrlParams.length > 0) {
-                travelUrl += '?' + travelUrlParams.join('?');
-            }
-
-            // Build the other command-line parameters (e.g., -Port 27102)
-            const otherParams = [
-                `-Port=${port}`,
-                `-QueryPort=${queryPort}`,
-                '-log',
-                `-hostname="${hostname}"`
-            ];
-
-            if (enableCheats) otherParams.push("-EnableCheats");
-            if (gameStatsToken && enableGameStats) {
-                otherParams.push(`-GameStatsToken=${gameStatsToken}`, "-GameStats");
-            }
-            if (gsltToken) otherParams.push(`-GSLTToken=${gsltToken}`);
-            if (officialRules) otherParams.push("-ruleset=OfficialRules");
-            
-            // Add mutators parameter
-            if (selectedMutators.length > 0) {
-                otherParams.push(`-Mutators=${selectedMutators.join(',')}`);
-            }
-            
-            // Add mods parameter
-            if (selectedMods.length > 0) {
-                const modIds = selectedMods.map(mod => mod.id).join(',');
-                otherParams.push(`-mods`, `-CmdModList=${modIds}`);
-            }
-
-            // Combine into the final parameter string for the Steam URL
-            const steamParamsString = `${travelUrl} ${otherParams.join(' ')}`;
-            
-            // Create the full command-line string for the text area (with executable)
-            const baseCommand = os === "windows" ?
-                "InsurgencyServer.exe" :
-                "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
-            const configString = `${baseCommand} ${steamParamsString}`;
-
-            // --- Update UI Elements ---
-
-            // 1. Update the text area with the full command line
-            document.getElementById('configOutput').value = configString;
-
-            // 2. Update the "Launch Server" link's href with the steam:// URL
-            const steamURL = `steam://rungameid/581330//${encodeURIComponent(steamParamsString)}`;
-            const launchLink = document.getElementById('launchLink');
-            if (launchLink) {
-                launchLink.href = steamURL;
-            }
-        }
+    // Update the main "Launch Server" link
+    if (launchLink) {
+        const steamURL = `steam://rungameid/581330//${encodeURIComponent(steamParamsString)}`;
+        launchLink.href = steamURL;
+    }
+}
 
         /**
          * The launchServer function is now removed, as the <a> tag handles launching.
@@ -2726,54 +2698,83 @@ function logMutatorSelection(mutatorName) {
           ensureModListIsVisible();
         }
         
-        function generateShareLink() {
-            const params = new URLSearchParams();
+function generateShareLink() {
+    // 1. Get the current server parameters string from the form.
+    // We can reuse the generateConfig logic to ensure it's always up-to-date.
+    generateConfig(); 
+    const steamParamsString = getServerParamsString(); // We will create this small helper function.
 
-            params.set('os', document.getElementById('os').value);
-            params.set('hostname', encodeURIComponent(document.getElementById('hostname').value));
-            params.set('maxPlayers', document.getElementById('maxPlayers').value);
-            params.set('port', document.getElementById('port').value);
-            params.set('queryPort', document.getElementById('queryPort').value);
-            params.set('scenario', encodeURIComponent(document.getElementById('scenario').value));
+    // 2. URI-encode the entire parameter string so it can be safely passed in a URL.
+    const encodedServerParams = encodeURIComponent(steamParamsString);
 
-            const password = document.getElementById('password').value;
-            if (password) params.set('password', encodeURIComponent(password));
+    // 3. Construct the base URL of the current page.
+    const baseUrl = window.location.origin + window.location.pathname;
+    
+    // 4. Create the final shareable URL with the action and params.
+    const shareUrl = `${baseUrl}?action=launch¶ms=${encodedServerParams}`;
 
-            const gameStatsToken = document.getElementById('gameStatsToken').value;
-            if (gameStatsToken) params.set('gameStatsToken', gameStatsToken);
+    // 5. Copy the HTTPS link to the clipboard.
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showNotification('Shareable link for Discord copied to clipboard!', 'success');
+        }).catch(err => {
+            console.error('Failed to copy link automatically: ', err);
+            prompt('Copy this shareable link:', shareUrl); // Fallback for errors
+        });
+    } else {
+        // Fallback for non-secure contexts or older browsers
+        prompt('Copy this shareable link:', shareUrl);
+    }
+}
+/**
+ * HELPER FUNCTION: Extracts the core logic for getting the server parameter string.
+ * This avoids code duplication between generateConfig and generateShareLink.
+ */
+function getServerParamsString() {
+    const hostname = document.getElementById('hostname').value || "My Insurgency Server";
+    const maxPlayers = document.getElementById('maxPlayers').value || "24";
+    const port = document.getElementById('port').value || "27102";
+    const queryPort = document.getElementById('queryPort').value || "27131";
+    const scenario = document.getElementById('scenario').value;
+    const password = document.getElementById('password').value;
+    const enableCheats = document.getElementById('enableCheats').checked;
+    const gameStatsToken = document.getElementById('gameStatsToken').value;
+    const gsltToken = document.getElementById('gsltToken').value;
+    const enableGameStats = document.getElementById('enableGameStats').checked;
+    const officialRules = document.getElementById('officialRules').checked;
 
-            const gsltToken = document.getElementById('gsltToken').value;
-            if (gsltToken) params.set('gsltToken', gsltToken);
+    let travelUrl = scenario;
+    const travelUrlParams = [];
+    travelUrlParams.push(`MaxPlayers=${maxPlayers}`);
+    if (password) {
+        travelUrlParams.push(`Password=${password}`);
+    }
+    if (travelUrlParams.length > 0) {
+        travelUrl += '?' + travelUrlParams.join('?');
+    }
 
-            if (document.getElementById('enableGameStats').checked) params.set('enableGameStats', 'true');
-            if (document.getElementById('officialRules').checked) params.set('officialRules', 'true');
-            if (document.getElementById('enableCheats').checked) params.set('enableCheats', 'true');
+    const otherParams = [
+        `-Port=${port}`,
+        `-QueryPort=${queryPort}`,
+        '-log',
+        `-hostname="${hostname}"`
+    ];
+    if (enableCheats) otherParams.push("-EnableCheats");
+    if (gameStatsToken && enableGameStats) {
+        otherParams.push(`-GameStatsToken=${gameStatsToken}`, "-GameStats");
+    }
+    if (gsltToken) otherParams.push(`-GSLTToken=${gsltToken}`);
+    if (officialRules) otherParams.push("-ruleset=OfficialRules");
+    if (selectedMutators.length > 0) {
+        otherParams.push(`-Mutators=${selectedMutators.join(',')}`);
+    }
+    if (selectedMods.length > 0) {
+        const modIds = selectedMods.map(mod => mod.id).join(',');
+        otherParams.push(`-mods`, `-CmdModList=${modIds}`);
+    }
 
-            if (selectedMods && selectedMods.length > 0) {
-                 const validModIds = selectedMods.filter(mod => mod && typeof mod.id !== 'undefined').map(mod => mod.id);
-                 if (validModIds.length > 0) {
-                    params.set('mods', validModIds.join(','));
-                 }
-            }
-
-            if (selectedMutators && selectedMutators.length > 0) {
-                params.set('mutators', selectedMutators.map(m => encodeURIComponent(m)).join(','));
-            }
-
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?${params.toString()}`;
-
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    showNotification('Shareable link copied to clipboard!', 'success');
-                }).catch(err => {
-                    console.error('Failed to copy link automatically: ', err);
-                    prompt('Copy this shareable link:', shareUrl);
-                });
-            } else {
-                prompt('Copy this shareable link:', shareUrl);
-            }
-        }
+    return `${travelUrl} ${otherParams.join(' ')}`;
+}
     </script>
 </body>
 </html>
