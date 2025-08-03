@@ -36,6 +36,8 @@
             transition: background-color 0.3s;
             margin: 5px;
             font-weight: 500;
+            text-decoration: none; /* Added for <a> tags */
+            display: inline-block; /* Added for <a> tags */
         }
 
         .btn-primary {
@@ -90,6 +92,7 @@
             grid-column: 1 / -1;
             display: flex;
             justify-content: space-between;
+            align-items: center; /* Align items vertically */
             margin-top: 20px;
         }
 
@@ -782,9 +785,15 @@
                     </div>
                     
                     <div class="form-actions">
-                        <button type="button" class="btn btn-primary btn-large" onclick="launchServer()">Launch Server</button>
-                        <button type="button" class="btn btn-secondary" onclick="generateConfig()">Generate Config</button>
-			<button type="button" class="btn btn-info" onclick="generateShareLink()" style="margin-left: 10px;">Share Configuration</button>
+                        <!-- === MODIFIED PART === -->
+                        <!-- Replaced the button with a link (anchor tag) -->
+                        <a id="launchLink" href="#" class="btn btn-primary btn-large" role="button">Launch Server</a>
+                        <!-- === END MODIFIED PART === -->
+                        
+                        <div>
+                            <button type="button" class="btn btn-secondary" onclick="generateConfig()">Generate Config</button>
+                            <button type="button" class="btn btn-info" onclick="generateShareLink()" style="margin-left: 10px;">Share Configuration</button>
+                        </div>
                     </div>
                 </form>
                 
@@ -1038,6 +1047,7 @@
 					updateSelectedMutatorsDisplay();
 					generateMutatorCheckboxes(); // Re-render this list to sort/group
 					updateMutatorSuggestions(); // Re-render suggestions for button states
+                    generateConfig(); // <<< NEW: Update link/config on change
 				});
 
 				const label = document.createElement('label');
@@ -1202,6 +1212,7 @@ function initializeCustomMutators() {
             checkboxes.forEach(checkbox => {
                 checkbox.checked = selectedMutators.includes(checkbox.value);
             });
+            generateConfig(); // Update link/config
         }
 
         function updateSelectedMutatorsDisplay() {
@@ -1360,6 +1371,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Still try to apply other parameters even if mods fail
         applyUrlParameters();
     });
+
+    // Add event listeners to form inputs to regenerate config on change
+    document.getElementById('serverForm').addEventListener('change', generateConfig);
+    document.getElementById('serverForm').addEventListener('keyup', generateConfig);
+
 
     console.log("Initial DOM Content Loaded setup complete.");
 });
@@ -1931,14 +1947,6 @@ function logMutatorSelection(mutatorName) {
     // Silently fail - don't interrupt user experience
   });
 }
-
-
-
-
-
-
-        
-
         
         // Mutators data
 	const mutators = [
@@ -2045,90 +2053,53 @@ function logMutatorSelection(mutatorName) {
         }
 
         // Tab switching
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
 
-    // Get all elements with class="tab-content" and hide them
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-        // Remove the active class from all content divs
-        tabcontent[i].classList.remove("active");
-    }
-
-    // Get all elements with class="tab" and remove the class "active"
-    tablinks = document.getElementsByClassName("tab");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-    }
-
-    // Get the specific tab content element to show
-    const currentTabContent = document.getElementById(tabName);
-
-    // Show the current tab content, and add an "active" class to it
-    if (currentTabContent) {
-        currentTabContent.style.display = "block";
-        currentTabContent.classList.add("active");
-    }
-
-    // Add the "active" class to the button that opened the tab
-    if (evt && evt.currentTarget) {
-      evt.currentTarget.classList.add("active");
-    }
-}
-
-        // Server configuration functions
-        function generateConfig() {
-            const os = document.getElementById('os').value;
-            const hostname = document.getElementById('hostname').value;
-            const maxPlayers = document.getElementById('maxPlayers').value;
-            const port = document.getElementById('port').value;
-            const queryPort = document.getElementById('queryPort').value;
-            const scenario = document.getElementById('scenario').value;
-            const password = document.getElementById('password').value;
-            const enableCheats = document.getElementById('enableCheats').checked;
-            const gameStatsToken = document.getElementById('gameStatsToken').value;
-            const gsltToken = document.getElementById('gsltToken').value;
-            const enableGameStats = document.getElementById('enableGameStats').checked;
-            const officialRules = document.getElementById('officialRules').checked;
-
-            let configString = "";
-            const baseCommand = os === "windows" ?
-                "InsurgencyServer.exe" :
-                "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
-
-            let travelParams = `${scenario}?MaxPlayers=${maxPlayers}`;
-
-            if (password) travelParams += `?Password=${password}`;
-
-            let gsltTokenParam = gsltToken ? ` -GSLTToken=${gsltToken}` : "";
-            let cheatParam = enableCheats ? " -EnableCheats" : "";
-            let gameStatsParam = (gameStatsToken && enableGameStats) ? ` -GameStatsToken=${gameStatsToken} -GameStats` : "";
-            let officialRulesParam = officialRules ? " -ruleset=OfficialRules" : "";
-            
-            // Add mutators parameter
-            let mutatorParam = selectedMutators.length > 0 ? ` -Mutators=${selectedMutators.join(',')}` : "";
-            
-            // Add mods parameter
-            let modsParam = "";
-            if (selectedMods.length > 0) {
-                const modIds = selectedMods.map(mod => mod.id).join(',');
-                modsParam = ` -mods -CmdModList=${modIds}`;
+            // Get all elements with class="tab-content" and hide them
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                // Remove the active class from all content divs
+                tabcontent[i].classList.remove("active");
             }
 
-            configString = `${baseCommand} ${travelParams} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"${cheatParam}${gameStatsParam}${gsltTokenParam}${officialRulesParam}${mutatorParam}${modsParam}`;
+            // Get all elements with class="tab" and remove the class "active"
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
 
-            document.getElementById('configOutput').value = configString;
+            // Get the specific tab content element to show
+            const currentTabContent = document.getElementById(tabName);
+
+            // Show the current tab content, and add an "active" class to it
+            if (currentTabContent) {
+                currentTabContent.style.display = "block";
+                currentTabContent.classList.add("active");
+            }
+
+            // Add the "active" class to the button that opened the tab
+            if (evt && evt.currentTarget) {
+              evt.currentTarget.classList.add("active");
+            }
         }
 
-        function launchServer() {
-            generateConfig();
-            
+        // === MODIFIED/NEW SERVER CONFIGURATION FUNCTIONS ===
+        
+        /**
+         * Generates the server configuration string for the text area
+         * AND the steam:// launch URL for the launch link. This is now the
+         * single source of truth for the server command line.
+         */
+        function generateConfig() {
+            // Get all form values, providing defaults for empty fields
+            const os = document.getElementById('os').value;
+            const hostname = document.getElementById('hostname').value || "My Insurgency Server";
+            const maxPlayers = document.getElementById('maxPlayers').value || "24";
+            const port = document.getElementById('port').value || "27102";
+            const queryPort = document.getElementById('queryPort').value || "27131";
             const scenario = document.getElementById('scenario').value;
-            const maxPlayers = document.getElementById('maxPlayers').value;
-            const port = document.getElementById('port').value;
-            const queryPort = document.getElementById('queryPort').value;
-            const hostname = document.getElementById('hostname').value;
             const password = document.getElementById('password').value;
             const enableCheats = document.getElementById('enableCheats').checked;
             const gameStatsToken = document.getElementById('gameStatsToken').value;
@@ -2136,29 +2107,70 @@ function openTab(evt, tabName) {
             const enableGameStats = document.getElementById('enableGameStats').checked;
             const officialRules = document.getElementById('officialRules').checked;
 
-            let serverParams = `${scenario}?MaxPlayers=${maxPlayers} -Port=${port} -QueryPort=${queryPort} -log -hostname="${hostname}"`;
+            // Build the travel URL part (e.g., MapName?Param1=Value?Param2=Value)
+            let travelUrl = scenario;
+            const travelUrlParams = [];
+            travelUrlParams.push(`MaxPlayers=${maxPlayers}`);
+            if (password) {
+                travelUrlParams.push(`Password=${password}`);
+            }
 
-            if (password) serverParams += `?Password=${password}`;
-            if (enableCheats) serverParams += ' -EnableCheats';
-            if (gameStatsToken && enableGameStats) serverParams += ` -GameStatsToken=${gameStatsToken} -GameStats`;
-            if (gsltToken) serverParams += ` -GSLTToken=${gsltToken}`;
-            if (officialRules) serverParams += ' -ruleset=OfficialRules';
+            if (travelUrlParams.length > 0) {
+                travelUrl += '?' + travelUrlParams.join('?');
+            }
+
+            // Build the other command-line parameters (e.g., -Port 27102)
+            const otherParams = [
+                `-Port=${port}`,
+                `-QueryPort=${queryPort}`,
+                '-log',
+                `-hostname="${hostname}"`
+            ];
+
+            if (enableCheats) otherParams.push("-EnableCheats");
+            if (gameStatsToken && enableGameStats) {
+                otherParams.push(`-GameStatsToken=${gameStatsToken}`, "-GameStats");
+            }
+            if (gsltToken) otherParams.push(`-GSLTToken=${gsltToken}`);
+            if (officialRules) otherParams.push("-ruleset=OfficialRules");
             
             // Add mutators parameter
             if (selectedMutators.length > 0) {
-                serverParams += ` -Mutators=${selectedMutators.join(',')}`;
+                otherParams.push(`-Mutators=${selectedMutators.join(',')}`);
             }
             
             // Add mods parameter
             if (selectedMods.length > 0) {
                 const modIds = selectedMods.map(mod => mod.id).join(',');
-                serverParams += ` -mods -CmdModList=${modIds}`;
+                otherParams.push(`-mods`, `-CmdModList=${modIds}`);
             }
 
-            const steamURL = `steam://rungameid/581330//${encodeURIComponent(serverParams)}`;
-            window.location.href = steamURL;
+            // Combine into the final parameter string for the Steam URL
+            const steamParamsString = `${travelUrl} ${otherParams.join(' ')}`;
+            
+            // Create the full command-line string for the text area (with executable)
+            const baseCommand = os === "windows" ?
+                "InsurgencyServer.exe" :
+                "Insurgency/Binaries/Linux/InsurgencyServer-Linux-Shipping";
+            const configString = `${baseCommand} ${steamParamsString}`;
+
+            // --- Update UI Elements ---
+
+            // 1. Update the text area with the full command line
+            document.getElementById('configOutput').value = configString;
+
+            // 2. Update the "Launch Server" link's href with the steam:// URL
+            const steamURL = `steam://rungameid/581330//${encodeURIComponent(steamParamsString)}`;
+            const launchLink = document.getElementById('launchLink');
+            if (launchLink) {
+                launchLink.href = steamURL;
+            }
         }
 
+        /**
+         * The launchServer function is now removed, as the <a> tag handles launching.
+         * This function remains to power the Quick Launch button.
+         */
         function quickStart() {
             document.getElementById('hostname').value = 'My Insurgency Server';
             document.getElementById('maxPlayers').value = '24';
@@ -2169,8 +2181,14 @@ function openTab(evt, tabName) {
             const randomIndex = Math.floor(Math.random() * scenarioDropdown.options.length);
             scenarioDropdown.selectedIndex = randomIndex;
             
-            launchServer();
+            // First, generate the config and update the link's href
+            generateConfig();
+            
+            // Then, programmatically click the link to launch the game
+            document.getElementById('launchLink').click();
         }
+        
+        // === END MODIFIED/NEW FUNCTIONS ===
 
         // Preset functions
         function savePreset() {
@@ -2222,7 +2240,8 @@ function openTab(evt, tabName) {
                 launchButton.className = 'btn btn-primary';
                 launchButton.onclick = function() {
                     loadPreset(index);
-                    launchServer();
+                    // After loading, click the main launch link
+                    document.getElementById('launchLink').click();
                 };
 
                 const renameButton = document.createElement('button');
@@ -2291,6 +2310,7 @@ function openTab(evt, tabName) {
             updateModCheckboxes();
             updateSelectedMutatorsDisplay();
             updateSelectedModsDisplay();
+            generateConfig(); // <<< NEW: Regenerate config after loading a preset.
         }
 
         function exportPresets() {
@@ -2435,6 +2455,7 @@ function openTab(evt, tabName) {
 					}
 					updateSelectedModsDisplay(); // This triggers suggestion updates
 					generateModCheckboxes(); // Re-render the list to move the item between sections
+                    generateConfig(); // <<< NEW: Update link/config on change
 				});
 
 				const label = document.createElement('label');
@@ -2503,6 +2524,7 @@ function openTab(evt, tabName) {
                 const modId = parseInt(checkbox.value);
                 checkbox.checked = selectedMods.some(mod => mod.id === modId);
             });
+            generateConfig(); // Update link/config
         }
 
         // Modify the updateSelectedModsDisplay function to trigger suggestion updates
@@ -2546,457 +2568,212 @@ function openTab(evt, tabName) {
         // GameStats token auto-check enableGameStats
         document.getElementById('gameStatsToken').addEventListener('input', function(e) {
             document.getElementById('enableGameStats').checked = !!e.target.value.trim();
+            generateConfig(); // Update link/config
         });
+        
+        // Modio info
+        function setupModTabBehavior() {
+          const tabButtons = document.querySelectorAll('.tab');
+          tabButtons.forEach(button => {
+            if (button.textContent.trim() === 'Mods') {
+              button.addEventListener('click', function() {
+                const modCheckboxesContainer = document.getElementById('modCheckboxes');
+                if (!modCheckboxesContainer) return;
 
-
-
-
-
-////testing delte this
-function testISMCModSuggestions() {
-  // Test with ISMC mod
-  selectedMods = [{ id: '1516914', name: 'ISMC Resources' }];
-  updateSelectedModsDisplay();
-  
-  // Force suggestion container to be visible
-  const container = document.getElementById('mutatorSuggestions');
-  if (container) {
-    container.style.display = 'block';
-    checkSuggestionContainerVisibility();
-  }
-  
-  // Force update suggestions
-  updateMutatorSuggestions();
-  
-  // Log the current state
-  console.log("modMutatorSuggestions contains:", Object.keys(modMutatorSuggestions));
-  console.log("Looking for suggestions for mod ID:", selectedMods[0].id);
-  console.log("Found suggestion:", modMutatorSuggestions[selectedMods[0].id]);
-}
-
-// Add a button to test this function
-function addTestButton() {
-  const container = document.getElementById('mods');
-  if (!container) return;
-  
-  const testButton = document.createElement('button');
-  testButton.textContent = 'Test ISMC Suggestions';
-  testButton.className = 'btn btn-secondary';
-  testButton.style.marginTop = '10px';
-  testButton.onclick = testISMCModSuggestions;
-  
-  container.appendChild(testButton);
-  console.log("Added test button");
-}
-
-
-/////END TESTING
-
-    </script>
-	
-<script>
-// Modio info
-
-// Add these functions to your existing JavaScript code
-
-// 1. Function to automatically show the suggestion modal when the mods tab is clicked
-// Modify setupModTabBehavior
-function setupModTabBehavior() {
-  const tabButtons = document.querySelectorAll('.tab');
-  tabButtons.forEach(button => {
-    // Attach listener to the Mods tab button
-    if (button.textContent.trim() === 'Mods') {
-      button.addEventListener('click', function() {
-        // 1. Attempt to display the mod list immediately
-        const modCheckboxesContainer = document.getElementById('modCheckboxes');
-        if (!modCheckboxesContainer) return;
-
-        if (sortedMods && sortedMods.length > 0) {
-          // If mods are already loaded (from initial fetch), generate the checkboxes
-          generateModCheckboxes();
-          console.log("Mods tab clicked: Regenerated mod list from existing data.");
-        } else {
-          // If mods aren't loaded yet (e.g., fetch failed or is slow), show loading/error
-          // And potentially trigger fetch again
-          modCheckboxesContainer.innerHTML = '<p>Loading mod list...</p>';
-          console.log("Mods tab clicked: Mods not ready, showing loading. Attempting fetch.");
-          fetchMods().then(() => {
-             generateModCheckboxes(); // Try generating again after fetch attempt
-             // Now check for API helper AFTER trying to load list
-             checkAndShowApiSetupHelper();
-          }).catch(err => {
-             modCheckboxesContainer.innerHTML = '<p>Failed to load mod list. Please refresh the page.</p>';
-             console.error("Error fetching mods on tab click:", err);
-             // Still check for API helper even if list fails, as it's separate info
-             checkAndShowApiSetupHelper();
-          });
-          // Don't check for API helper immediately in this case, wait for fetch attempt
-          return; // Exit early, checkAndShowApiSetupHelper called in .then/.catch
-        }
-
-        // 2. If mods were displayed instantly, now check if the API helper needs showing
-        // Use a minimal timeout just to ensure tab rendering is complete
-        setTimeout(() => {
-            checkAndShowApiSetupHelper();
-        }, 50); // Small delay
-      });
-    }
-    // Add listeners for other tabs if needed
-    // else if (button.textContent.trim() === 'Other Tab') { ... }
-  });
-}
-
-// 2. Function to check if API token is configured and show helper
-function checkAndShowApiSetupHelper() {
-  // Check if we have an API token saved
-  const hasApiToken = localStorage.getItem('modioApiToken');
-  
-  if (!hasApiToken) {
-    showApiSetupHelper();
-  }
-}
-
-function ensureModListIsVisible() {
-    console.log("Ensuring mod list is visible after modal close/action.");
-    const modCheckboxesContainer = document.getElementById('modCheckboxes');
-    if (!modCheckboxesContainer) {
-        console.error("Mod checkboxes container not found in ensureModListIsVisible.");
-        return;
-    }
-
-    // If mods were successfully loaded previously, regenerate the list view
-    if (sortedMods && sortedMods.length > 0) {
-        generateModCheckboxes();
-    } else {
-        // If mods haven't loaded or failed, display an appropriate message
-        // This state should ideally be rare if fetchMods ran correctly on load/tab click
-        modCheckboxesContainer.innerHTML = '<p>Mod list could not be loaded. Please try refreshing the page.</p>';
-        console.warn("ensureModListIsVisible: sortedMods data is missing.");
-    }
-}
-
-// Modify showApiSetupHelper to add ensureModListIsVisible() to close actions
-
-function showApiSetupHelper() {
-  // Create the modal if it doesn't exist
-  if (document.getElementById('apiSetupModal')) {
-    document.getElementById('apiSetupModal').style.display = 'block';
-    return;
-  }
-
-  const modalHTML = `
-    <div id="apiSetupModal" class="modal" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
-      <div class="modal-content" style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 5px; width: 80%; max-width: 700px; position: relative;">
-        <span class="close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">×</span>
-        <h2>Mod.io API Setup (Optional for this Tool)</h2>
-        <p><strong>Note:</strong> An API token is needed for your <strong>game server</strong> to use mods, but this tool can list mods without it.</p>
-        <p>Follow these steps if you want to set up your server:</p>
-
-        <div class="setup-steps">
-          <h3>Step 1: Get your API token</h3>
-          <ol>
-            <li>Create or sign in to your <a href="https://mod.io" target="_blank">Mod.io account</a></li>
-            <li>Click your username at the top right, then click "API Access" from the left navigation</li>
-            <li>Under "OAuth 2 Management", look for "Generate Access Token"</li>
-            <li>Enter a name for your token (e.g., "My Sandstorm Server") and set it to "Read" access</li>
-            <li>Click "Create Token" and copy the generated token</li>
-          </ol>
-
-          <h3>Step 2: Enter your API token (Optional Storage)</h3>
-           <p>You can paste your token here to generate the config snippet, but it's primarily needed in your server's INI file.</p>
-          <div class="form-group">
-            <input type="text" id="apiTokenInput" placeholder="Paste your API token here" style="width: 100%; padding: 8px; margin-bottom: 10px;">
-          </div>
-
-          <h3>Step 3: Save to GameUserSettings.ini</h3>
-          <p>Your token <strong>must</strong> be saved in this file on your server:</p>
-          <code style="display: block; background: #f5f5f5; padding: 10px; margin: 10px 0; word-break: break-all;">
-            \\sandstorm_server\\Insurgency\\Saved\\Config\\WindowsServer\\GameUserSettings.ini
-          </code>
-
-          <div class="generated-config" style="background: #f0f0f0; padding: 15px; margin: 15px 0; border-left: 3px solid #3498db;">
-            <h4>Copy this text to your GameUserSettings.ini file:</h4>
-            <pre id="iniConfigOutput" style="white-space: pre-wrap; word-break: break-all;"></pre>
-            <button id="copyIniConfig" class="btn btn-primary">Copy to Clipboard</button>
-          </div>
-        </div>
-
-        <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
-          <button id="remindLaterButton" class="btn btn-secondary">Close Helper</button>
-          <button id="saveApiToken" class="btn btn-primary">Save Token Locally & Close</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const modalContainer = document.createElement('div');
-  modalContainer.innerHTML = modalHTML;
-  document.body.appendChild(modalContainer.firstElementChild);
-
-  // Add event listeners
-  document.querySelector('#apiSetupModal .close').addEventListener('click', function() {
-    document.getElementById('apiSetupModal').style.display = 'none';
-    ensureModListIsVisible(); // <<< ADDED HERE
-  });
-
-  // Changed button ID and text for clarity
-  document.getElementById('remindLaterButton').addEventListener('click', function() {
-      document.getElementById('apiSetupModal').style.display = 'none';
-      ensureModListIsVisible(); // <<< ADDED HERE
-  });
-
-
-  document.getElementById('apiTokenInput').addEventListener('input', updateIniConfig);
-  document.getElementById('saveApiToken').addEventListener('click', saveApiToken); // saveApiToken will call ensureModListIsVisible
-  document.getElementById('copyIniConfig').addEventListener('click', copyIniConfig);
-
-  // Initialize the INI config display
-  updateIniConfig();
-}
-
-// 4. Update the INI config preview based on the entered token
-function updateIniConfig() {
-  const token = document.getElementById('apiTokenInput').value.trim();
-  const iniConfig = `[/Script/ModKit.ModIOClient]
-bHasUserAcceptedTerms=True
-AccessToken=${token || 'YOUR_TOKEN_HERE'}`;
-  
-  document.getElementById('iniConfigOutput').textContent = iniConfig;
-}
-
-// 5. Copy the INI config to clipboard
-function copyIniConfig() {
-  const configText = document.getElementById('iniConfigOutput').textContent;
-  navigator.clipboard.writeText(configText).then(function() {
-    showNotification('Configuration copied to clipboard!', 'success');
-  }).catch(function(err) {
-    console.error('Could not copy text: ', err);
-    showNotification('Failed to copy. Please select and copy manually.', 'error');
-  });
-}
-
-// 6. Save the API token to localStorage
-function saveApiToken() {
-  const token = document.getElementById('apiTokenInput').value.trim();
-//   if (!token) { // Allow saving empty token if user wants to clear it
-//     // showNotification('Please enter a valid token', 'error');
-//     // return;
-//   }
-
-  if (token) {
-      localStorage.setItem('modioApiToken', token);
-      showNotification('API token saved locally!', 'success');
-  } else {
-      localStorage.removeItem('modioApiToken'); // Clear token if field is empty
-      showNotification('Local API token cleared.', 'info');
-  }
-
-  document.getElementById('apiSetupModal').style.display = 'none';
-  ensureModListIsVisible(); // <<< ADDED HERE (runs after saving or clearing)
-}
-// Remove this function entirely or comment it out.
-// function checkModAvailability() {
-// /*
-//   const modContainer = document.getElementById('modCheckboxes');
-//   const apiToken = localStorage.getItem('modioApiToken');
-
-//   if (!apiToken && modContainer) { // Check modContainer exists
-//     // OLD CODE - DO NOT USE: Replaces the mod list content
-//     // modContainer.innerHTML = `
-//     //   <div class="info-box" style="background-color: #fff3cd; color: #856404; border-left: 4px solid #ffc107;">
-//     //     <h3>API Token Not Configured</h3>
-//     //     <p>You need to set up your Mod.io API token to use mods with your server.</p>
-//     //     <button class="btn btn-primary" onclick="showApiSetupHelper()">Set Up API Token</button>
-//     //   </div>
-//     //   <p style="margin-top: 15px;">If you've already configured your token in GameUserSettings.ini, you can ignore this message and continue.</p>
-//     // `;
-//   }
-// */
-// }
-
-
-
-
-
-function applyUrlParameters() {
-    const urlParams = new URLSearchParams(window.location.search);
-    console.log("Checking for URL parameters:", window.location.search);
-
-    // Helper function to set value if param exists and element is found
-    const setInputValue = (id, paramName) => {
-        if (urlParams.has(paramName)) {
-            const element = document.getElementById(id);
-            if (element) {
-                try {
-                    element.value = decodeURIComponent(urlParams.get(paramName)); // Decode potential encoding
-                    console.log(`Set ${id} from param '${paramName}' to: ${element.value}`);
-                } catch (e) {
-                    console.error(`Error decoding parameter ${paramName} for ${id}:`, e);
-                    // Fallback to raw value if decoding fails
-                    element.value = urlParams.get(paramName);
+                if (sortedMods && sortedMods.length > 0) {
+                  generateModCheckboxes();
+                  console.log("Mods tab clicked: Regenerated mod list from existing data.");
+                } else {
+                  modCheckboxesContainer.innerHTML = '<p>Loading mod list...</p>';
+                  console.log("Mods tab clicked: Mods not ready, showing loading. Attempting fetch.");
+                  fetchMods().then(() => {
+                     generateModCheckboxes();
+                     checkAndShowApiSetupHelper();
+                  }).catch(err => {
+                     modCheckboxesContainer.innerHTML = '<p>Failed to load mod list. Please refresh the page.</p>';
+                     console.error("Error fetching mods on tab click:", err);
+                     checkAndShowApiSetupHelper();
+                  });
+                  return; 
                 }
+                setTimeout(() => {
+                    checkAndShowApiSetupHelper();
+                }, 50);
+              });
+            }
+          });
+        }
+
+        function checkAndShowApiSetupHelper() {
+          const hasApiToken = localStorage.getItem('modioApiToken');
+          if (!hasApiToken) {
+            showApiSetupHelper();
+          }
+        }
+
+        function ensureModListIsVisible() {
+            console.log("Ensuring mod list is visible after modal close/action.");
+            const modCheckboxesContainer = document.getElementById('modCheckboxes');
+            if (!modCheckboxesContainer) {
+                console.error("Mod checkboxes container not found in ensureModListIsVisible.");
+                return;
+            }
+            if (sortedMods && sortedMods.length > 0) {
+                generateModCheckboxes();
             } else {
-                console.warn(`Element with ID ${id} not found for param ${paramName}`);
+                modCheckboxesContainer.innerHTML = '<p>Mod list could not be loaded. Please try refreshing the page.</p>';
+                console.warn("ensureModListIsVisible: sortedMods data is missing.");
             }
         }
-    };
 
-    // Helper function for checkboxes
-    const setCheckboxValue = (id, paramName) => {
-        if (urlParams.has(paramName)) {
-            const element = document.getElementById(id);
-            if (element) {
-                // Treat 'true' or existence of param (with empty value) as checked
-                const paramValue = urlParams.get(paramName).toLowerCase();
-                element.checked = (paramValue === 'true' || paramValue === '');
-                console.log(`Set ${id} checked state from param '${paramName}' to: ${element.checked}`);
+        function showApiSetupHelper() {
+          if (document.getElementById('apiSetupModal')) {
+            document.getElementById('apiSetupModal').style.display = 'block';
+            return;
+          }
+
+          const modalHTML = `
+            <div id="apiSetupModal" class="modal" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
+              <div class="modal-content" style="background-color: white; margin: 10% auto; padding: 20px; border-radius: 5px; width: 80%; max-width: 700px; position: relative;">
+                <span class="close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">×</span>
+                <h2>Mod.io API Setup (Optional for this Tool)</h2>
+                <p><strong>Note:</strong> An API token is needed for your <strong>game server</strong> to use mods, but this tool can list mods without it.</p>
+                <p>Follow these steps if you want to set up your server:</p>
+
+                <div class="setup-steps">
+                  <h3>Step 1: Get your API token</h3>
+                  <ol>
+                    <li>Create or sign in to your <a href="https://mod.io" target="_blank">Mod.io account</a></li>
+                    <li>Click your username at the top right, then click "API Access" from the left navigation</li>
+                    <li>Under "OAuth 2 Management", look for "Generate Access Token"</li>
+                    <li>Enter a name for your token (e.g., "My Sandstorm Server") and set it to "Read" access</li>
+                    <li>Click "Create Token" and copy the generated token</li>
+                  </ol>
+
+                  <h3>Step 2: Enter your API token (Optional Storage)</h3>
+                   <p>You can paste your token here to generate the config snippet, but it's primarily needed in your server's INI file.</p>
+                  <div class="form-group">
+                    <input type="text" id="apiTokenInput" placeholder="Paste your API token here" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                  </div>
+
+                  <h3>Step 3: Save to GameUserSettings.ini</h3>
+                  <p>Your token <strong>must</strong> be saved in this file on your server:</p>
+                  <code style="display: block; background: #f5f5f5; padding: 10px; margin: 10px 0; word-break: break-all;">
+                    \\sandstorm_server\\Insurgency\\Saved\\Config\\WindowsServer\\GameUserSettings.ini
+                  </code>
+
+                  <div class="generated-config" style="background: #f0f0f0; padding: 15px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <h4>Copy this text to your GameUserSettings.ini file:</h4>
+                    <pre id="iniConfigOutput" style="white-space: pre-wrap; word-break: break-all;"></pre>
+                    <button id="copyIniConfig" class="btn btn-primary">Copy to Clipboard</button>
+                  </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
+                  <button id="remindLaterButton" class="btn btn-secondary">Close Helper</button>
+                  <button id="saveApiToken" class="btn btn-primary">Save Token Locally & Close</button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const modalContainer = document.createElement('div');
+          modalContainer.innerHTML = modalHTML;
+          document.body.appendChild(modalContainer.firstElementChild);
+
+          document.querySelector('#apiSetupModal .close').addEventListener('click', function() {
+            document.getElementById('apiSetupModal').style.display = 'none';
+            ensureModListIsVisible();
+          });
+          document.getElementById('remindLaterButton').addEventListener('click', function() {
+              document.getElementById('apiSetupModal').style.display = 'none';
+              ensureModListIsVisible();
+          });
+          document.getElementById('apiTokenInput').addEventListener('input', updateIniConfig);
+          document.getElementById('saveApiToken').addEventListener('click', saveApiToken);
+          document.getElementById('copyIniConfig').addEventListener('click', copyIniConfig);
+          updateIniConfig();
+        }
+
+        function updateIniConfig() {
+          const token = document.getElementById('apiTokenInput').value.trim();
+          const iniConfig = `[/Script/ModKit.ModIOClient]
+        bHasUserAcceptedTerms=True
+        AccessToken=${token || 'YOUR_TOKEN_HERE'}`;
+          document.getElementById('iniConfigOutput').textContent = iniConfig;
+        }
+
+        function copyIniConfig() {
+          const configText = document.getElementById('iniConfigOutput').textContent;
+          navigator.clipboard.writeText(configText).then(function() {
+            showNotification('Configuration copied to clipboard!', 'success');
+          }).catch(function(err) {
+            console.error('Could not copy text: ', err);
+            showNotification('Failed to copy. Please select and copy manually.', 'error');
+          });
+        }
+
+        function saveApiToken() {
+          const token = document.getElementById('apiTokenInput').value.trim();
+          if (token) {
+              localStorage.setItem('modioApiToken', token);
+              showNotification('API token saved locally!', 'success');
+          } else {
+              localStorage.removeItem('modioApiToken');
+              showNotification('Local API token cleared.', 'info');
+          }
+          document.getElementById('apiSetupModal').style.display = 'none';
+          ensureModListIsVisible();
+        }
+        
+        function generateShareLink() {
+            const params = new URLSearchParams();
+
+            params.set('os', document.getElementById('os').value);
+            params.set('hostname', encodeURIComponent(document.getElementById('hostname').value));
+            params.set('maxPlayers', document.getElementById('maxPlayers').value);
+            params.set('port', document.getElementById('port').value);
+            params.set('queryPort', document.getElementById('queryPort').value);
+            params.set('scenario', encodeURIComponent(document.getElementById('scenario').value));
+
+            const password = document.getElementById('password').value;
+            if (password) params.set('password', encodeURIComponent(password));
+
+            const gameStatsToken = document.getElementById('gameStatsToken').value;
+            if (gameStatsToken) params.set('gameStatsToken', gameStatsToken);
+
+            const gsltToken = document.getElementById('gsltToken').value;
+            if (gsltToken) params.set('gsltToken', gsltToken);
+
+            if (document.getElementById('enableGameStats').checked) params.set('enableGameStats', 'true');
+            if (document.getElementById('officialRules').checked) params.set('officialRules', 'true');
+            if (document.getElementById('enableCheats').checked) params.set('enableCheats', 'true');
+
+            if (selectedMods && selectedMods.length > 0) {
+                 const validModIds = selectedMods.filter(mod => mod && typeof mod.id !== 'undefined').map(mod => mod.id);
+                 if (validModIds.length > 0) {
+                    params.set('mods', validModIds.join(','));
+                 }
+            }
+
+            if (selectedMutators && selectedMutators.length > 0) {
+                params.set('mutators', selectedMutators.map(m => encodeURIComponent(m)).join(','));
+            }
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?${params.toString()}`;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    showNotification('Shareable link copied to clipboard!', 'success');
+                }).catch(err => {
+                    console.error('Failed to copy link automatically: ', err);
+                    prompt('Copy this shareable link:', shareUrl);
+                });
             } else {
-                console.warn(`Element with ID ${id} not found for param ${paramName}`);
+                prompt('Copy this shareable link:', shareUrl);
             }
         }
-    };
-
-    // --- Apply to Standard Form Fields ---
-    setInputValue('os', 'os');
-    setInputValue('hostname', 'hostname');
-    setInputValue('maxPlayers', 'maxPlayers');
-    setInputValue('port', 'port');
-    setInputValue('queryPort', 'queryPort');
-    setInputValue('scenario', 'scenario');
-    setInputValue('password', 'password');
-    setInputValue('gameStatsToken', 'gameStatsToken');
-    setInputValue('gsltToken', 'gsltToken');
-
-    // --- Apply to Checkboxes ---
-    setCheckboxValue('enableGameStats', 'enableGameStats');
-    setCheckboxValue('officialRules', 'officialRules');
-    setCheckboxValue('enableCheats', 'enableCheats');
-
-    // --- Handle Mods ---
-    // Needs to run AFTER mods have been fetched and 'sortedMods' is populated
-    if (urlParams.has('mods')) {
-        const modIdsParam = urlParams.get('mods');
-        if (modIdsParam && sortedMods.length > 0) { // Ensure mods are loaded
-            const modIds = modIdsParam.split(',')
-                                    .map(id => parseInt(id.trim()))
-                                    .filter(id => !isNaN(id));
-            console.log("Applying mod IDs from URL:", modIds);
-
-            // Filter the fetched mods based on the IDs from the URL
-            selectedMods = sortedMods.filter(mod => mod && modIds.includes(mod.id));
-            console.log("Selected mods after URL processing:", selectedMods);
-
-        } else if (modIdsParam === '') { // Handle empty mods param "?mods="
-             selectedMods = [];
-             console.log("Cleared mods due to empty URL parameter.");
-        }
-        // Update UI AFTER processing mods
-        generateModCheckboxes(); // Regenerate to show selections correctly
-        updateSelectedModsDisplay();
-    } else {
-        // If no 'mods' param, ensure initial mod UI state is correct (might be redundant if fetchMods already did this)
-        // generateModCheckboxes(); // Usually called after fetchMods anyway
-        // updateSelectedModsDisplay();
-    }
-
-
-    // --- Handle Mutators ---
-    if (urlParams.has('mutators')) {
-        const mutatorsParam = urlParams.get('mutators');
-         if (mutatorsParam) {
-            selectedMutators = mutatorsParam.split(',')
-                                         .map(m => decodeURIComponent(m.trim())) // Decode mutator names
-                                         .filter(m => m !== '');
-            console.log("Applying mutators from URL:", selectedMutators);
-         } else { // Handle empty mutators param "?mutators="
-             selectedMutators = [];
-             console.log("Cleared mutators due to empty URL parameter.");
-         }
-         // Update UI AFTER processing mutators
-         generateMutatorCheckboxes(); // Regenerate checkboxes to reflect selection
-         updateSelectedMutatorsDisplay();
-    } else {
-        // If no 'mutators' param, ensure initial mutator UI state is correct
-        // generateMutatorCheckboxes(); // Usually called by initializeCustomMutators
-        // updateSelectedMutatorsDisplay();
-    }
-
-    // --- Final UI Updates ---
-    // Trigger generation of the config string based on prefilled values
-    generateConfig();
-    // Update suggestions based on potentially prefilled mods/mutators
-    updateMutatorSuggestions();
-    console.log("URL parameter application complete.");
-}
-
-
-
-
-function generateShareLink() {
-    const params = new URLSearchParams();
-
-    // Read current values from the form - use encodeURIComponent for safety
-    params.set('os', document.getElementById('os').value);
-    params.set('hostname', encodeURIComponent(document.getElementById('hostname').value));
-    params.set('maxPlayers', document.getElementById('maxPlayers').value);
-    params.set('port', document.getElementById('port').value);
-    params.set('queryPort', document.getElementById('queryPort').value);
-    params.set('scenario', encodeURIComponent(document.getElementById('scenario').value)); // Scenario might have special chars
-
-    const password = document.getElementById('password').value;
-    if (password) params.set('password', encodeURIComponent(password));
-
-    const gameStatsToken = document.getElementById('gameStatsToken').value;
-    if (gameStatsToken) params.set('gameStatsToken', gameStatsToken); // Tokens usually don't need encoding, but doesn't hurt
-
-    const gsltToken = document.getElementById('gsltToken').value;
-    if (gsltToken) params.set('gsltToken', gsltToken); // Tokens usually don't need encoding
-
-    // Checkboxes - only include if true for cleaner URLs
-    if (document.getElementById('enableGameStats').checked) params.set('enableGameStats', 'true');
-    if (document.getElementById('officialRules').checked) params.set('officialRules', 'true');
-    if (document.getElementById('enableCheats').checked) params.set('enableCheats', 'true');
-
-    // Mods - make sure selectedMods contains valid objects with 'id'
-    if (selectedMods && selectedMods.length > 0) {
-         const validModIds = selectedMods.filter(mod => mod && typeof mod.id !== 'undefined').map(mod => mod.id);
-         if (validModIds.length > 0) {
-            params.set('mods', validModIds.join(','));
-         }
-    }
-
-    // Mutators - encode each mutator name
-    if (selectedMutators && selectedMutators.length > 0) {
-        params.set('mutators', selectedMutators.map(m => encodeURIComponent(m)).join(','));
-    }
-
-    // Construct the full URL (without the hash part)
-    const baseUrl = window.location.origin + window.location.pathname;
-    const shareUrl = `${baseUrl}?${params.toString()}`;
-
-    // --- Present the URL to the user ---
-    // Attempt to copy to clipboard (preferred)
-    if (navigator.clipboard && window.isSecureContext) { // Clipboard API needs secure context (HTTPS)
-        navigator.clipboard.writeText(shareUrl).then(() => {
-            showNotification('Shareable link copied to clipboard!', 'success');
-            // Optional: Briefly show the link in a prompt anyway for visibility
-            // setTimeout(() => prompt('Shareable Link (copied to clipboard):', shareUrl), 100);
-        }).catch(err => {
-            console.error('Failed to copy link automatically: ', err);
-            prompt('Copy this shareable link:', shareUrl); // Fallback to prompt
-        });
-    } else {
-        // Fallback for non-secure contexts or older browsers
-        prompt('Copy this shareable link:', shareUrl);
-    }
-}
-
-
-
-
-
-
-</script>
-
+    </script>
 </body>
 </html>
