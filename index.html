@@ -2726,7 +2726,7 @@ function generateShareLink() {
     const baseUrl = window.location.origin + window.location.pathname;
     
     // 4. Create the final shareable URL with the action and params.
-    const shareUrl = `${baseUrl}?action=launch¶ms=${encodedServerParams}`;
+    const shareUrl = `${baseUrl}?action=launch&ms=${encodedServerParams}`;
 
     // 5. Copy the HTTPS link to the clipboard.
     if (navigator.clipboard && window.isSecureContext) {
