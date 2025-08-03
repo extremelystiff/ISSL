@@ -878,12 +878,14 @@
                 const serverParams = urlParams.get('params');
                 if (serverParams) {
                     // Display a user-friendly launching message so they know what's happening
-                    document.body.innerHTML = `
-                        <div style="font-family: 'Roboto', sans-serif; text-align: center; padding-top: 50px; color: #333; background-color: #f0f2f5; height: 100vh; margin: 0;">
-                            <h1>Launching Insurgency: Sandstorm...</h1>
-                            <p>Your game should open shortly. If it doesn't, please ensure Steam is running.</p>
-                            <p style="font-size: 0.8em; color: #666;">You can close this tab.</p>
-                        </div>
+			document.body.innerHTML = `
+			    <div style="font-family: 'Roboto', sans-serif; text-align: center; color: #333; background-color: #f0f2f5; height: 100vh; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+			        <div>
+			             <h1>Launching Insurgency: Sandstorm Server...</h1>
+			             <p>Your server should open shortly. If it doesn't, please ensure Steam is running and you allow steam links.</p>
+			             <p style="font-size: 0.8em; color: #666;">You can close this tab.</p>
+			        </div>
+			    </div>
                     `;
 
                     // The serverParams from the URL are already URI-encoded.
