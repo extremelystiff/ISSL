@@ -864,35 +864,50 @@
 
 
     <script>
-// Redirect logic to handle shared launch links for platforms like Discord
-(function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const action = urlParams.get('action');
+    // =========================================================================
+    // == IMMEDIATE LAUNCH REDIRECT HANDLER (FOR DISCORD-FRIENDLY LINKS)      ==
+    // =========================================================================
+    // This code runs instantly. If it finds "action=launch" in the URL, it
+    // takes over the page to launch the game and prevents the tool from loading.
+    (function() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
 
-    // Check if the URL is intended for launching the game
-    if (action === 'launch') {
-        const serverParams = urlParams.get('params');
-        if (serverParams) {
-            // Display a user-friendly launching message
-            document.body.innerHTML = `
-                <div style="font-family: 'Roboto', sans-serif; text-align: center; padding-top: 50px; color: #333;">
-                    <h1>Launching Insurgency: Sandstorm...</h1>
-                    <p>Your game should open shortly. If nothing happens, please ensure Steam is running and that your browser has permission to open steam:// links.</p>
-                    <p style="font-size: 0.8em; color: #666;">You can close this tab.</p>
-                </div>
-            `;
-            // The serverParams from the URL are already URI-encoded.
-            const steamUrl = 'steam://rungameid/581330//' + serverParams;
-            
-            // Perform the redirect
-            window.location.href = steamUrl;
-        } else {
-             document.body.innerHTML = '<h1>Error: Launch parameters were not found in the link.</h1>';
+            if (action === 'launch') {
+                const serverParams = urlParams.get('params');
+                if (serverParams) {
+                    // Display a user-friendly launching message so they know what's happening
+                    document.body.innerHTML = `
+                        <div style="font-family: 'Roboto', sans-serif; text-align: center; padding-top: 50px; color: #333; background-color: #f0f2f5; height: 100vh; margin: 0;">
+                            <h1>Launching Insurgency: Sandstorm...</h1>
+                            <p>Your game should open shortly. If it doesn't, please ensure Steam is running.</p>
+                            <p style="font-size: 0.8em; color: #666;">You can close this tab.</p>
+                        </div>
+                    `;
+
+                    // The serverParams from the URL are already URI-encoded.
+                    const steamUrl = 'steam://rungameid/581330//' + serverParams;
+                    
+                    // Perform the redirect to launch Steam
+                    window.location.href = steamUrl;
+                } else {
+                    document.body.innerHTML = '<h1>Error: Launch parameters were not found in the link.</h1>';
+                }
+                // This error is thrown intentionally to stop the rest of the script (the tool UI) from running.
+                throw new Error("Redirecting to Steam. Halting further script execution.");
+            }
+        } catch (e) {
+            // We expect the "Halting" error, so we only log other unexpected errors.
+            if (!e.message.startsWith("Redirecting to Steam")) {
+                console.error("An error occurred in the redirect handler:", e);
+            }
         }
-        // Stop the rest of the script from executing on this redirect page
-        throw new Error("Redirecting to Steam link. Halting further script execution.");
-    }
-})();
+    })();
+    // =========================================================================
+    // == END OF REDIRECT HANDLER                                             ==
+    // =========================================================================
+
         // Global variables
         let mods = [];
         let selectedMods = [];
