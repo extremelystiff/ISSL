@@ -11108,5 +11108,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5139777,
+    "name": "AimTrainer",
+    "summary": "aim trainer map",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/aimtrainer",
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
