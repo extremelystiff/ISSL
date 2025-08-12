@@ -11121,5 +11121,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5160844,
+    "name": "GooseFarmhouse1",
+    "summary": "GooseFarmhouse1 mod",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosefarmhouse1",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
