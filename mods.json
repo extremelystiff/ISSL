@@ -11151,5 +11151,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5186211,
+    "name": "EscortMission",
+    "summary": "A VIP escort mission specifically designed for Checkpoint mode (including Hardcore).",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/escortmission",
+    "modfile": {
+      "id": 0,
+      "version": "Internal 1.0.0_r"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
