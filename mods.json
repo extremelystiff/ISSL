@@ -11167,5 +11167,20 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 5196111,
+    "name": "GooseCompound",
+    "summary": "GooseCompound",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosecompound",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
