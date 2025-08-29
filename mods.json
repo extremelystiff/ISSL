@@ -11182,5 +11182,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5202510,
+    "name": "GooseHideout",
+    "summary": "GooseHideout",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosehideout",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
