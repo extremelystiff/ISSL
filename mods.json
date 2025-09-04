@@ -11197,5 +11197,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5214590,
+    "name": "GooseBab",
+    "summary": "GooseBab :D",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosebab",
+    "modfile": {
+      "id": 0,
+      "version": 2
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
