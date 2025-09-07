@@ -11225,5 +11225,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5217704,
+    "name": "Alpha Stage More Guns For Bots [WIP]",
+    "summary": "What this Mod does, it basically giving more weapon variety for the bots. It ain't ready just for testing",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/alpha-stage-more-guns-for-bots",
+    "modfile": {
+      "id": 0,
+      "version": "0.0.7"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
