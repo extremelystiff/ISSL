@@ -11251,5 +11251,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5093685,
+    "name": "Scrapyard",
+    "summary": "Scrapyard TEST",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/scrapyard",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
