@@ -11266,5 +11266,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5251042,
+    "name": "GoosePowerPlant",
+    "summary": "GoosePowerPlant",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosepowerplant",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
