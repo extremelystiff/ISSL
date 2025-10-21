@@ -11328,5 +11328,18 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 5305654,
+    "name": "Test mod rain gun",
+    "summary": "A copy of AKM that plays rain sounds upon firing.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/test-mod-rain-gun",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
