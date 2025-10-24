@@ -11341,5 +11341,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5310862,
+    "name": "Twilight Hollow",
+    "summary": "Engage in gorilla warfare in dense forest during the twilight hours",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/twilight-hollow",
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
