@@ -11357,5 +11357,20 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 5324201,
+    "name": "LiveRange",
+    "summary": "Live Firing Range",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/liverange",
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
