@@ -11385,5 +11385,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5338473,
+    "name": "RSPL-Mutator",
+    "summary": "placeholder",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/rspl-mutator",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
