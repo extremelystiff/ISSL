@@ -11426,5 +11426,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5363856,
+    "name": "TestMod3",
+    "summary": "Description text",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testmod3",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
