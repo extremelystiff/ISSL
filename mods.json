@@ -11413,5 +11413,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5363438,
+    "name": "NewModTest9",
+    "summary": "Description",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/newmodtest9",
+    "modfile": {
+      "id": 0,
+      "version": 1.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
