@@ -11400,5 +11400,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5363113,
+    "name": "TestNewMod",
+    "summary": "Text Descript",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testnewmod",
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
