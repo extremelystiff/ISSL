@@ -11475,5 +11475,17 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5449202,
+    "name": "MP7 expansion",
+    "summary": "MP7 expansion",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/mp7-expansion",
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
