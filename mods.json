@@ -11530,5 +11530,17 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5496571,
+    "name": "Sharklett Community Night",
+    "summary": "Mod required for Sharklett game night",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/sharklett-community-night",
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
