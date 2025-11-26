@@ -11552,5 +11552,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5507627,
+    "name": "EM-AMBUSH",
+    "summary": "Even more ambush maps",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/em-ambush",
+    "modfile": {
+      "id": 0,
+      "version": "V1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
