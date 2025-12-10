@@ -11639,5 +11639,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5564618,
+    "name": "Duck",
+    "summary": "Test_duck_mod",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/duck",
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
