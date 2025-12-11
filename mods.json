@@ -11652,5 +11652,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5566531,
+    "name": "Scavenge",
+    "summary": "??? Scavenge",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/scavenge",
+    "modfile": {
+      "id": 0,
+      "version": "0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
