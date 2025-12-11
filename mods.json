@@ -11667,5 +11667,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5566963,
+    "name": "Rank Required Remake",
+    "summary": "??????? Rank Required Remake",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/forcerankremake",
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
