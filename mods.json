@@ -11682,5 +11682,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5575780,
+    "name": "HD Newspaper",
+    "summary": "Restores HD newspapers back to the world of Insurgency Sandstorm. Works everywhere as long as you place inside your Paks folder. Read description.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/hd-newspaper",
+    "modfile": {
+      "id": 0,
+      "version": "1.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
