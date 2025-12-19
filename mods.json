@@ -11708,5 +11708,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5590619,
+    "name": "pfs-max",
+    "summary": "remove all blocking volumes",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/pfsmax",
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
