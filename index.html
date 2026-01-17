@@ -246,6 +246,43 @@
 
         .mutator-item input { margin-right: 10px; cursor: pointer; }
         .mutator-item label { cursor: pointer; font-size: 0.9rem; }
+		/* --- Custom Mutator Styles --- */
+		.mutator-item.custom-mutator {
+		    background-color: #f3f6ff; /* Light blue tint to distinguish */
+		    border-color: #b3c7f7;
+		}
+		
+		.mutator-item.custom-mutator:hover {
+		    background-color: #e6eeff;
+		    border-color: #4a90e2;
+		}
+		
+		.mutator-item.custom-mutator.active {
+		    background-color: #ebf8ff; /* Slightly different active state */
+		    border-color: var(--primary);
+		}
+		
+		/* Delete Button (X) */
+		.mutator-delete-btn {
+		    margin-left: auto; /* Pushes button to the far right */
+		    background: transparent;
+		    border: none;
+		    color: #e53e3e; /* Red */
+		    cursor: pointer;
+		    font-size: 1.1rem;
+		    line-height: 1;
+		    padding: 4px 8px;
+		    border-radius: 4px;
+		    opacity: 0.6;
+		    transition: all 0.2s;
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.mutator-delete-btn:hover {
+		    opacity: 1;
+		    background-color: rgba(229, 62, 62, 0.1);
+		}
         
         .search-box { display: flex; margin-bottom: 20px; }
         .search-box input { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px 0 0 6px; }
@@ -540,20 +577,26 @@
                         <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="GameStats Token">
                     </div>
 
-                    <div style="grid-column: 1 / -1; display:flex; gap: 20px; flex-wrap:wrap;">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="enableGameStats" name="enableGameStats">
-                            <label for="enableGameStats" style="margin:0;">Enable GameStats</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="officialRules" name="officialRules">
-                            <label for="officialRules" style="margin:0;">Use Official Rules</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="enableCheats" name="enableCheats">
-                            <label for="enableCheats" style="margin:0;">Enable Cheats</label>
-                        </div>
-                    </div>
+					<!-- Checkboxes Full Row -->
+					<div style="grid-column: 1 / -1; display:flex; gap: 20px; flex-wrap:wrap;">
+					    <div class="checkbox-wrapper">
+					        <input type="checkbox" id="enableGameStats" name="enableGameStats">
+					        <label for="enableGameStats" style="margin:0;">Enable GameStats</label>
+					    </div>
+					    <div class="checkbox-wrapper">
+					        <input type="checkbox" id="officialRules" name="officialRules">
+					        <label for="officialRules" style="margin:0;">Use Official Rules</label>
+					    </div>
+					    <div class="checkbox-wrapper">
+					        <input type="checkbox" id="enableCheats" name="enableCheats">
+					        <label for="enableCheats" style="margin:0;">Enable Cheats</label>
+					    </div>
+					    <!-- NEW NoEAC Checkbox -->
+					    <div class="checkbox-wrapper">
+					        <input type="checkbox" id="noEAC" name="noEAC">
+					        <label for="noEAC" style="margin:0;">Disable EAC <abbr title="Disables Easy Anti-Cheat. XP is still enabled.">?</abbr></label>
+					    </div>
+					</div>
 
                     <div class="form-actions">
                         <a id="launchLink" href="#" class="btn btn-primary btn-large" role="button">🚀 Launch Server</a>
@@ -880,9 +923,10 @@ function generateMutatorCheckboxes() {
     allMutators.forEach(mutator => {
         const isSelected = selectedMutators.includes(mutator.name);
         
-        // Create Item
+        // Create Item Container
         const item = document.createElement('div');
-        item.className = `mutator-item ${isSelected ? 'active' : ''}`;
+        // Add specific class if it's custom
+        item.className = `mutator-item ${isSelected ? 'active' : ''} ${mutator.isCustom ? 'custom-mutator' : ''}`;
         
         // Hidden Checkbox
         const checkbox = document.createElement('input');
@@ -894,17 +938,37 @@ function generateMutatorCheckboxes() {
         const label = document.createElement('label');
         label.textContent = mutator.name;
         
-        // Construct DOM
+        // Append elements
         item.appendChild(checkbox);
         item.appendChild(label);
 
-        // Click Logic
+        // --- NEW: Add Delete Button for Custom Mutators ---
+        if (mutator.isCustom) {
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'mutator-delete-btn';
+            deleteBtn.innerHTML = '&times;'; // HTML entity for multiplication X
+            deleteBtn.title = 'Remove custom mutator';
+            
+            deleteBtn.onclick = function(e) {
+                e.stopPropagation(); // Prevent clicking the row (selecting the mutator)
+                if(confirm(`Remove custom mutator "${mutator.name}"?`)) {
+                    deleteCustomMutator(mutator.name);
+                }
+            };
+            item.appendChild(deleteBtn);
+        }
+        // --------------------------------------------------
+
+        // Click Logic (Row Selection)
         item.onclick = function(e) {
-            // Prevent double triggering if clicking the actual checkbox
-            if (e.target !== checkbox) {
+            // Check if we clicked the actual checkbox or the delete button
+            if (e.target !== checkbox && !e.target.classList.contains('mutator-delete-btn')) {
                 checkbox.checked = !checkbox.checked;
             }
             
+            // If we clicked delete button, stop here (handled by deleteBtn.onclick)
+            if (e.target.classList.contains('mutator-delete-btn')) return;
+
             const name = checkbox.value;
             if (checkbox.checked) {
                 if (!selectedMutators.includes(name)) selectedMutators.push(name);
@@ -1073,7 +1137,7 @@ function applyUrlParameters() {
     setCheckboxValue('enableGameStats', 'enableGameStats');
     setCheckboxValue('officialRules', 'officialRules');
     setCheckboxValue('enableCheats', 'enableCheats');
-
+	setCheckboxValue('noEAC', 'noEAC');
     // --- Handle Mods ---
     // Needs to run AFTER mods have been fetched and 'sortedMods' is populated
     if (urlParams.has('mods')) {
@@ -1920,33 +1984,34 @@ function generateConfig() {
         // === END MODIFIED/NEW FUNCTIONS ===
 
         // Preset functions
-        function savePreset() {
-            const presetName = prompt('Enter a name for the preset:');
-            if (!presetName) return;
-            
-            const preset = {
-                name: presetName,
-                os: document.getElementById('os').value,
-                hostname: document.getElementById('hostname').value,
-                maxPlayers: document.getElementById('maxPlayers').value,
-                port: document.getElementById('port').value,
-                queryPort: document.getElementById('queryPort').value,
-                scenario: document.getElementById('scenario').value,
-                password: document.getElementById('password').value,
-                enableCheats: document.getElementById('enableCheats').checked,
-                gameStatsToken: document.getElementById('gameStatsToken').value,
-                gsltToken: document.getElementById('gsltToken').value,
-                enableGameStats: document.getElementById('enableGameStats').checked,
-                officialRules: document.getElementById('officialRules').checked,
-                selectedMutators: [...selectedMutators],
-                selectedMods: [...selectedMods]
-            };
-            
-            let presets = JSON.parse(localStorage.getItem('presets') || '[]');
-            presets.push(preset);
-            localStorage.setItem('presets', JSON.stringify(presets));
-            renderPresetButtons(presets);
-        }
+function savePreset() {
+    const presetName = prompt('Enter a name for the preset:');
+    if (!presetName) return;
+    
+    const preset = {
+        name: presetName,
+        os: document.getElementById('os').value,
+        hostname: document.getElementById('hostname').value,
+        maxPlayers: document.getElementById('maxPlayers').value,
+        port: document.getElementById('port').value,
+        queryPort: document.getElementById('queryPort').value,
+        scenario: document.getElementById('scenario').value,
+        password: document.getElementById('password').value,
+        enableCheats: document.getElementById('enableCheats').checked,
+        noEAC: document.getElementById('noEAC').checked, // <--- Add this
+        gameStatsToken: document.getElementById('gameStatsToken').value,
+        gsltToken: document.getElementById('gsltToken').value,
+        enableGameStats: document.getElementById('enableGameStats').checked,
+        officialRules: document.getElementById('officialRules').checked,
+        selectedMutators: [...selectedMutators],
+        selectedMods: [...selectedMods]
+    };
+    
+    let presets = JSON.parse(localStorage.getItem('presets') || '[]');
+    presets.push(preset);
+    localStorage.setItem('presets', JSON.stringify(presets));
+    renderPresetButtons(presets);
+}
 
         function loadPresetsFromStorage() {
             const presets = JSON.parse(localStorage.getItem('presets') || '[]');
@@ -2013,35 +2078,36 @@ function generateConfig() {
             }
         }
 
-        function loadPreset(index) {
-            const presets = JSON.parse(localStorage.getItem('presets') || '[]');
-            const preset = presets[index];
-            if (!preset) return;
-            
-            document.getElementById('os').value = preset.os;
-            document.getElementById('hostname').value = preset.hostname;
-            document.getElementById('maxPlayers').value = preset.maxPlayers;
-            document.getElementById('port').value = preset.port;
-            document.getElementById('queryPort').value = preset.queryPort;
-            document.getElementById('scenario').value = preset.scenario;
-            document.getElementById('password').value = preset.password;
-            document.getElementById('enableCheats').checked = preset.enableCheats;
-            document.getElementById('gameStatsToken').value = preset.gameStatsToken;
-            document.getElementById('gsltToken').value = preset.gsltToken;
-            document.getElementById('enableGameStats').checked = preset.enableGameStats;
-            document.getElementById('officialRules').checked = preset.officialRules;
-            
-            // Load saved mutators and mods
-            selectedMutators = preset.selectedMutators || [];
-            selectedMods = preset.selectedMods || [];
-            
-            updateMutatorCheckboxes();
-            updateModCheckboxes();
-            updateSelectedMutatorsDisplay();
-            updateSelectedModsDisplay();
-            generateConfig(); // <<< NEW: Regenerate config after loading a preset.
-        }
-
+function loadPreset(index) {
+    const presets = JSON.parse(localStorage.getItem('presets') || '[]');
+    const preset = presets[index];
+    if (!preset) return;
+    
+    document.getElementById('os').value = preset.os;
+    document.getElementById('hostname').value = preset.hostname;
+    document.getElementById('maxPlayers').value = preset.maxPlayers;
+    document.getElementById('port').value = preset.port;
+    document.getElementById('queryPort').value = preset.queryPort;
+    document.getElementById('scenario').value = preset.scenario;
+    document.getElementById('password').value = preset.password;
+    document.getElementById('enableCheats').checked = preset.enableCheats;
+    // Handle older presets that might not have this property
+    document.getElementById('noEAC').checked = preset.noEAC || false; // <--- Add this
+    document.getElementById('gameStatsToken').value = preset.gameStatsToken;
+    document.getElementById('gsltToken').value = preset.gsltToken;
+    document.getElementById('enableGameStats').checked = preset.enableGameStats;
+    document.getElementById('officialRules').checked = preset.officialRules;
+    
+    // Load saved mutators and mods
+    selectedMutators = preset.selectedMutators || [];
+    selectedMods = preset.selectedMods || [];
+    
+    updateMutatorCheckboxes();
+    updateModCheckboxes();
+    updateSelectedMutatorsDisplay();
+    updateSelectedModsDisplay();
+    generateConfig(); 
+}
         function exportPresets() {
             const presets = JSON.parse(localStorage.getItem('presets') || '[]');
             const presetsJSON = JSON.stringify(presets, null, 2);
@@ -2585,6 +2651,7 @@ function getServerParamsString() {
     const gsltToken = document.getElementById('gsltToken').value;
     const enableGameStats = document.getElementById('enableGameStats').checked;
     const officialRules = document.getElementById('officialRules').checked;
+    const noEAC = document.getElementById('noEAC').checked; // <--- NEW
 
     // 1. Build the initial Launch URL (Server Map string)
     let travelUrl = scenario;
@@ -2606,6 +2673,10 @@ function getServerParamsString() {
     ];
     
     if (enableCheats) otherParams.push("-EnableCheats");
+    
+    // NEW NoEAC Logic
+    if (noEAC) otherParams.push("-NoEAC");
+
     if (gameStatsToken && enableGameStats) {
         otherParams.push(`-GameStatsToken=${gameStatsToken}`, "-GameStats");
     }
@@ -2616,13 +2687,12 @@ function getServerParamsString() {
         otherParams.push(`-Mutators=${selectedMutators.join(',')}`);
     }
     
-    // --- UPDATED MODS LOGIC ---
+    // --- Mods Logic ---
     if (selectedMods.length > 0) {
         const modIds = selectedMods.map(mod => mod.id).join(',');
         otherParams.push(`-mods`, `-CmdModList=${modIds}`);
         
         // Forces the server to reload the map after mods finish downloading
-        // This ensures all mods are loaded correctly before players join
         otherParams.push(`-ModDownloadTravelTo=${scenario}`);
     }
 
