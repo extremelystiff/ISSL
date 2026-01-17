@@ -2988,12 +2988,12 @@ function getServerParamsString() {
     return `${travelUrl} ${otherParams.join(' ')}`;
 }
     </script>
-	<script>
-		// ==========================================
-// GAME.INI GENERATOR LOGIC
+<script>
+// ==========================================
+// GAME.INI GENERATOR LOGIC + PERSISTENCE
 // ==========================================
 
-// Configuration Schema based on your request
+// Configuration Schema
 const iniConfigData = [
     {
         title: "General Gameplay (INSGameMode)",
@@ -3062,7 +3062,7 @@ const iniConfigData = [
     },
     {
         title: "Mutator: Arms Race",
-        section: "[/Script/Insurgency.Mutator_ArmsRace]", // Inferred section based on standard naming
+        section: "[/Script/Insurgency.Mutator_ArmsRace]", 
         fields: [
             { key: "bItemsDrop", type: "bool", def: false, desc: "If players can drop items" },
             { key: "bEnablePickupItems", type: "bool", def: false, desc: "Allow pickup items on map" },
@@ -3113,6 +3113,33 @@ const iniConfigData = [
     }
 ];
 
+// --- Persistence Functions for Game.ini ---
+function saveGameIniState() {
+    const inputs = document.querySelectorAll('#iniFormContainer input, #iniFormContainer select');
+    const data = {};
+    inputs.forEach(input => {
+        if(input.dataset.key) {
+            data[input.dataset.key] = input.value;
+        }
+    });
+    localStorage.setItem('issl_gameini_v1', JSON.stringify(data));
+}
+
+function loadGameIniState() {
+    const stored = localStorage.getItem('issl_gameini_v1');
+    if (!stored) return;
+    try {
+        const data = JSON.parse(stored);
+        const inputs = document.querySelectorAll('#iniFormContainer input, #iniFormContainer select');
+        inputs.forEach(input => {
+            if (input.dataset.key && data[input.dataset.key] !== undefined) {
+                input.value = data[input.dataset.key];
+            }
+        });
+        generateIniOutput(); // Regenerate text area after loading
+    } catch (e) { console.error("Error loading Game.ini", e); }
+}
+
 // Initialize the form
 function initGameIniForm() {
     const container = document.getElementById('iniFormContainer');
@@ -3120,23 +3147,17 @@ function initGameIniForm() {
     container.innerHTML = '';
 
     iniConfigData.forEach((group, index) => {
-        // Create Section
         const sectionDiv = document.createElement('div');
         sectionDiv.className = 'ini-section';
 
-        // Header
         const header = document.createElement('div');
         header.className = 'ini-header';
         header.textContent = group.title;
-        header.onclick = () => {
-            sectionDiv.classList.toggle('open');
-        };
+        header.onclick = () => { sectionDiv.classList.toggle('open'); };
 
-        // Body
         const body = document.createElement('div');
         body.className = 'ini-body';
 
-        // Fields
         group.fields.forEach(field => {
             const wrapper = document.createElement('div');
             wrapper.className = 'ini-input-group';
@@ -3148,14 +3169,10 @@ function initGameIniForm() {
             if (field.type === 'bool') {
                 input = document.createElement('select');
                 const optTrue = document.createElement('option');
-                optTrue.value = 'True';
-                optTrue.text = 'True';
+                optTrue.value = 'True'; optTrue.text = 'True';
                 const optFalse = document.createElement('option');
-                optFalse.value = 'False';
-                optFalse.text = 'False';
-                
-                input.add(optTrue);
-                input.add(optFalse);
+                optFalse.value = 'False'; optFalse.text = 'False';
+                input.add(optTrue); input.add(optFalse);
                 input.value = field.def ? 'True' : 'False';
             } else {
                 input = document.createElement('input');
@@ -3164,13 +3181,14 @@ function initGameIniForm() {
                 if(field.type === 'number') input.step = "any";
             }
 
-            // Event listener to update preview
-            input.addEventListener('change', generateIniOutput);
-            input.addEventListener('input', generateIniOutput);
-
-            // Add metadata for generator
             input.dataset.section = index;
             input.dataset.key = field.key;
+
+            // Listeners for updates AND saving
+            input.addEventListener('change', generateIniOutput);
+            input.addEventListener('input', generateIniOutput);
+            input.addEventListener('change', saveGameIniState);
+            input.addEventListener('input', saveGameIniState);
 
             const desc = document.createElement('div');
             desc.className = 'ini-desc';
@@ -3187,6 +3205,9 @@ function initGameIniForm() {
         container.appendChild(sectionDiv);
     });
 
+    // LOAD SAVED DATA IMMEDIATELY
+    loadGameIniState();
+    
     // Generate initial state
     generateIniOutput();
 }
@@ -3194,8 +3215,6 @@ function initGameIniForm() {
 function generateIniOutput() {
     let output = "";
     const inputs = document.querySelectorAll('#iniFormContainer input, #iniFormContainer select');
-    
-    // Group inputs by section index
     const sectionMap = {};
 
     inputs.forEach(input => {
@@ -3204,20 +3223,17 @@ function generateIniOutput() {
         sectionMap[sectionIdx].push(input);
     });
 
-    // Build String
     Object.keys(sectionMap).forEach(idx => {
         const group = iniConfigData[idx];
         output += `${group.section}\n`;
-        
         sectionMap[idx].forEach(input => {
-            // Optional: Only output if different from default? 
-            // For now, output everything for clarity.
             output += `${input.dataset.key}=${input.value}\n`;
         });
         output += "\n";
     });
 
-    document.getElementById('iniOutput').value = output.trim();
+    const outputEl = document.getElementById('iniOutput');
+    if(outputEl) outputEl.value = output.trim();
 }
 
 function downloadGameIniFile() {
@@ -3236,9 +3252,8 @@ function downloadGameIniFile() {
 function copyIniToClipboard() {
     const content = document.getElementById('iniOutput');
     content.select();
-    document.execCommand('copy'); // Fallback for older browsers
+    document.execCommand('copy'); 
     
-    // Attempt modern API
     if (navigator.clipboard) {
         navigator.clipboard.writeText(content.value).then(() => {
             showNotification('Game.ini content copied!', 'success');
@@ -3248,17 +3263,16 @@ function copyIniToClipboard() {
     }
 }
 
-// Initialize on load
 document.addEventListener('DOMContentLoaded', function() {
     initGameIniForm();
 });
-	</script>
-		<script>
-			// ==========================================
-// MAPCYCLE GENERATOR LOGIC
+</script>
+<script>
+// ==========================================
+// MAPCYCLE GENERATOR LOGIC + PERSISTENCE
 // ==========================================
 
-// 1. Data Source (Compiled from your list)
+// 1. Data Source
 const scenarioDatabase = [
     // Bab
     { map: "Bab", mode: "Checkpoint Insurgents", code: "Scenario_Bab_Checkpoint_Insurgents" },
@@ -3272,7 +3286,7 @@ const scenarioDatabase = [
     { map: "Bab", mode: "Survival", code: "Scenario_Bab_Survival" },
     { map: "Bab", mode: "Defusal", code: "Scenario_Bab_Defusal" },
 
-    // Crossing (Canyon)
+    // Crossing
     { map: "Crossing", mode: "Ambush", code: "Scenario_Crossing_Ambush" },
     { map: "Crossing", mode: "Checkpoint Insurgents", code: "Scenario_Crossing_Checkpoint_Insurgents" },
     { map: "Crossing", mode: "Checkpoint Security", code: "Scenario_Crossing_Checkpoint_Security" },
@@ -3303,7 +3317,7 @@ const scenarioDatabase = [
     { map: "Farmhouse", mode: "Outpost", code: "Scenario_Farmhouse_Outpost" },
     { map: "Farmhouse", mode: "Defusal", code: "Scenario_Farmhouse_Defusal" },
 
-    // Hideout (Town)
+    // Hideout
     { map: "Hideout", mode: "Ambush", code: "Scenario_Hideout_Ambush" },
     { map: "Hideout", mode: "Checkpoint Insurgents", code: "Scenario_Hideout_Checkpoint_Insurgents" },
     { map: "Hideout", mode: "Checkpoint Security", code: "Scenario_Hideout_Checkpoint_Security" },
@@ -3320,7 +3334,7 @@ const scenarioDatabase = [
     { map: "Hideout", mode: "Ambush East", code: "Scenario_Hideout_Ambush_East" },
     { map: "Hideout", mode: "Defusal", code: "Scenario_Hideout_Defusal" },
 
-    // Hillside (Sinjar)
+    // Hillside
     { map: "Hillside", mode: "Ambush", code: "Scenario_Hillside_Ambush" },
     { map: "Hillside", mode: "Checkpoint Insurgents", code: "Scenario_Hillside_Checkpoint_Insurgents" },
     { map: "Hillside", mode: "Checkpoint Security", code: "Scenario_Hillside_Checkpoint_Security" },
@@ -3347,7 +3361,7 @@ const scenarioDatabase = [
     { map: "Ministry", mode: "Survival", code: "Scenario_Ministry_Survival" },
     { map: "Ministry", mode: "Defusal", code: "Scenario_Ministry_Defusal" },
 
-    // Outskirts (Compound)
+    // Outskirts
     { map: "Outskirts", mode: "Checkpoint Insurgents", code: "Scenario_Outskirts_Checkpoint_Insurgents" },
     { map: "Outskirts", mode: "Checkpoint Security", code: "Scenario_Outskirts_Checkpoint_Security" },
     { map: "Outskirts", mode: "Firefight East", code: "Scenario_Outskirts_Firefight_East" },
@@ -3383,7 +3397,7 @@ const scenarioDatabase = [
     { map: "Precinct", mode: "Ambush East", code: "Scenario_Precinct_Ambush_East" },
     { map: "Precinct", mode: "FFA", code: "Scenario_Precinct_FFA" },
 
-    // Refinery (Oilfield)
+    // Refinery
     { map: "Refinery", mode: "Ambush", code: "Scenario_Refinery_Ambush" },
     { map: "Refinery", mode: "Checkpoint Insurgents", code: "Scenario_Refinery_Checkpoint_Insurgents" },
     { map: "Refinery", mode: "Checkpoint Security", code: "Scenario_Refinery_Checkpoint_Security" },
@@ -3398,7 +3412,7 @@ const scenarioDatabase = [
     { map: "Refinery", mode: "Domination", code: "Scenario_Refinery_Domination" },
     { map: "Refinery", mode: "Outpost", code: "Scenario_Refinery_Outpost" },
 
-    // Summit (Mountain)
+    // Summit
     { map: "Summit", mode: "Ambush West", code: "Scenario_Summit_Ambush_West" },
     { map: "Summit", mode: "Checkpoint Insurgents", code: "Scenario_Summit_Checkpoint_Insurgents" },
     { map: "Summit", mode: "Checkpoint Security", code: "Scenario_Summit_Checkpoint_Security" },
@@ -3446,7 +3460,7 @@ const scenarioDatabase = [
     { map: "Tell", mode: "Defusal", code: "Scenario_Tell_Defusal" },
     { map: "Tell", mode: "FFA", code: "Scenario_Tell_FFA" },
 
-    // Tideway (Buhriz)
+    // Tideway
     { map: "Tideway", mode: "Checkpoint Insurgents", code: "Scenario_Tideway_Checkpoint_Insurgents" },
     { map: "Tideway", mode: "Checkpoint Security", code: "Scenario_Tideway_Checkpoint_Security" },
     { map: "Tideway", mode: "Domination", code: "Scenario_Tideway_Domination" },
@@ -3462,6 +3476,20 @@ const scenarioDatabase = [
 
 // 2. Global State for Map Cycle
 let currentMapCycle = [];
+
+// --- Persistence Functions for MapCycle ---
+function saveMapCycleState() {
+    localStorage.setItem('issl_mapcycle_v1', JSON.stringify(currentMapCycle));
+}
+
+function loadMapCycleState() {
+    const stored = localStorage.getItem('issl_mapcycle_v1');
+    if (!stored) return;
+    try {
+        currentMapCycle = JSON.parse(stored);
+        updateMapCycleOutput();
+    } catch (e) { console.error("Error loading MapCycle", e); }
+}
 
 // 3. Initialize Dropdowns
 function initMapCycleUI() {
@@ -3496,16 +3524,7 @@ function addScenariosToCycle() {
 
     let matches = scenarioDatabase.filter(scenario => {
         const mapMatch = (mapFilter === "All") || (scenario.map === mapFilter);
-        
-        // Exact mode match logic, or partial if needed? 
-        // For now, exact string match based on the dropdown.
-        // But if I pick "All", it allows anything.
-        // If I pick "Checkpoint Security", it finds that string.
-        // Note: Some modes are "Firefight West", "Firefight East". 
-        // If user wants generic "Firefight", they might need to be specific or we add loose matching.
-        // Given the dataset, specific is safer.
         const modeMatch = (modeFilter === "All") || (scenario.mode === modeFilter);
-
         return mapMatch && modeMatch;
     });
 
@@ -3527,6 +3546,9 @@ function addScenariosToCycle() {
         }
     });
 
+    // Save state after adding
+    saveMapCycleState();
+
     updateMapCycleOutput();
     showNotification(`Added ${addedCount} entries.`, "success");
 }
@@ -3534,6 +3556,8 @@ function addScenariosToCycle() {
 function clearMapCycle() {
     if(confirm("Clear the entire map cycle list?")) {
         currentMapCycle = [];
+        // Save state after clearing
+        saveMapCycleState();
         updateMapCycleOutput();
     }
 }
@@ -3575,14 +3599,29 @@ function downloadMapCycle() {
 // Init on load
 document.addEventListener('DOMContentLoaded', function() {
     initMapCycleUI();
+    loadMapCycleState(); // Load saved data
 });
-		</script>
-	<script>
-		// ==========================================
-// ADMIN LIST GENERATOR LOGIC
+</script>
+<script>
+// ==========================================
+// ADMIN LIST GENERATOR LOGIC + PERSISTENCE
 // ==========================================
 
 let adminUsers = [];
+
+// --- Persistence Functions for Admin List ---
+function saveAdminState() {
+    localStorage.setItem('issl_admin_v1', JSON.stringify(adminUsers));
+}
+
+function loadAdminState() {
+    const stored = localStorage.getItem('issl_admin_v1');
+    if (!stored) return;
+    try {
+        adminUsers = JSON.parse(stored);
+        updateAdminUI();
+    } catch (e) { console.error("Error loading Admins", e); }
+}
 
 function addAdminUser() {
     const idInput = document.getElementById('adminSteamID');
@@ -3613,6 +3652,9 @@ function addAdminUser() {
     // Add to array
     adminUsers.push({ id: id, name: name });
     
+    // SAVE STATE
+    saveAdminState();
+
     // Clear inputs
     idInput.value = '';
     nameInput.value = '';
@@ -3623,6 +3665,10 @@ function addAdminUser() {
 
 function removeAdmin(index) {
     adminUsers.splice(index, 1);
+    
+    // SAVE STATE
+    saveAdminState();
+
     updateAdminUI();
 }
 
@@ -3669,7 +3715,6 @@ function updateAdminUI() {
     }
 
     // 2. Update Output Textarea
-    // Strictly one ID per line. No comments in the actual file to prevent server parsing errors.
     const fileContent = adminUsers.map(u => u.id).join('\n');
     outputArea.value = fileContent;
 }
@@ -3704,6 +3749,11 @@ function downloadAdminList() {
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
 }
-	</script>
+
+// Load Saved Data on Init
+document.addEventListener('DOMContentLoaded', function() {
+    loadAdminState();
+});
+</script>
 </body>
 </html>
