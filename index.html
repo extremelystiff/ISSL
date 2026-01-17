@@ -2370,21 +2370,30 @@ function generateModCheckboxes() {
     let availableCount = 0;
 
     sortedMods.forEach(mod => {
+        // Skip invalid entries entirely
+        if (!mod || !mod.id) return;
+
         const isSelected = selectedMods.some(selectedMod => selectedMod.id === mod.id);
 
         // Create Card
         const card = document.createElement('div');
         card.className = `mod-card mod-item ${isSelected ? 'selected' : ''}`;
         
-        // *** CRITICAL FOR SEARCH FIX ***
-        // We create a combined string of Name + Summary + ID for easier searching
-        const safeSummary = mod.summary ? mod.summary.toLowerCase() : "";
-        const safeName = mod.name.toLowerCase();
+        // *** SAFETY FIX HERE ***
+        // 1. Ensure mod.name is treated as a string, handling null/undefined/numbers
+        const rawName = (mod.name !== undefined && mod.name !== null) ? String(mod.name) : "Unknown Mod";
+        const safeName = rawName.toLowerCase();
+        
+        // 2. Ensure summary is treated as a string
+        const rawSummary = (mod.summary !== undefined && mod.summary !== null) ? String(mod.summary) : "";
+        const safeSummary = rawSummary.toLowerCase();
+
+        // 3. Create search text
         const searchText = `${safeName} ${safeSummary} ${mod.id}`;
         card.dataset.searchText = searchText; 
         // *******************************
 
-        // Image
+        // Image Logic
         const imgContainer = document.createElement('div');
         imgContainer.className = 'mod-image-container';
         
@@ -2401,7 +2410,8 @@ function generateModCheckboxes() {
         } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'mod-placeholder';
-            placeholder.textContent = mod.name.charAt(0).toUpperCase();
+            // Safe charAt check
+            placeholder.textContent = rawName.charAt(0).toUpperCase();
             imgContainer.appendChild(placeholder);
         }
         card.appendChild(imgContainer);
@@ -2412,11 +2422,11 @@ function generateModCheckboxes() {
 
         const title = document.createElement('div');
         title.className = 'mod-title';
-        title.textContent = mod.name;
+        title.textContent = rawName; // Use the safe string version
         
         const summary = document.createElement('div');
         summary.className = 'mod-summary';
-        summary.textContent = mod.summary || 'No description available.';
+        summary.textContent = rawSummary || 'No description available.';
 
         content.appendChild(title);
         content.appendChild(summary);
@@ -2449,10 +2459,10 @@ function generateModCheckboxes() {
             
             if (checkbox.checked) {
                 card.classList.add('selected');
+                // Ensure we find the mod safely
                 const modToAdd = sortedMods.find(m => m.id === modId);
                 if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
                     selectedMods.push(modToAdd);
-                    // logSelectedCustomMutators(); // Uncomment if you use this
                 }
             } else {
                 card.classList.remove('selected');
