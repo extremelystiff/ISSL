@@ -271,7 +271,119 @@
             border-bottom: 1px dotted #666;
             cursor: help;
         }
-		
+
+		/* --- Mod Grid Layout --- */
+.mod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive columns */
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.mod-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.mod-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-color: #3498db;
+}
+
+.mod-card.selected {
+    border: 2px solid #3498db;
+    background-color: #f0f8ff;
+}
+
+.mod-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #3498db;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 25px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.mod-image-container {
+    width: 100%;
+    height: 160px; /* Fixed height for consistency */
+    background-color: #eee;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mod-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers area without stretching */
+}
+
+.mod-placeholder {
+    color: #aaa;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.mod-content {
+    padding: 15px;
+    flex-grow: 1; /* Pushes content to fill space */
+    display: flex;
+    flex-direction: column;
+}
+
+.mod-title {
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.mod-summary {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.mod-links {
+    margin-top: auto; /* Pushes to bottom */
+    font-size: 0.8em;
+}
+
+.mod-links a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.mod-links a:hover {
+    text-decoration: underline;
+}
+
+/* Hide the actual checkbox but keep it functional */
+.mod-card input[type="checkbox"] {
+    display: none;
+}
 /* ============================================ */
 /* == FORCE MUTATOR CHECKBOX VISIBILITY FIX === */
 /* ============================================ */
@@ -2402,116 +2514,160 @@ function generateConfig() {
         }
 
 		// Generate mod checkboxes using the pre-sorted 'sortedMods' list
-		function generateModCheckboxes() {
-			const modCheckboxesContainer = document.getElementById('modCheckboxes');
-			modCheckboxesContainer.innerHTML = ''; // Clear previous
+function generateModCheckboxes() {
+    const modCheckboxesContainer = document.getElementById('modCheckboxes');
+    modCheckboxesContainer.innerHTML = ''; // Clear previous
 
-			// Use the globally sorted 'sortedMods' array
-			if (!sortedMods || sortedMods.length === 0) {
-				modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
-				return;
-			}
+    if (!sortedMods || sortedMods.length === 0) {
+        modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
+        return;
+    }
 
-			// --- NEW: Create separate containers for visual grouping ---
-			const enabledModsSection = document.createElement('div');
-			enabledModsSection.id = 'enabledModsSection';
-			enabledModsSection.style.marginBottom = '25px'; // Space below enabled mods
+    // Prepare Sections
+    const enabledModsSection = document.createElement('div');
+    enabledModsSection.id = 'enabledModsSection';
+    
+    // Create Grid containers
+    const enabledGrid = document.createElement('div');
+    enabledGrid.className = 'mod-grid';
+    
+    const availableModsSection = document.createElement('div');
+    availableModsSection.id = 'availableModsSection';
+    
+    const availableGrid = document.createElement('div');
+    availableGrid.className = 'mod-grid';
 
-			const availableModsSection = document.createElement('div');
-			availableModsSection.id = 'availableModsSection';
+    // Track counts
+    let enabledCount = 0;
+    let availableCount = 0;
 
-			const enabledModItems = [];
-			const availableModItems = [];
-			// --- END NEW ---
+    sortedMods.forEach(mod => {
+        const isSelected = selectedMods.some(selectedMod => selectedMod.id === mod.id);
 
+        // 1. Create Card Container
+        const card = document.createElement('div');
+        card.className = `mod-card mod-item ${isSelected ? 'selected' : ''}`;
+        
+        // 2. Handle Image
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'mod-image-container';
+        
+        // CHECK: Does your JSON have an image?
+        // Note: You need to update your mods.json generator to include "logo.thumb_320x180"
+        let imageUrl = null;
+        if(mod.logo && mod.logo.thumb_320x180) imageUrl = mod.logo.thumb_320x180;
+        else if(mod.logoUrl) imageUrl = mod.logoUrl; // Fallback if you named it differently
+        
+        if (imageUrl) {
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.className = 'mod-image';
+            img.loading = "lazy"; // Performance boost
+            imgContainer.appendChild(img);
+        } else {
+            // Placeholder if no image found
+            const placeholder = document.createElement('div');
+            placeholder.className = 'mod-placeholder';
+            placeholder.textContent = mod.name.charAt(0).toUpperCase();
+            imgContainer.appendChild(placeholder);
+        }
+        card.appendChild(imgContainer);
 
-			sortedMods.forEach(mod => {
-				const isSelected = selectedMods.some(selectedMod => selectedMod.id === mod.id);
+        // 3. Content Section
+        const content = document.createElement('div');
+        content.className = 'mod-content';
 
-				// Create the checkbox item (same logic as before)
-				const checkboxItem = document.createElement('div');
-				checkboxItem.className = 'checkbox-item mod-item'; // Add 'mod-item' for search
+        const title = document.createElement('div');
+        title.className = 'mod-title';
+        title.textContent = mod.name;
+        
+        const summary = document.createElement('div');
+        summary.className = 'mod-summary';
+        summary.textContent = mod.summary || 'No description available.';
+        // Search text helper (hidden)
+        const searchHelper = document.createElement('span');
+        searchHelper.style.display = 'none';
+        searchHelper.className = 'item-description'; // Keep for search compatibility
+        searchHelper.textContent = mod.summary;
 
-				const checkbox = document.createElement('input');
-				checkbox.type = 'checkbox';
-				checkbox.value = mod.id;
-				checkbox.id = `mod-${mod.id}`;
-				checkbox.checked = isSelected;
-				checkbox.addEventListener('change', function() {
-					const modId = parseInt(this.value); // Ensure ID is number for comparison if needed
-					if (this.checked) {
-						const modToAdd = sortedMods.find(m => m.id === modId);
-						if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
-							selectedMods.push(modToAdd);
-							logSelectedCustomMutators(); // Keep if needed
-						}
-					} else {
-						selectedMods = selectedMods.filter(sm => sm.id !== modId);
-					}
-					updateSelectedModsDisplay(); // This triggers suggestion updates
-					generateModCheckboxes(); // Re-render the list to move the item between sections
-                    generateConfig(); // <<< NEW: Update link/config on change
-				});
+        content.appendChild(title);
+        content.appendChild(summary);
+        content.appendChild(searchHelper);
 
-				const label = document.createElement('label');
-				label.htmlFor = checkbox.id;
-				label.textContent = mod.name;
+        // 4. Mod.io Link (Stop propagation so clicking link doesn't select mod)
+        if(mod.profileUrl) {
+            const linkDiv = document.createElement('div');
+            linkDiv.className = 'mod-links';
+            const link = document.createElement('a');
+            link.href = mod.profileUrl;
+            link.target = "_blank";
+            link.textContent = "View on Mod.io ↗";
+            link.onclick = (e) => e.stopPropagation();
+            linkDiv.appendChild(link);
+            content.appendChild(linkDiv);
+        }
 
-				const description = document.createElement('div');
-				description.className = 'item-description';
-				description.textContent = mod.summary || 'No description available';
-				description.style.marginLeft = '10px'; // Space after label
+        card.appendChild(content);
 
-				checkboxItem.appendChild(checkbox);
-				checkboxItem.appendChild(label);
-				checkboxItem.appendChild(description);
+        // 5. Hidden Checkbox Logic
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = mod.id;
+        checkbox.checked = isSelected;
+        card.appendChild(checkbox);
 
-				// --- NEW: Add to the correct list/section ---
-				if (isSelected) {
-					enabledModItems.push(checkboxItem);
-				} else {
-					availableModItems.push(checkboxItem);
-				}
-				// --- END NEW ---
-			});
+        // 6. Click Event for the Card
+        card.addEventListener('click', function() {
+            checkbox.checked = !checkbox.checked; // Toggle checkbox
+            
+            const modId = parseInt(checkbox.value);
+            
+            if (checkbox.checked) {
+                card.classList.add('selected');
+                const modToAdd = sortedMods.find(m => m.id === modId);
+                if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
+                    selectedMods.push(modToAdd);
+                    logSelectedCustomMutators(); 
+                }
+            } else {
+                card.classList.remove('selected');
+                selectedMods = selectedMods.filter(sm => sm.id !== modId);
+            }
+            
+            updateSelectedModsDisplay();
+            generateConfig(); 
+            // NOTE: We do NOT re-generate the whole list on click anymore
+            // to prevent the grid from jumping around. We just toggle styles.
+        });
 
-			// --- NEW: Append items to their respective sections with headers ---
-			// 1. Enabled Section
-			if (enabledModItems.length > 0) {
-				const enabledHeader = document.createElement('h4');
-				enabledHeader.textContent = `Enabled Mods (${enabledModItems.length})`;
-				enabledHeader.style.marginBottom = '10px';
-				enabledModsSection.appendChild(enabledHeader);
-				// Style this section slightly differently?
-				enabledModsSection.style.border = '1px solid #d1ecf1';
-				enabledModsSection.style.backgroundColor = '#f8f9fa';
-				enabledModsSection.style.padding = '15px';
-				enabledModsSection.style.borderRadius = '5px';
+        // Add to appropriate grid
+        if (isSelected) {
+            enabledGrid.appendChild(card);
+            enabledCount++;
+        } else {
+            availableGrid.appendChild(card);
+            availableCount++;
+        }
+    });
 
-				enabledModItems.forEach(item => enabledModsSection.appendChild(item));
-				modCheckboxesContainer.appendChild(enabledModsSection); // Add section to main container
-			}
+    // Append Sections to DOM
+    if (enabledCount > 0) {
+        const enabledHeader = document.createElement('h4');
+        enabledHeader.textContent = `Enabled Mods (${enabledCount})`;
+        enabledModsSection.appendChild(enabledHeader);
+        enabledModsSection.appendChild(enabledGrid);
+        modCheckboxesContainer.appendChild(enabledModsSection);
+    }
 
-			// 2. Available Section
-			if (availableModItems.length > 0) {
-				 const availableHeader = document.createElement('h4');
-				 availableHeader.textContent = 'Available Mods';
-				 // Add margin top only if there *was* an enabled section
-				 if (enabledModItems.length > 0) {
-					 availableHeader.style.marginTop = '20px';
-				 }
-				 availableHeader.style.marginBottom = '10px';
-				 availableModsSection.appendChild(availableHeader);
-
-				availableModItems.forEach(item => availableModsSection.appendChild(item));
-				modCheckboxesContainer.appendChild(availableModsSection); // Add section to main container
-			}
-			// --- END NEW ---
-
-			// We still call updateSelectedModsDisplay to update the separate text list below
-			updateSelectedModsDisplay();
-			console.log("Mod checkboxes generated with enabled/available sections.");
-		}
+    if (availableCount > 0) {
+        const availableHeader = document.createElement('h4');
+        availableHeader.textContent = 'Available Mods';
+        if (enabledCount > 0) availableHeader.style.marginTop = '20px';
+        availableModsSection.appendChild(availableHeader);
+        availableModsSection.appendChild(availableGrid);
+        modCheckboxesContainer.appendChild(availableModsSection);
+    }
+}
 
         function updateModCheckboxes() {
             const checkboxes = document.querySelectorAll('#modCheckboxes input[type="checkbox"]');
