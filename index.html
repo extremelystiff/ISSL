@@ -4,16 +4,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Playcount Widget -->
     <iframe src="https://extremelystiff.github.io/sandstormplayercount/widget.html" frameborder="0" scrolling="no" width="100%" height="auto" style="display:block; border:none; background:#000;"></iframe>
     
     <title>Insurgency Sandstorm Server Launcher</title>
-    <meta property="og:title" content="Insurgency: Sandstorm Server Launcher">
-    <meta property="og:description" content="A powerful and user-friendly web application for Insurgency: Sandstorm dedicated servers.">
     
     <style>
         :root {
-            --primary: #d3a03e; /* Sandstorm Gold/Orange accent */
+            --primary: #d3a03e; 
             --primary-hover: #b88a32;
             --bg-body: #f4f6f8;
             --bg-card: #ffffff;
@@ -21,7 +18,7 @@
             --text-muted: #718096;
             --border-color: #e2e8f0;
             --success: #48bb78;
-            --danger: #f56565;
+            --danger: #e53e3e;
             --header-bg: #1a202c;
             --header-text: #ffffff;
         }
@@ -35,17 +32,10 @@
             font-size: 14px;
         }
 
-        /* --- Layout --- */
         .container {
             width: 95%;
-            max-width: 1920px; /* Full width support */
+            max-width: 1920px;
             margin: 20px auto;
-            padding: 0;
-        }
-
-        h1, h2, h3 {
-            color: var(--header-bg);
-            margin-top: 0;
         }
 
         h1 {
@@ -53,7 +43,10 @@
             margin-bottom: 20px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 15px;
+            color: var(--header-bg);
         }
+        
+        h2, h3 { color: var(--header-bg); margin-top: 0; }
 
         /* --- Tabs --- */
         .tabs {
@@ -76,30 +69,16 @@
             transition: all 0.2s;
         }
 
-        .tab:hover {
-            background-color: #e2e8f0;
-            color: var(--text-main);
-        }
-
+        .tab:hover { background-color: #e2e8f0; color: var(--text-main); }
         .tab.active {
             background-color: var(--header-bg);
             color: var(--header-text);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- Forms --- */
         #serverForm {
@@ -112,325 +91,171 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .form-group {
-            margin-bottom: 0;
+        .form-group { margin-bottom: 0; }
+        #serverForm label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9em; }
+        #serverForm input[type="text"], #serverForm input[type="number"], #serverForm select {
+            width: 100%; padding: 10px; border: 1px solid var(--border-color);
+            border-radius: 6px; background-color: #fcfcfc; box-sizing: border-box;
         }
-
-        #serverForm label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 0.9em;
-            color: var(--text-main);
-        }
-
-        #serverForm input[type="text"],
-        #serverForm input[type="number"],
-        #serverForm select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background-color: #fcfcfc;
-            box-sizing: border-box; /* Fix width issues */
-            transition: border-color 0.2s;
-        }
-
-        #serverForm input:focus,
-        #serverForm select:focus {
-            border-color: var(--primary);
-            outline: none;
-            background-color: #fff;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 25px; /* Align with inputs */
-        }
-        
-        .checkbox-wrapper input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
+        #serverForm input:focus, #serverForm select:focus { border-color: var(--primary); outline: none; }
+        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; margin-top: 25px; }
 
         /* --- Buttons --- */
         .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
+            padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s; font-weight: 600; text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem;
         }
-
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-
+        .btn-primary:hover { background-color: var(--primary-hover); }
         .btn-secondary { background-color: #edf2f7; color: var(--text-main); border: 1px solid var(--border-color); }
         .btn-secondary:hover { background-color: #e2e8f0; }
-
         .btn-danger { background-color: var(--danger); color: white; }
-        .btn-danger:hover { opacity: 0.9; }
-
-        .btn-large {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            width: 100%; /* Full width on mobile, auto on desktop */
-        }
+        .btn-large { padding: 15px 30px; font-size: 1.1rem; width: 100%; }
 
         .form-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            flex-wrap: wrap;
-            gap: 15px;
+            grid-column: 1 / -1; display: flex; justify-content: space-between;
+            align-items: center; margin-top: 20px; padding-top: 20px;
+            border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px;
         }
 
         /* --- Config Output --- */
         .config-output textarea {
-            width: 100%;
-            height: 150px;
+            width: 100%; height: 150px; padding: 15px; border: 1px solid var(--border-color);
+            border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.9rem;
+            background-color: #2d3748; color: #a0aec0; resize: vertical; box-sizing: border-box;
+        }
+
+        /* --- Selected Mods Chips --- */
+        #selectedModsContainer {
+            background: #fff;
             padding: 15px;
-            border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-family: 'Consolas', monospace;
-            font-size: 0.9rem;
-            background-color: #2d3748;
-            color: #a0aec0;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        /* --- Info & Search --- */
-        .info-box {
-            background-color: #ebf8ff;
-            color: #2c5282;
-            padding: 15px;
-            border-radius: 6px;
+            border: 1px solid var(--primary);
             margin-bottom: 20px;
-            border-left: 4px solid #4299e1;
-            font-size: 0.95em;
+            display: none; /* Hidden by default until mods selected */
         }
-
-        .search-box {
+        
+        .mod-chips-wrapper {
             display: flex;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .search-box input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-right: none;
-            border-radius: 6px 0 0 6px;
-            font-size: 1rem;
+        .mod-chip {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fffaf0;
+            border: 1px solid var(--primary);
+            color: #744210;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.2s;
         }
 
-        .search-box button {
-            border-radius: 0 6px 6px 0;
+        .mod-chip:hover {
+            background-color: var(--primary);
+            color: white;
         }
 
-        /* --- MOD GRID OVERHAUL --- */
+        .mod-chip .remove-x {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            opacity: 0.6;
+        }
+        .mod-chip .remove-x:hover { opacity: 1; }
+
+        /* --- Mod Grid --- */
         .mod-grid {
             display: grid;
-            /* Smaller minimum width for denser grid */
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             gap: 15px;
             padding: 10px 0;
         }
 
         .mod-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; overflow: hidden; transition: all 0.2s ease-in-out;
+            cursor: pointer; position: relative; display: flex; flex-direction: column; height: 100%;
         }
-
-        .mod-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            border-color: var(--primary);
-        }
-
-        .mod-card.selected {
-            border: 2px solid var(--primary);
-            background-color: #fffaf0; /* Very light orange tint */
-        }
-
+        .mod-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .mod-card.selected { border: 2px solid var(--primary); background-color: #fffaf0; }
         .mod-card.selected::after {
-            content: "✓";
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: var(--primary);
-            color: white;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 22px;
-            font-weight: bold;
-            font-size: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            z-index: 2;
+            content: "✓"; position: absolute; top: 5px; right: 5px; background: var(--primary);
+            color: white; width: 22px; height: 22px; border-radius: 50%; text-align: center;
+            line-height: 22px; font-weight: bold; font-size: 12px; z-index: 2;
         }
 
-        .mod-image-container {
-            width: 100%;
-            height: 110px; /* Reduced height for compactness */
-            background-color: #edf2f7;
-            overflow: hidden;
-            position: relative;
-        }
+        .mod-image-container { width: 100%; height: 110px; background-color: #edf2f7; position: relative; overflow: hidden; }
+        .mod-image { width: 100%; height: 100%; object-fit: cover; }
+        .mod-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2.5em; font-weight: 700; color: #cbd5e0; }
 
-        .mod-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .mod-card:hover .mod-image {
-            transform: scale(1.05);
-        }
-
-        .mod-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #cbd5e0;
-            background-color: #e2e8f0;
-        }
-
-        .mod-content {
-            padding: 10px;
-            flex-grow: 1;
+        .mod-content { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; }
+        .mod-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; line-height: 1.3; }
+        .mod-summary { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
+        
+        /* --- Mutator Grid (Updated for Stability) --- */
+        .mutator-container {
             display: flex;
             flex-direction: column;
+            gap: 30px;
         }
 
-        .mod-title {
-            font-weight: 700;
-            font-size: 0.9rem; /* Smaller title */
-            margin-bottom: 4px;
-            color: var(--text-main);
-            line-height: 1.3;
+        .mutator-group h3 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
 
-        .mod-summary {
-            font-size: 0.75rem; /* Smaller text */
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limit to 2 lines */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            flex-grow: 1;
-        }
-
-        .mod-links {
-            font-size: 0.75rem;
-            margin-top: auto;
-            border-top: 1px solid #f1f1f1;
-            padding-top: 6px;
-        }
-
-        .mod-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .mod-links a:hover { text-decoration: underline; }
-
-        /* Hidden checkbox for functionality */
-        .mod-card input[type="checkbox"] { display: none; }
-
-        /* --- Mutator & Other Tabs --- */
-        #mutatorCheckboxes {
+        .mutator-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 10px;
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            max-height: 600px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
         }
 
-        .checkbox-item {
+        .mutator-item {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        .checkbox-item:hover {
-            border-color: #cbd5e0;
-            background: #f8fafc;
-        }
-
-        .checkbox-header {
+            padding: 12px;
             display: flex;
             align-items: center;
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        
-        .checkbox-item label {
-            font-weight: 600;
+            transition: all 0.2s;
             cursor: pointer;
-            margin-left: 8px;
         }
 
-        .item-description {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            padding-left: 24px; /* Align with text start */
-        }
-        
-        /* Utility */
-        .d-none { display: none !important; }
-        
-        abbr[title] {
-            text-decoration: none;
-            color: var(--primary);
-            cursor: help;
+        .mutator-item:hover {
+            border-color: var(--primary);
+            background: #fdfdfd;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            #serverForm { grid-template-columns: 1fr; }
-            .form-actions { flex-direction: column; }
-            .btn-large { width: 100%; }
-            .mod-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        .mutator-item.active {
+            border-color: var(--primary);
+            background-color: #fffaf0;
+            font-weight: 600;
         }
+
+        .mutator-item input { margin-right: 10px; cursor: pointer; }
+        .mutator-item label { cursor: pointer; font-size: 0.9rem; }
+        
+        .search-box { display: flex; margin-bottom: 20px; }
+        .search-box input { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px 0 0 6px; }
+        .search-box button { border-radius: 0 6px 6px 0; }
+
+        /* --- Modal --- */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 10% auto; padding: 25px; border-radius: 8px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; }
+        .close-modal:hover { color: #000; }
+
+        /* Notification */
+        .notification { position: fixed; bottom: 20px; right: 20px; background-color: var(--success); color: white; padding: 15px 20px; border-radius: 6px; opacity: 0; transition: opacity 0.5s; z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-weight: 600; }
+        .notification.show { opacity: 1; }
     </style>
 </head>
 <body>
@@ -453,7 +278,6 @@
                 </div>
                 
                 <form id="serverForm">
-                    <!-- Column 1 -->
                     <div class="form-group">
                         <label for="os">Operating System</label>
                         <select name="os" id="os">
@@ -682,39 +506,36 @@
                         </select>
                     </div>
 
-                    <!-- Column 2 -->
                     <div class="form-group">
                         <label for="maxPlayers">Max Players</label>
                         <input type="number" id="maxPlayers" name="maxPlayers" placeholder="24" min="1" max="99" value="24">
                     </div>
 
                     <div class="form-group">
-                        <label for="port">Game Port <abbr title="Forward TCP & UDP">?</abbr></label>
+                        <label for="port">Game Port</label>
                         <input type="number" id="port" name="port" placeholder="27102" min="1" max="65535" value="27102">
                     </div>
                     
                     <div class="form-group">
-                        <label for="queryPort">Query Port <abbr title="Different from Game Port">?</abbr></label>
+                        <label for="queryPort">Query Port</label>
                         <input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535" value="27131">
                     </div>
 
-                    <!-- Column 3 (Auth & Tokens) -->
                     <div class="form-group">
                         <label for="password">Password (Optional)</label>
                         <input type="text" id="password" name="password" placeholder="Server Password">
                     </div>
 
                     <div class="form-group">
-                        <label for="gsltToken">GSLT Token <abbr title="Steam Game Server Login Token">?</abbr></label>
+                        <label for="gsltToken">GSLT Token</label>
                         <input type="text" id="gsltToken" name="gsltToken" placeholder="Steam GSLT Token">
                     </div>
 
                     <div class="form-group">
-                        <label for="gameStatsToken">GameStats Token <abbr title="For stats/XP">?</abbr></label>
+                        <label for="gameStatsToken">GameStats Token</label>
                         <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="GameStats Token">
                     </div>
 
-                    <!-- Checkboxes Full Row -->
                     <div style="grid-column: 1 / -1; display:flex; gap: 20px; flex-wrap:wrap;">
                         <div class="checkbox-wrapper">
                             <input type="checkbox" id="enableGameStats" name="enableGameStats">
@@ -730,7 +551,6 @@
                         </div>
                     </div>
 
-                    <!-- Actions -->
                     <div class="form-actions">
                         <a id="launchLink" href="#" class="btn btn-primary btn-large" role="button">🚀 Launch Server</a>
                         <div style="display:flex; gap:10px;">
@@ -760,50 +580,84 @@
             <div id="mods" class="tab-content">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                     <h2>Mod Selection</h2>
-                    <button type="button" class="btn btn-primary" onclick="fetchMods()">↻ Refresh Mods</button>
                 </div>
 
-                <div class="info-box">
-                    Select mods to include. The search below searches Mod Names, Summaries, and IDs.
+                <!-- SELECTED MODS CHIPS (Top of page) -->
+                <div id="selectedModsContainer">
+                    <h3 style="font-size:1rem; margin-bottom:10px; color:#d3a03e;">Active Mods:</h3>
+                    <div id="modChipsWrapper" class="mod-chips-wrapper">
+                        <!-- Chips inserted here via JS -->
+                    </div>
                 </div>
-                
+
                 <div class="search-box">
-                    <input type="text" id="modSearch" placeholder="Search mods (e.g., 'Peg', 'ISMC', 'M4')..." onkeyup="searchMods()">
-                    <button type="button" class="btn btn-primary" onclick="searchMods()">Search</button>
+                    <input type="text" id="modSearch" placeholder="Search mods by Name, Summary, or ID..." onkeyup="searchMods()">
+                    <button type="button" class="btn btn-secondary" onclick="openApiHelper()">🛠️ Mod.io API Helper</button>
                 </div>
                 
                 <div id="modCheckboxes">
                     <p style="text-align:center; padding:20px;">Loading mods list... Please wait.</p>
-                </div>
-                
-                <div style="background:#fff; padding:15px; border-radius:8px; margin-top:20px; border:1px solid #eee;">
-                    <h3 style="font-size:1rem;">Selected Mods ID List:</h3>
-                    <div id="selectedModsOutput" style="font-family:monospace; color:#555;">None</div>
                 </div>
             </div>
 
             <!-- MUTATORS TAB -->
             <div id="mutators" class="tab-content">
                 <h2>Mutators</h2>
-                <div class="info-box">
-                    Mutators change gameplay mechanics.
-                </div>
+                <div class="info-box">Mutators change gameplay mechanics and rules.</div>
+                
                 <div class="search-box">
                     <input type="text" id="mutatorSearch" placeholder="Search mutators..." onkeyup="searchMutators()">
                 </div>
-                <div id="mutatorCheckboxes">
-                    <!-- Dynamic -->
+
+                <!-- Structured Mutator Container -->
+                <div id="mutatorContainer" class="mutator-container">
+                    <!-- Enabled Group -->
+                    <div class="mutator-group" id="enabledMutatorGroup" style="display:none;">
+                        <h3>Enabled Mutators</h3>
+                        <div id="enabledMutatorGrid" class="mutator-grid"></div>
+                    </div>
+
+                    <!-- Available Group -->
+                    <div class="mutator-group">
+                        <h3>Available Mutators</h3>
+                        <div id="availableMutatorGrid" class="mutator-grid"></div>
+                    </div>
                 </div>
-                <div style="margin-top:20px;">
-				    <h3>Selected Mutators:</h3>
-				    <div id="selectedMutatorsOutput" style="font-family:monospace;"></div>
-			    </div>
+                
+                <!-- Custom Mutator Input -->
+                <div style="margin-top:30px; border-top:1px solid #eee; padding-top:20px;">
+                    <h3 style="font-size:1rem;">Add Custom Mutator</h3>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="customMutatorInput" placeholder="Enter mutator name" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:6px;">
+                        <button type="button" class="btn btn-primary" onclick="addCustomMutator()">Add</button>
+                    </div>
+                </div>
 		    </div>
 
-        </div> <!-- End Main Content -->
-    </div> <!-- End Container -->
+        </div> 
+    </div>
 
     <div id="notification" class="notification"></div>
+
+    <!-- API Helper Modal -->
+    <div id="apiHelperModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeApiHelper()">&times;</span>
+            <h2>Mod.io API Token Helper</h2>
+            <p>Paste your API Token below to generate a ready-to-use <code>GameUserSettings.ini</code> file.</p>
+            <p style="font-size:0.85em; color:#666;">This runs entirely in your browser. Your token is not saved or sent to us.</p>
+            
+            <div style="margin:20px 0;">
+                <label style="font-weight:bold; display:block; margin-bottom:5px;">API Token (Optional):</label>
+                <input type="text" id="apiTokenField" placeholder="Paste Token Here..." style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button class="btn btn-secondary" onclick="closeApiHelper()">Cancel</button>
+                <button class="btn btn-primary" onclick="downloadIniFile()">Download .ini File</button>
+            </div>
+        </div>
+    </div>
     
 
 
@@ -990,163 +844,75 @@
         }
         
         // Generate mutator checkboxes
-		// Generate mutator checkboxes, sorting selected to the top
-		// Generate mutator checkboxes, sorting selected to top, and grouping custom
-		function generateMutatorCheckboxes() {
-			console.log("Generating mutator checkboxes (sorted + grouped)");
-			const mutatorCheckboxesContainer = document.getElementById('mutatorCheckboxes');
+function generateMutatorCheckboxes() {
+    const enabledGroup = document.getElementById('enabledMutatorGroup');
+    const enabledGrid = document.getElementById('enabledMutatorGrid');
+    const availableGrid = document.getElementById('availableMutatorGrid');
 
-			if (!mutatorCheckboxesContainer) {
-				console.error("Mutator checkboxes container not found!");
-				return;
-			}
-			mutatorCheckboxesContainer.innerHTML = ''; // Clear previous
+    // Clear grids
+    enabledGrid.innerHTML = '';
+    availableGrid.innerHTML = '';
 
-			// --- NEW: Four lists for detailed sorting ---
-			const enabledStandardItems = [];
-			const enabledCustomItems = [];
-			const availableStandardItems = [];
-			const availableCustomItems = [];
+    const allMutators = [
+        ...mutators.map(m => ({ ...m, isCustom: false })),
+        ...customMutators.map(m => ({ ...m, isCustom: true }))
+    ];
 
-			// Combine standard and custom into one list for iteration
-			const allMutatorsData = [
-				...mutators.map(m => ({ ...m, isCustom: false })),
-				...customMutators.map(m => ({ ...m, isCustom: true }))
-			];
+    let enabledCount = 0;
 
-			allMutatorsData.forEach(mutator => {
-				const isSelected = selectedMutators.includes(mutator.name);
-				const checkboxItem = document.createElement('div');
-				checkboxItem.className = 'checkbox-item';
-				if (mutator.isCustom) {
-					checkboxItem.classList.add('custom-mutator-item');
-				}
+    allMutators.forEach(mutator => {
+        const isSelected = selectedMutators.includes(mutator.name);
+        
+        // Create Item
+        const item = document.createElement('div');
+        item.className = `mutator-item ${isSelected ? 'active' : ''}`;
+        
+        // Hidden Checkbox
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = mutator.name;
+        checkbox.checked = isSelected;
+        
+        // Label
+        const label = document.createElement('label');
+        label.textContent = mutator.name;
+        
+        // Construct DOM
+        item.appendChild(checkbox);
+        item.appendChild(label);
 
-				const checkbox = document.createElement('input');
-				checkbox.type = 'checkbox';
-				checkbox.value = mutator.name;
-				checkbox.id = mutator.isCustom ? `mutator-custom-${mutator.name}` : `mutator-${mutator.name}`;
-				checkbox.checked = isSelected;
+        // Click Logic
+        item.onclick = function(e) {
+            // Prevent double triggering if clicking the actual checkbox
+            if (e.target !== checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+            
+            const name = checkbox.value;
+            if (checkbox.checked) {
+                if (!selectedMutators.includes(name)) selectedMutators.push(name);
+            } else {
+                const idx = selectedMutators.indexOf(name);
+                if (idx > -1) selectedMutators.splice(idx, 1);
+            }
+            
+            // Re-render to move items to correct group
+            generateMutatorCheckboxes();
+            generateConfig();
+        };
 
-				checkbox.addEventListener('change', function() {
-					const mutatorName = this.value;
-					if (this.checked) {
-						if (!selectedMutators.includes(mutatorName)) {
-							selectedMutators.push(mutatorName);
-						}
-					} else {
-						const index = selectedMutators.indexOf(mutatorName);
-						if (index !== -1) {
-							selectedMutators.splice(index, 1);
-						}
-					}
-					updateSelectedMutatorsDisplay();
-					generateMutatorCheckboxes(); // Re-render this list to sort/group
-					updateMutatorSuggestions(); // Re-render suggestions for button states
-                    generateConfig(); // <<< NEW: Update link/config on change
-				});
+        // Sort into groups
+        if (isSelected) {
+            enabledGrid.appendChild(item);
+            enabledCount++;
+        } else {
+            availableGrid.appendChild(item);
+        }
+    });
 
-				const label = document.createElement('label');
-				label.htmlFor = checkbox.id;
-				label.textContent = mutator.name;
-
-				const description = document.createElement('div');
-				description.className = 'item-description';
-				description.textContent = mutator.description || (mutator.isCustom ? 'Custom user-added mutator' : '');
-				 // Align description better when delete button is present
-				 description.style.flexGrow = '1';
-				 description.style.marginLeft = '10px'; // Add some space after label/button
-
-				checkboxItem.appendChild(checkbox);
-				checkboxItem.appendChild(label);
-
-				// Add delete button for custom mutators (before description)
-				if (mutator.isCustom) {
-					const deleteButton = document.createElement('button');
-					deleteButton.className = 'btn btn-danger btn-sm';
-					deleteButton.textContent = 'Delete';
-					deleteButton.style.marginLeft = 'auto'; // Push button to the right
-					deleteButton.style.marginRight = '10px'; // Space before description
-					deleteButton.onclick = function(e) {
-						e.preventDefault();
-						deleteCustomMutator(mutator.name);
-					};
-					checkboxItem.appendChild(deleteButton);
-				}
-
-				checkboxItem.appendChild(description);
-
-				// Assign to the correct temporary list
-				if (isSelected) {
-					if (mutator.isCustom) {
-						enabledCustomItems.push(checkboxItem);
-					} else {
-						enabledStandardItems.push(checkboxItem);
-					}
-				} else {
-					if (mutator.isCustom) {
-						availableCustomItems.push(checkboxItem);
-					} else {
-						availableStandardItems.push(checkboxItem);
-					}
-				}
-			});
-
-			// --- Append sorted and grouped items ---
-			const hasEnabled = enabledStandardItems.length > 0 || enabledCustomItems.length > 0;
-			const hasAvailable = availableStandardItems.length > 0 || availableCustomItems.length > 0;
-
-			// 1. Enabled Section
-			if (hasEnabled) {
-				const enabledHeader = document.createElement('h4');
-				enabledHeader.textContent = "Enabled Mutators";
-				enabledHeader.style.marginTop = '15px';
-				enabledHeader.style.marginBottom = '5px';
-				mutatorCheckboxesContainer.appendChild(enabledHeader);
-
-				enabledStandardItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
-				// Add custom enabled after standard enabled
-				if (enabledCustomItems.length > 0) {
-					 // Optional: Add a small sub-header or just let them list
-					enabledCustomItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
-				}
-			}
-
-			// 2. Separator
-			if (hasEnabled && hasAvailable) {
-				const separator = document.createElement('hr');
-				separator.style.margin = '20px 0';
-				mutatorCheckboxesContainer.appendChild(separator);
-			}
-
-			// 3. Available Section
-			if (hasAvailable) {
-				const availableHeader = document.createElement('h4');
-				availableHeader.textContent = "Available Mutators";
-				if (!hasEnabled) { // Add top margin if no enabled section
-					availableHeader.style.marginTop = '15px';
-				}
-				availableHeader.style.marginBottom = '5px';
-				mutatorCheckboxesContainer.appendChild(availableHeader);
-
-				availableStandardItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
-				// Add custom available after standard available
-				if (availableCustomItems.length > 0) {
-					const customSeparator = document.createElement('div');
-					customSeparator.textContent = '--- Custom ---'; // Simple text separator
-					customSeparator.style.textAlign = 'center';
-					customSeparator.style.margin = '10px 0 5px 0';
-					customSeparator.style.color = '#666';
-					customSeparator.style.fontSize = '0.9em';
-					mutatorCheckboxesContainer.appendChild(customSeparator);
-					availableCustomItems.forEach(item => mutatorCheckboxesContainer.appendChild(item));
-				}
-			}
-			// --- END Appending Logic ---
-
-			updateSelectedMutatorsDisplay(); // Update the text list below
-			console.log("Mutator checkboxes container generated with sorting/grouping.");
-		}
+    // Toggle visibility of Enabled Group
+    enabledGroup.style.display = enabledCount > 0 ? 'block' : 'none';
+}
 function forceRegenerateMutators() {
   console.log("Forcing regeneration of mutator checkboxes");
   generateMutatorCheckboxes();
@@ -2346,7 +2112,6 @@ function generateConfig() {
         }
 
 		// Generate mod checkboxes using the pre-sorted 'sortedMods' list
-// REPLACE your existing generateModCheckboxes function with this:
 function generateModCheckboxes() {
     const modCheckboxesContainer = document.getElementById('modCheckboxes');
     modCheckboxesContainer.innerHTML = ''; 
@@ -2370,33 +2135,20 @@ function generateModCheckboxes() {
     let availableCount = 0;
 
     sortedMods.forEach(mod => {
-        // Skip invalid entries entirely
         if (!mod || !mod.id) return;
-
         const isSelected = selectedMods.some(selectedMod => selectedMod.id === mod.id);
 
-        // Create Card
         const card = document.createElement('div');
         card.className = `mod-card mod-item ${isSelected ? 'selected' : ''}`;
         
-        // *** SAFETY FIX HERE ***
-        // 1. Ensure mod.name is treated as a string, handling null/undefined/numbers
+        // Search Logic
         const rawName = (mod.name !== undefined && mod.name !== null) ? String(mod.name) : "Unknown Mod";
-        const safeName = rawName.toLowerCase();
-        
-        // 2. Ensure summary is treated as a string
         const rawSummary = (mod.summary !== undefined && mod.summary !== null) ? String(mod.summary) : "";
-        const safeSummary = rawSummary.toLowerCase();
+        card.dataset.searchText = `${rawName.toLowerCase()} ${rawSummary.toLowerCase()} ${mod.id}`;
 
-        // 3. Create search text
-        const searchText = `${safeName} ${safeSummary} ${mod.id}`;
-        card.dataset.searchText = searchText; 
-        // *******************************
-
-        // Image Logic
+        // Image
         const imgContainer = document.createElement('div');
         imgContainer.className = 'mod-image-container';
-        
         let imageUrl = null;
         if(mod.logo && mod.logo.thumb_320x180) imageUrl = mod.logo.thumb_320x180;
         else if(mod.logoUrl) imageUrl = mod.logoUrl;
@@ -2410,7 +2162,6 @@ function generateModCheckboxes() {
         } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'mod-placeholder';
-            // Safe charAt check
             placeholder.textContent = rawName.charAt(0).toUpperCase();
             imgContainer.appendChild(placeholder);
         }
@@ -2419,18 +2170,15 @@ function generateModCheckboxes() {
         // Content
         const content = document.createElement('div');
         content.className = 'mod-content';
-
         const title = document.createElement('div');
         title.className = 'mod-title';
-        title.textContent = rawName; // Use the safe string version
-        
+        title.textContent = rawName;
         const summary = document.createElement('div');
         summary.className = 'mod-summary';
         summary.textContent = rawSummary || 'No description available.';
-
         content.appendChild(title);
         content.appendChild(summary);
-
+        
         if(mod.profileUrl) {
             const linkDiv = document.createElement('div');
             linkDiv.className = 'mod-links';
@@ -2442,13 +2190,13 @@ function generateModCheckboxes() {
             linkDiv.appendChild(link);
             content.appendChild(linkDiv);
         }
-
         card.appendChild(content);
 
-        // Checkbox
+        // Input
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = mod.id;
+        checkbox.id = `mod-checkbox-${mod.id}`; // Critical for chip removal linkage
         checkbox.checked = isSelected;
         card.appendChild(checkbox);
 
@@ -2459,7 +2207,6 @@ function generateModCheckboxes() {
             
             if (checkbox.checked) {
                 card.classList.add('selected');
-                // Ensure we find the mod safely
                 const modToAdd = sortedMods.find(m => m.id === modId);
                 if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
                     selectedMods.push(modToAdd);
@@ -2484,7 +2231,6 @@ function generateModCheckboxes() {
     if (enabledCount > 0) {
         const enabledHeader = document.createElement('h3');
         enabledHeader.textContent = `Enabled Mods (${enabledCount})`;
-        enabledHeader.style.marginTop = '0';
         enabledModsSection.appendChild(enabledHeader);
         enabledModsSection.appendChild(enabledGrid);
         modCheckboxesContainer.appendChild(enabledModsSection);
@@ -2509,24 +2255,88 @@ function generateModCheckboxes() {
             generateConfig(); // Update link/config
         }
 
-        // Modify the updateSelectedModsDisplay function to trigger suggestion updates
-        function updateSelectedModsDisplay() {
-          const output = document.getElementById('selectedModsOutput');
-          if (selectedMods.length === 0) {
-            output.textContent = 'No mods selected';
-          } else {
-            let modInfo = selectedMods.map(mod => `${mod.name} (ID: ${mod.id})`).join('\n');
-            output.textContent = modInfo;
-          }
-          
-          // Always update mutator suggestions when mod selection changes
-          updateMutatorSuggestions();
-          
-          // If mods are selected, fetch the latest suggestions
-          if (selectedMods.length > 0) {
-            fetchMutatorSuggestionsFromGAS();
-          }
-        }
+function updateSelectedModsDisplay() {
+    const container = document.getElementById('selectedModsContainer');
+    const wrapper = document.getElementById('modChipsWrapper');
+    
+    // Clear chips
+    wrapper.innerHTML = '';
+
+    if (selectedMods.length === 0) {
+        container.style.display = 'none';
+    } else {
+        container.style.display = 'block';
+        
+        selectedMods.forEach(mod => {
+            const chip = document.createElement('div');
+            chip.className = 'mod-chip';
+            chip.innerHTML = `
+                ${mod.name} 
+                <span class="remove-x" onclick="removeModFromList(${mod.id})">&times;</span>
+            `;
+            wrapper.appendChild(chip);
+        });
+    }
+
+    // Trigger updates
+    updateMutatorSuggestions();
+    generateConfig();
+}
+function openApiHelper() {
+    document.getElementById('apiHelperModal').style.display = 'block';
+}
+
+function closeApiHelper() {
+    document.getElementById('apiHelperModal').style.display = 'none';
+}
+
+function downloadIniFile() {
+    const token = document.getElementById('apiTokenField').value.trim();
+    // Default config text
+    const configContent = `[/Script/ModKit.ModIOClient]
+bHasUserAcceptedTerms=True
+AccessToken=${token || ''}`;
+
+    // Create Blob
+    const blob = new Blob([configContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create temporary link and click it
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'GameUserSettings.ini';
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    closeApiHelper();
+    
+    showNotification("GameUserSettings.ini downloaded!", "success");
+}
+
+// Close modal if clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('apiHelperModal');
+    if (event.target == modal) {
+        closeApiHelper();
+    }
+}
+// Helper to remove mod via the "X" button on the chip
+function removeModFromList(modId) {
+    // Remove from array
+    selectedMods = selectedMods.filter(m => m.id !== modId);
+    
+    // Update visual state of checkboxes/cards
+    const checkbox = document.getElementById(`mod-checkbox-${modId}`); // See generating function below
+    if (checkbox) checkbox.checked = false;
+    
+    const card = document.querySelector(`.mod-card input[value="${modId}"]`)?.closest('.mod-card');
+    if (card) card.classList.remove('selected');
+
+    updateSelectedModsDisplay();
+}
 
 // REPLACE your existing searchMods function with this:
 function searchMods() {
