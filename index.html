@@ -1,586 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <iframe src="https://extremelystiff.github.io/sandstormplayercount/widget.html" frameborder="0" scrolling="no" width="100%" height="auto"></iframe>
+    <!-- Playcount Widget -->
+    <iframe src="https://extremelystiff.github.io/sandstormplayercount/widget.html" frameborder="0" scrolling="no" width="100%" height="auto" style="display:block; border:none; background:#000;"></iframe>
+    
     <title>Insurgency Sandstorm Server Launcher</title>
     <meta property="og:title" content="Insurgency: Sandstorm Server Launcher">
-    <meta property="og:description" content="A powerful and user-friendly web application that allows you to effortlessly launch and configure your own Insurgency: Sandstorm dedicated server right from your browser.">
+    <meta property="og:description" content="A powerful and user-friendly web application for Insurgency: Sandstorm dedicated servers.">
+    
     <style>
+        :root {
+            --primary: #d3a03e; /* Sandstorm Gold/Orange accent */
+            --primary-hover: #b88a32;
+            --bg-body: #f4f6f8;
+            --bg-card: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --success: #48bb78;
+            --danger: #f56565;
+            --header-bg: #1a202c;
+            --header-text: #ffffff;
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
             margin: 0;
-            padding: 1px;
-            color: #333;
+            padding: 0;
+            color: var(--text-main);
+            font-size: 14px;
         }
 
+        /* --- Layout --- */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .quick-start {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin: 5px;
-            font-weight: 500;
-            text-decoration: none; /* Added for <a> tags */
-            display: inline-block; /* Added for <a> tags */
-        }
-
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .btn-large {
-            font-size: 1.2em;
-            padding: 15px 25px;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        #serverForm {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        #serverForm label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        #serverForm input,
-        #serverForm select {
             width: 95%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            max-width: 1920px; /* Full width support */
+            margin: 20px auto;
+            padding: 0;
         }
 
-        .form-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center; /* Align items vertically */
-            margin-top: 20px;
+        h1, h2, h3 {
+            color: var(--header-bg);
+            margin-top: 0;
         }
 
-        .config-output {
-            margin-top: 30px;
-            width: 100%;
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
-        #configOutput {
-            width: 100%;
-            height: 200px;
-            margin-top: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-
-        #presetsContainer {
-            margin-top: 30px;
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        #presetButtons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .preset {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .preset-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        h1, h2 {
-            color: #2c3e50;
-        }
-
+        /* --- Tabs --- */
         .tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
         .tab {
             padding: 10px 20px;
             cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            font-weight: bold;
-            color: #777;
-            transition: color 0.3s;
+            border: 1px solid transparent;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background-color: #e2e8f0;
+            color: var(--text-main);
         }
 
         .tab.active {
-            color: #3498db;
-            border-bottom: 2px solid #3498db;
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .tab-content {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        .mutator-section {
-            margin-top: 20px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .mod-section {
-            margin-top: 20px;
+        /* --- Forms --- */
+        #serverForm {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        details {
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        #serverForm label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text-main);
+        }
+
+        #serverForm input[type="text"],
+        #serverForm input[type="number"],
+        #serverForm select {
+            width: 100%;
             padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #fcfcfc;
+            box-sizing: border-box; /* Fix width issues */
+            transition: border-color 0.2s;
         }
 
-        summary {
-            font-weight: bold;
-            cursor: pointer;
-            padding: 5px;
+        #serverForm input:focus,
+        #serverForm select:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: #fff;
         }
 
-        #mutatorCheckboxes, #modCheckboxes {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 4px;
-        }
-
-        .checkbox-item {
+        .checkbox-wrapper {
             display: flex;
             align-items: center;
-            padding: 8px;
-            border-bottom: 1px solid #eee;
+            gap: 10px;
+            margin-top: 25px; /* Align with inputs */
+        }
+        
+        .checkbox-wrapper input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
 
-        .checkbox-item:hover {
-            background-color: #f9f9f9;
+        /* --- Buttons --- */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
         }
 
-        .checkbox-item label {
-            margin-left: 10px;
-            flex: 1;
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+
+        .btn-secondary { background-color: #edf2f7; color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background-color: #e2e8f0; }
+
+        .btn-danger { background-color: var(--danger); color: white; }
+        .btn-danger:hover { opacity: 0.9; }
+
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            width: 100%; /* Full width on mobile, auto on desktop */
         }
 
-        .item-description {
-            font-size: 0.85em;
-            color: #666;
-            margin-top: 5px;
-            margin-left: 25px;
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        #selectedModsOutput {
-            margin-top: 10px;
+        /* --- Config Output --- */
+        .config-output textarea {
             width: 100%;
-            min-height: 100px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            font-family: monospace;
+            height: 150px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            background-color: #2d3748;
+            color: #a0aec0;
+            resize: vertical;
+            box-sizing: border-box;
         }
 
+        /* --- Info & Search --- */
         .info-box {
-            background-color: #d1ecf1;
-            color: #0c5460;
+            background-color: #ebf8ff;
+            color: #2c5282;
             padding: 15px;
-            border-radius: 4px;
+            border-radius: 6px;
             margin-bottom: 20px;
+            border-left: 4px solid #4299e1;
+            font-size: 0.95em;
         }
 
         .search-box {
             display: flex;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .search-box input {
             flex: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-size: 1rem;
         }
 
         .search-box button {
-            border-radius: 0 4px 4px 0;
-            padding: 8px 12px;
+            border-radius: 0 6px 6px 0;
         }
 
-        abbr {
+        /* --- MOD GRID OVERHAUL --- */
+        .mod-grid {
+            display: grid;
+            /* Smaller minimum width for denser grid */
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .mod-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .mod-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
+        }
+
+        .mod-card.selected {
+            border: 2px solid var(--primary);
+            background-color: #fffaf0; /* Very light orange tint */
+        }
+
+        .mod-card.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--primary);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .mod-image-container {
+            width: 100%;
+            height: 110px; /* Reduced height for compactness */
+            background-color: #edf2f7;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mod-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .mod-card:hover .mod-image {
+            transform: scale(1.05);
+        }
+
+        .mod-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #cbd5e0;
+            background-color: #e2e8f0;
+        }
+
+        .mod-content {
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mod-title {
+            font-weight: 700;
+            font-size: 0.9rem; /* Smaller title */
+            margin-bottom: 4px;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .mod-summary {
+            font-size: 0.75rem; /* Smaller text */
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limit to 2 lines */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .mod-links {
+            font-size: 0.75rem;
+            margin-top: auto;
+            border-top: 1px solid #f1f1f1;
+            padding-top: 6px;
+        }
+
+        .mod-links a {
+            color: var(--primary);
             text-decoration: none;
-            border-bottom: 1px dotted #666;
+            font-weight: 500;
+        }
+
+        .mod-links a:hover { text-decoration: underline; }
+
+        /* Hidden checkbox for functionality */
+        .mod-card input[type="checkbox"] { display: none; }
+
+        /* --- Mutator & Other Tabs --- */
+        #mutatorCheckboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 600px;
+        }
+
+        .checkbox-item {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #cbd5e0;
+            background: #f8fafc;
+        }
+
+        .checkbox-header {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .checkbox-item label {
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .item-description {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            padding-left: 24px; /* Align with text start */
+        }
+        
+        /* Utility */
+        .d-none { display: none !important; }
+        
+        abbr[title] {
+            text-decoration: none;
+            color: var(--primary);
             cursor: help;
         }
 
-		/* --- Mod Grid Layout --- */
-.mod-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive columns */
-    gap: 20px;
-    padding: 10px 0;
-}
-
-.mod-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.mod-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    border-color: #3498db;
-}
-
-.mod-card.selected {
-    border: 2px solid #3498db;
-    background-color: #f0f8ff;
-}
-
-.mod-card.selected::after {
-    content: "✓";
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #3498db;
-    color: white;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 25px;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.mod-image-container {
-    width: 100%;
-    height: 160px; /* Fixed height for consistency */
-    background-color: #eee;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.mod-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures image covers area without stretching */
-}
-
-.mod-placeholder {
-    color: #aaa;
-    font-size: 3em;
-    font-weight: bold;
-}
-
-.mod-content {
-    padding: 15px;
-    flex-grow: 1; /* Pushes content to fill space */
-    display: flex;
-    flex-direction: column;
-}
-
-.mod-title {
-    font-weight: 700;
-    font-size: 1.1em;
-    margin-bottom: 5px;
-    color: #2c3e50;
-}
-
-.mod-summary {
-    font-size: 0.85em;
-    color: #666;
-    margin-bottom: 10px;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limit to 3 lines */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.mod-links {
-    margin-top: auto; /* Pushes to bottom */
-    font-size: 0.8em;
-}
-
-.mod-links a {
-    color: #3498db;
-    text-decoration: none;
-}
-
-.mod-links a:hover {
-    text-decoration: underline;
-}
-
-/* Hide the actual checkbox but keep it functional */
-.mod-card input[type="checkbox"] {
-    display: none;
-}
-/* ============================================ */
-/* == FORCE MUTATOR CHECKBOX VISIBILITY FIX === */
-/* ============================================ */
-
-/* Ensure the main mutators tab content is visible when active */
-#mutators.tab-content.active {
-  display: block !important; /* Or flex if you use flexbox layout */
-  visibility: visible !important;
-  opacity: 1 !important;
-  height: auto !important; /* Allow height to adjust */
-  overflow: visible !important; /* Prevent accidental clipping */
-}
-
-/* Ensure the checkbox container itself is always visible */
-#mutatorCheckboxes {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  min-height: 100px !important; /* Crucial */
-  height: auto !important;      /* Let it grow naturally */
-  max-height: 400px !important; /* Limit growth */
-  overflow-y: auto !important;   /* Add scrollbar if needed */
-  overflow-x: hidden !important;
-  padding: 10px !important;
-  /* border: 3px dashed red !important;  <-- DELETE OR COMMENT OUT THIS LINE */
-  background-color: #fffafa !important; /* Light background */
-  width: 98% !important; /* Ensure it has width */
-  margin-top: 10px !important; /* Add some top margin */
-}
-
-/* Ensure each individual checkbox item is visible */
-#mutatorCheckboxes .checkbox-item {
-  display: flex !important;
-  align-items: center !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  min-height: 30px !important;
-  height: auto !important;
-  width: 100% !important;
-  padding: 8px !important;
-  border-bottom: 1px solid #eee !important;
-  background-color: #ffffff !important;
-}
-
-/* Make labels and inputs visible within the item */
-#mutatorCheckboxes .checkbox-item input[type="checkbox"],
-#mutatorCheckboxes .checkbox-item label,
-#mutatorCheckboxes .checkbox-item .item-description {
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Ensure the "Selected Mutators" output is also visible */
-#selectedMutatorsOutput {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    min-height: 50px !important; /* Give it some space */
-}
-
-/* ============================================ */
-/* == END VISIBILITY FIX                 ==== */
-/* ============================================ */
-		
-		
-  /* Mutator Suggestions Styling */
-  .mutator-suggestions {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e3f2fd;
-    border-radius: 4px;
-    border-left: 4px solid #2196F3;
-  }
-  
-  .suggestion-box {
-    margin-bottom: 10px;
-    padding: 12px;
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
-  
-  .suggestion-box:hover {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-  
-  .suggestion-mod-name {
-    font-weight: bold;
-    margin-bottom: 3px;
-  }
-  
-  .suggestion-mutator-name {
-    color: #0d47a1;
-  }
-  
-  .suggestion-description {
-    font-size: 0.9em;
-    color: #666;
-    margin-top: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .apply-suggestion {
-    padding: 5px 10px;
-    font-size: 0.85em;
-  }
-  
-  .highlight-mutator {
-    animation: highlight-pulse 2s ease-in-out;
-  }
-  
-  @keyframes highlight-pulse {
-    0% { background-color: #ffffff; }
-    50% { background-color: #e3f2fd; }
-    100% { background-color: #ffffff; }
-  }
-  
-  /* Add notification styling */
-  .notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 15px 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
-    transition: opacity 0.5s ease;
-    opacity: 0;
-  }
-  
-  .notification.show {
-    opacity: 1;
-  }
-  
-  /* Tooltip improvements */
-  abbr[title] {
-    position: relative;
-    cursor: help;
-  }
-  
-  abbr[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    left: 100%;
-    top: -5px;
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    z-index: 10;
-    width: 200px;
-    font-size: 0.8em;
-    white-space: normal;
-  }
-
-  #suggestionInfoModal {
-    display: none;
-    position: absolute; /* Changed from fixed */
-    top: 0; /* Will be set by JS */
-    left: 0; /* Will be set by JS */
-    width: 100%; /* Keep this for overlay effect if needed, or remove if just popup */
-    height: 100%; /* Keep this for overlay effect if needed, or remove */
-    /* background-color: rgba(0,0,0,0.5); */ /* Optional: remove background overlay if distracting */
-    z-index: 1000;
-    /* Remove centering margin */
-  }
-
-  #suggestionInfoModal .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 90%; /* Adjusted for potentially smaller absolute box */
-    max-width: 450px; /* Adjusted max width */
-    position: relative; /* Needed for absolute positioning inside */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Add shadow for floating effect */
-    border: 1px solid #ccc;
-    /* Remove margin: 15% auto; */
-  }
-
-  .modal-pointer {
-    position: absolute;
-    bottom: -10px; /* Position below the modal box */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid white; /* Same color as modal background */
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); /* Optional shadow for pointer */
-  }
-
+        /* Responsive */
+        @media (max-width: 768px) {
+            #serverForm { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column; }
+            .btn-large { width: 100%; }
+            .mod-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        }
     </style>
 </head>
 <body>
@@ -594,15 +444,18 @@
         </div>
         
         <div class="main-content">
+            <!-- SERVER CONFIG TAB -->
             <div id="serverConfig" class="tab-content active">
-                <div class="quick-start">
-                    <button id="quickStartButton" class="btn btn-primary btn-large" onclick="quickStart()">Quick Launch Random Map Server</button>
+                <div class="quick-start" style="margin-bottom: 20px;">
+                     <button id="quickStartButton" class="btn btn-primary btn-large" onclick="quickStart()">
+                        ⚡ Quick Launch Random Map
+                    </button>
                 </div>
                 
-                <h2>Server Configuration</h2>
                 <form id="serverForm">
+                    <!-- Column 1 -->
                     <div class="form-group">
-                        <label for="os">Operating System:</label>
+                        <label for="os">Operating System</label>
                         <select name="os" id="os">
                             <option value="windows">Windows</option>
                             <option value="linux">Linux</option>
@@ -610,33 +463,12 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="hostname">Server Name:</label>
+                        <label for="hostname">Server Name</label>
                         <input type="text" id="hostname" name="hostname" placeholder="Enter server name">
                     </div>
                     
                     <div class="form-group">
-                        <label for="maxPlayers">Max Players:</label>
-                        <input type="number" id="maxPlayers" name="maxPlayers" placeholder="24" min="1" max="99" value="24">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="port">
-                            Game Port
-                            <abbr title="For your server to show up on the server browser, you will have to forward both TCP and UDP. You can find tutorials on port forwarding on a lot of websites. We suggest portforward.com, which offers tutorials for most router manufacturers.">?</abbr>:
-                        </label>
-                        <input type="number" id="port" name="port" placeholder="27102" min="1" max="65535" value="27102">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="queryPort">
-                            Query Port
-                            <abbr title="The query port is used by the server browser to retrieve information about your server. It should be a different port than the game port.">?</abbr>:
-                        </label>
-                        <input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535" value="27131">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="scenario">Choose a Scenario:</label>
+                        <label for="scenario">Scenario</label>
                         <select name="scenario" id="scenario">
                 			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Insurgents">Bab Checkpoint Insurgents</option>
                 			<option value="Bab?Scenario=Scenario_Bab_Checkpoint_Security">Bab Checkpoint Security</option>
@@ -678,21 +510,21 @@
                 			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Skirmish">Farmhouse Skirmish</option>
                 			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Survival">Farmhouse Survival</option>
                 			<option value="Farmhouse?Scenario=Scenario_Farmhouse_Team_Deathmatch">Farmhouse Team Deathmatch</option>
-					<option value="Forest?Scenario=Scenario_Forest_Push_Insurgents">Forest Push Insurgents</option>
-					<option value="Forest?Scenario=Scenario_Forest_Push_Security">Forest Push Security</option>
-					<option value="Forest?Scenario=Scenario_Forest_Firefight_East">Forest Firefight East</option>
-					<option value="Forest?Scenario=Scenario_Forest_Firefight_West">Forest Firefight West</option>
-					<option value="Forest?Scenario=Scenario_Forest_Survival">Forest Survival</option>
-					<option value="Forest?Scenario=Scenario_Forest_Ambush">Forest Ambush</option>
-					<option value="Forest?Scenario=Scenario_Forest_FFA">Forest FFA</option>
-					<option value="Forest?Scenario=Scenario_Forest_Defusal">Forest Defusal</option>
-					<option value="Forest?Scenario=Scenario_Forest_TDM">Forest Team Deathmatch</option>
-					<option value="Forest?Scenario=Scenario_Forest_Domination">Forest Domination</option>
-					<option value="Forest?Scenario=Scenario_Forest_Frontline">Forest Frontline</option>
-					<option value="Forest?Scenario=Scenario_Forest_Skirmish">Forest Skirmish</option>
-					<option value="Forest?Scenario=Scenario_Forest_Checkpoint_Insurgents">Forest Checkpoint Insurgents</option>
-					<option value="Forest?Scenario=Scenario_Forest_Checkpoint_Security">Forest Checkpoint Security</option>
-					<option value="Forest?Scenario=Scenario_Forest_Outpost">Forest Outpost</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Push_Insurgents">Forest Push Insurgents</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Push_Security">Forest Push Security</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Firefight_East">Forest Firefight East</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Firefight_West">Forest Firefight West</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Survival">Forest Survival</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Ambush">Forest Ambush</option>
+                            <option value="Forest?Scenario=Scenario_Forest_FFA">Forest FFA</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Defusal">Forest Defusal</option>
+                            <option value="Forest?Scenario=Scenario_Forest_TDM">Forest Team Deathmatch</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Domination">Forest Domination</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Frontline">Forest Frontline</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Skirmish">Forest Skirmish</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Checkpoint_Insurgents">Forest Checkpoint Insurgents</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Checkpoint_Security">Forest Checkpoint Security</option>
+                            <option value="Forest?Scenario=Scenario_Forest_Outpost">Forest Outpost</option>
                 			<option value=Gap?Scenario=Scenario_Gap_Ambush">Gap Ambush</option>
                 			<option value=Gap?Scenario=Scenario_Gap_Checkpoint_Insurgents">Gap Checkpoint Insurgents</option>
                 			<option value=Gap?Scenario=Scenario_Gap_Checkpoint_Security">Gap Checkpoint Security</option>
@@ -849,127 +681,127 @@
                 			<option value="Trainyard?Scenario=Scenario_Trainyard_Survival">Trainyard Survival</option>
                         </select>
                     </div>
-                    
+
+                    <!-- Column 2 -->
                     <div class="form-group">
-                        <label for="password">Password (optional):</label>
-                        <input type="text" id="password" name="password" placeholder="Enter password">
+                        <label for="maxPlayers">Max Players</label>
+                        <input type="number" id="maxPlayers" name="maxPlayers" placeholder="24" min="1" max="99" value="24">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="port">Game Port <abbr title="Forward TCP & UDP">?</abbr></label>
+                        <input type="number" id="port" name="port" placeholder="27102" min="1" max="65535" value="27102">
                     </div>
                     
                     <div class="form-group">
-                        <label for="gameStatsToken">
-                            <a href="https://gamestats.sandstorm.game/" target="_blank">GameStats Token</a>
-                            <abbr title="Any Insurgency: Sandstorm community server can host a stats-enabled game. Enabling stats on your server also enables experience gain while playing on the server. The only requirement is that you must use a Steam GSLT, and you must not have a server password.">?</abbr>
-                            (optional):
-                        </label>
-                        <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="Enter GameStats token">
+                        <label for="queryPort">Query Port <abbr title="Different from Game Port">?</abbr></label>
+                        <input type="number" id="queryPort" name="queryPort" placeholder="27131" min="1" max="65535" value="27131">
                     </div>
-                    
+
+                    <!-- Column 3 (Auth & Tokens) -->
                     <div class="form-group">
-                        <label for="gsltToken">
-                            <a href="https://steamcommunity.com/dev/managegameservers" target="_blank">GSLT Token</a>
-                            <abbr title="For your server to authenticate with the stats server, you must authenticate your server through Steam GSLT (Game Server Login Token). GSLTs can be obtained from Steam's Game Server Account Management page.">?</abbr>
-                            (optional):
-                        </label>
-                        <input type="text" id="gsltToken" name="gsltToken" placeholder="Enter GSLT token">
+                        <label for="password">Password (Optional)</label>
+                        <input type="text" id="password" name="password" placeholder="Server Password">
                     </div>
-                    
+
                     <div class="form-group">
-                        <label>
+                        <label for="gsltToken">GSLT Token <abbr title="Steam Game Server Login Token">?</abbr></label>
+                        <input type="text" id="gsltToken" name="gsltToken" placeholder="Steam GSLT Token">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gameStatsToken">GameStats Token <abbr title="For stats/XP">?</abbr></label>
+                        <input type="text" id="gameStatsToken" name="gameStatsToken" placeholder="GameStats Token">
+                    </div>
+
+                    <!-- Checkboxes Full Row -->
+                    <div style="grid-column: 1 / -1; display:flex; gap: 20px; flex-wrap:wrap;">
+                        <div class="checkbox-wrapper">
                             <input type="checkbox" id="enableGameStats" name="enableGameStats">
-                            Enable GameStats
-                            <abbr title="By default, the game servers will not attempt to report to the stats system. Following the GSLT login steps, adding -GameStats to your server's command line will enable the opt-in to the system.">?</abbr>
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>
+                            <label for="enableGameStats" style="margin:0;">Enable GameStats</label>
+                        </div>
+                        <div class="checkbox-wrapper">
                             <input type="checkbox" id="officialRules" name="officialRules">
-                            Use Official Rules
-                            <abbr title="The game ships with a ruleset which are considered official rules; this locks down the options you can change on your dedicated server. If you are running a mostly vanilla server, you may consider opting into this ruleset for your server to appear under the 'official rules' filter. To opt-in, add -OfficialRules to your server's command line.">?</abbr>
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>
+                            <label for="officialRules" style="margin:0;">Use Official Rules</label>
+                        </div>
+                        <div class="checkbox-wrapper">
                             <input type="checkbox" id="enableCheats" name="enableCheats">
-                            Enable Cheats
-                        </label>
+                            <label for="enableCheats" style="margin:0;">Enable Cheats</label>
+                        </div>
                     </div>
-                    
+
+                    <!-- Actions -->
                     <div class="form-actions">
-                        <!-- === MODIFIED PART === -->
-                        <!-- Replaced the button with a link (anchor tag) -->
-                        <a id="launchLink" href="#" class="btn btn-primary btn-large" role="button">Launch Server</a>
-                        <!-- === END MODIFIED PART === -->
-                        
-                        <div>
+                        <a id="launchLink" href="#" class="btn btn-primary btn-large" role="button">🚀 Launch Server</a>
+                        <div style="display:flex; gap:10px;">
                             <button type="button" class="btn btn-secondary" onclick="generateConfig()">Generate Config</button>
-                            <button type="button" class="btn btn-info" onclick="generateShareLink()" style="margin-left: 10px;">Share Configuration</button>
+                            <button type="button" class="btn btn-secondary" onclick="generateShareLink()">Share Link</button>
                         </div>
                     </div>
                 </form>
                 
                 <div class="config-output">
-                    <label for="configOutput">Generated Config:</label>
+                    <label for="configOutput" style="font-weight:bold; display:block; margin-bottom:5px;">Generated Config Parameters:</label>
                     <textarea id="configOutput" readonly></textarea>
                 </div>
                 
                 <div id="presetsContainer">
-                    <h2>Presets</h2>
+                    <h2 style="font-size:1.2rem; border-bottom:1px solid #ddd; padding-bottom:5px;">Presets</h2>
                     <div id="presetButtons"></div>
-                    <div class="preset-actions">
-                        <button type="button" class="btn btn-secondary" onclick="savePreset()">Save Preset</button>
-                        <button type="button" class="btn btn-secondary" onclick="exportPresets()">Export Presets</button>
-                        <button type="button" class="btn btn-secondary" onclick="importPresets()">Import Presets</button>
+                    <div class="preset-actions" style="margin-top:15px;">
+                        <button type="button" class="btn btn-secondary" onclick="savePreset()">Save Current</button>
+                        <button type="button" class="btn btn-secondary" onclick="exportPresets()">Export JSON</button>
+                        <button type="button" class="btn btn-secondary" onclick="importPresets()">Import JSON</button>
                     </div>
                 </div>
             </div>
             
+            <!-- MODS TAB -->
             <div id="mods" class="tab-content">
-                <h2>Mods</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h2>Mod Selection</h2>
+                    <button type="button" class="btn btn-primary" onclick="fetchMods()">↻ Refresh Mods</button>
+                </div>
+
                 <div class="info-box">
-                    Select mods to include with your server. The selected mods will be added to the server launch parameters.
+                    Select mods to include. The search below searches Mod Names, Summaries, and IDs.
                 </div>
                 
                 <div class="search-box">
-                    <input type="text" id="modSearch" placeholder="Search mods..." onkeyup="searchMods()">
+                    <input type="text" id="modSearch" placeholder="Search mods (e.g., 'Peg', 'ISMC', 'M4')..." onkeyup="searchMods()">
                     <button type="button" class="btn btn-primary" onclick="searchMods()">Search</button>
                 </div>
                 
-                <button type="button" class="btn btn-primary" onclick="fetchMods()">Refresh Mod List</button>
-                
                 <div id="modCheckboxes">
-                    <p>Loading mods list... Please wait or click "Refresh Mod List"</p>
+                    <p style="text-align:center; padding:20px;">Loading mods list... Please wait.</p>
                 </div>
                 
-                <div>
-                    <h3>Selected Mods:</h3>
-                    <div id="selectedModsOutput"></div>
+                <div style="background:#fff; padding:15px; border-radius:8px; margin-top:20px; border:1px solid #eee;">
+                    <h3 style="font-size:1rem;">Selected Mods ID List:</h3>
+                    <div id="selectedModsOutput" style="font-family:monospace; color:#555;">None</div>
                 </div>
-            </div> <!-- This closes #mods -->
+            </div>
 
+            <!-- MUTATORS TAB -->
             <div id="mutators" class="tab-content">
                 <h2>Mutators</h2>
                 <div class="info-box">
-                    Select mutators to enable on your server. Mutators change gameplay mechanics and rules.
+                    Mutators change gameplay mechanics.
                 </div>
                 <div class="search-box">
                     <input type="text" id="mutatorSearch" placeholder="Search mutators..." onkeyup="searchMutators()">
-                    <button type="button" class="btn btn-primary" onclick="searchMutators()">Search</button>
                 </div>
                 <div id="mutatorCheckboxes">
-                    <!-- Mutator checkboxes will be dynamically generated here -->
+                    <!-- Dynamic -->
                 </div>
-                <div> <!-- Consider removing this wrapper if not needed -->
+                <div style="margin-top:20px;">
 				    <h3>Selected Mutators:</h3>
-				    <div id="selectedMutatorsOutput">
-				    </div>
-			    </div> <!-- Closes potential wrapper -->
-		    </div> <!-- This closes #mutators -->
+				    <div id="selectedMutatorsOutput" style="font-family:monospace;"></div>
+			    </div>
+		    </div>
 
-        </div> <!-- MOVED HERE: This now correctly closes .main-content -->
-
-    </div> <!-- This closes .container -->
+        </div> <!-- End Main Content -->
+    </div> <!-- End Container -->
 
     <div id="notification" class="notification"></div>
     
@@ -2514,58 +2346,59 @@ function generateConfig() {
         }
 
 		// Generate mod checkboxes using the pre-sorted 'sortedMods' list
+// REPLACE your existing generateModCheckboxes function with this:
 function generateModCheckboxes() {
     const modCheckboxesContainer = document.getElementById('modCheckboxes');
-    modCheckboxesContainer.innerHTML = ''; // Clear previous
+    modCheckboxesContainer.innerHTML = ''; 
 
     if (!sortedMods || sortedMods.length === 0) {
-        modCheckboxesContainer.innerHTML = '<p>No mods available. Please try refreshing the mod list.</p>';
+        modCheckboxesContainer.innerHTML = '<p style="text-align:center">No mods available. Please click "Refresh Mods".</p>';
         return;
     }
 
-    // Prepare Sections
     const enabledModsSection = document.createElement('div');
     enabledModsSection.id = 'enabledModsSection';
-    
-    // Create Grid containers
     const enabledGrid = document.createElement('div');
     enabledGrid.className = 'mod-grid';
     
     const availableModsSection = document.createElement('div');
     availableModsSection.id = 'availableModsSection';
-    
     const availableGrid = document.createElement('div');
     availableGrid.className = 'mod-grid';
 
-    // Track counts
     let enabledCount = 0;
     let availableCount = 0;
 
     sortedMods.forEach(mod => {
         const isSelected = selectedMods.some(selectedMod => selectedMod.id === mod.id);
 
-        // 1. Create Card Container
+        // Create Card
         const card = document.createElement('div');
         card.className = `mod-card mod-item ${isSelected ? 'selected' : ''}`;
         
-        // 2. Handle Image
+        // *** CRITICAL FOR SEARCH FIX ***
+        // We create a combined string of Name + Summary + ID for easier searching
+        const safeSummary = mod.summary ? mod.summary.toLowerCase() : "";
+        const safeName = mod.name.toLowerCase();
+        const searchText = `${safeName} ${safeSummary} ${mod.id}`;
+        card.dataset.searchText = searchText; 
+        // *******************************
+
+        // Image
         const imgContainer = document.createElement('div');
         imgContainer.className = 'mod-image-container';
         
-        // CHECK: Does your JSON have an image?
-        // Note: You need to update your mods.json generator to include "logo.thumb_320x180"
         let imageUrl = null;
         if(mod.logo && mod.logo.thumb_320x180) imageUrl = mod.logo.thumb_320x180;
-        else if(mod.logoUrl) imageUrl = mod.logoUrl; // Fallback if you named it differently
+        else if(mod.logoUrl) imageUrl = mod.logoUrl;
         
         if (imageUrl) {
             const img = document.createElement('img');
             img.src = imageUrl;
             img.className = 'mod-image';
-            img.loading = "lazy"; // Performance boost
+            img.loading = "lazy";
             imgContainer.appendChild(img);
         } else {
-            // Placeholder if no image found
             const placeholder = document.createElement('div');
             placeholder.className = 'mod-placeholder';
             placeholder.textContent = mod.name.charAt(0).toUpperCase();
@@ -2573,7 +2406,7 @@ function generateModCheckboxes() {
         }
         card.appendChild(imgContainer);
 
-        // 3. Content Section
+        // Content
         const content = document.createElement('div');
         content.className = 'mod-content';
 
@@ -2584,17 +2417,10 @@ function generateModCheckboxes() {
         const summary = document.createElement('div');
         summary.className = 'mod-summary';
         summary.textContent = mod.summary || 'No description available.';
-        // Search text helper (hidden)
-        const searchHelper = document.createElement('span');
-        searchHelper.style.display = 'none';
-        searchHelper.className = 'item-description'; // Keep for search compatibility
-        searchHelper.textContent = mod.summary;
 
         content.appendChild(title);
         content.appendChild(summary);
-        content.appendChild(searchHelper);
 
-        // 4. Mod.io Link (Stop propagation so clicking link doesn't select mod)
         if(mod.profileUrl) {
             const linkDiv = document.createElement('div');
             linkDiv.className = 'mod-links';
@@ -2609,17 +2435,16 @@ function generateModCheckboxes() {
 
         card.appendChild(content);
 
-        // 5. Hidden Checkbox Logic
+        // Checkbox
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = mod.id;
         checkbox.checked = isSelected;
         card.appendChild(checkbox);
 
-        // 6. Click Event for the Card
+        // Click Handler
         card.addEventListener('click', function() {
-            checkbox.checked = !checkbox.checked; // Toggle checkbox
-            
+            checkbox.checked = !checkbox.checked;
             const modId = parseInt(checkbox.value);
             
             if (checkbox.checked) {
@@ -2627,20 +2452,16 @@ function generateModCheckboxes() {
                 const modToAdd = sortedMods.find(m => m.id === modId);
                 if (modToAdd && !selectedMods.some(sm => sm.id === modId)) {
                     selectedMods.push(modToAdd);
-                    logSelectedCustomMutators(); 
+                    // logSelectedCustomMutators(); // Uncomment if you use this
                 }
             } else {
                 card.classList.remove('selected');
                 selectedMods = selectedMods.filter(sm => sm.id !== modId);
             }
-            
             updateSelectedModsDisplay();
             generateConfig(); 
-            // NOTE: We do NOT re-generate the whole list on click anymore
-            // to prevent the grid from jumping around. We just toggle styles.
         });
 
-        // Add to appropriate grid
         if (isSelected) {
             enabledGrid.appendChild(card);
             enabledCount++;
@@ -2650,19 +2471,19 @@ function generateModCheckboxes() {
         }
     });
 
-    // Append Sections to DOM
     if (enabledCount > 0) {
-        const enabledHeader = document.createElement('h4');
+        const enabledHeader = document.createElement('h3');
         enabledHeader.textContent = `Enabled Mods (${enabledCount})`;
+        enabledHeader.style.marginTop = '0';
         enabledModsSection.appendChild(enabledHeader);
         enabledModsSection.appendChild(enabledGrid);
         modCheckboxesContainer.appendChild(enabledModsSection);
     }
 
     if (availableCount > 0) {
-        const availableHeader = document.createElement('h4');
+        const availableHeader = document.createElement('h3');
         availableHeader.textContent = 'Available Mods';
-        if (enabledCount > 0) availableHeader.style.marginTop = '20px';
+        if (enabledCount > 0) availableHeader.style.marginTop = '30px';
         availableModsSection.appendChild(availableHeader);
         availableModsSection.appendChild(availableGrid);
         modCheckboxesContainer.appendChild(availableModsSection);
@@ -2697,24 +2518,27 @@ function generateModCheckboxes() {
           }
         }
 
-		// Update search function to look in both sections if they exist
-		function searchMods() {
-			const searchTerm = document.getElementById('modSearch').value.toLowerCase();
+// REPLACE your existing searchMods function with this:
+function searchMods() {
+    const rawSearchTerm = document.getElementById('modSearch').value;
+    const searchTerm = rawSearchTerm.toLowerCase().trim();
+    
+    // Select all mod cards
+    const cards = document.querySelectorAll('.mod-card');
 
-			// Target all items within both potential sections
-			const checkboxItems = document.querySelectorAll('#enabledModsSection .mod-item, #availableModsSection .mod-item');
-
-			checkboxItems.forEach(item => {
-				const label = item.querySelector('label')?.textContent.toLowerCase() || ''; // Safe access
-				const description = item.querySelector('.item-description')?.textContent.toLowerCase() || ''; // Safe access
-
-				if (label.includes(searchTerm) || description.includes(searchTerm)) {
-					item.style.display = ''; // Show if matches
-				} else {
-					item.style.display = 'none'; // Hide if doesn't match
-				}
-			});
-		}
+    cards.forEach(card => {
+        // Retrieve the pre-compiled search string from the data attribute
+        const searchData = card.dataset.searchText; 
+        
+        // If search is empty, show everything. 
+        // If match found, show it. Otherwise hide.
+        if (searchTerm === "" || (searchData && searchData.includes(searchTerm))) {
+            card.style.display = 'flex'; // Restore flex display for cards
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
 
         // GameStats token auto-check enableGameStats
         document.getElementById('gameStatsToken').addEventListener('input', function(e) {
