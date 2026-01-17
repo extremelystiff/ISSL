@@ -2586,6 +2586,7 @@ function getServerParamsString() {
     const enableGameStats = document.getElementById('enableGameStats').checked;
     const officialRules = document.getElementById('officialRules').checked;
 
+    // 1. Build the initial Launch URL (Server Map string)
     let travelUrl = scenario;
     const travelUrlParams = [];
     travelUrlParams.push(`MaxPlayers=${maxPlayers}`);
@@ -2596,24 +2597,33 @@ function getServerParamsString() {
         travelUrl += '?' + travelUrlParams.join('?');
     }
 
+    // 2. Build the Command Line Arguments
     const otherParams = [
         `-Port=${port}`,
         `-QueryPort=${queryPort}`,
         '-log',
         `-hostname="${hostname}"`
     ];
+    
     if (enableCheats) otherParams.push("-EnableCheats");
     if (gameStatsToken && enableGameStats) {
         otherParams.push(`-GameStatsToken=${gameStatsToken}`, "-GameStats");
     }
     if (gsltToken) otherParams.push(`-GSLTToken=${gsltToken}`);
     if (officialRules) otherParams.push("-ruleset=OfficialRules");
+    
     if (selectedMutators.length > 0) {
         otherParams.push(`-Mutators=${selectedMutators.join(',')}`);
     }
+    
+    // --- UPDATED MODS LOGIC ---
     if (selectedMods.length > 0) {
         const modIds = selectedMods.map(mod => mod.id).join(',');
         otherParams.push(`-mods`, `-CmdModList=${modIds}`);
+        
+        // Forces the server to reload the map after mods finish downloading
+        // This ensures all mods are loaded correctly before players join
+        otherParams.push(`-ModDownloadTravelTo=${scenario}`);
     }
 
     return `${travelUrl} ${otherParams.join(' ')}`;
