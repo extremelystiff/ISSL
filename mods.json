@@ -11783,5 +11783,18 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 5698307,
+    "name": "Overhaul",
+    "summary": "Various HD updates, skins, idk. Random compilation of user side mods. The pancho hood! HD vests ! Newspapers are readable now! Wow I'm not so blind anymore!",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/overhaul",
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
