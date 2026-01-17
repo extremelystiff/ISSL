@@ -379,6 +379,7 @@
             <button class="tab" onclick="openTab(event, 'mods')">Mods</button>
             <button class="tab" onclick="openTab(event, 'mutators')">Mutators</button>
 			<button class="tab" onclick="openTab(event, 'gameIni')">Game.ini Helper</button>
+			<button class="tab" onclick="openTab(event, 'mapCycle')">MapCycle Generator</button>
         </div>
         
         <div class="main-content">
@@ -778,6 +779,69 @@
     </div>
 </div>
 
+			<!-- MAPCYCLE TAB -->
+<div id="mapCycle" class="tab-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h2>MapCycle.txt Generator</h2>
+        <div style="display:flex; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="copyMapCycle()">Copy Text</button>
+            <button type="button" class="btn btn-primary" onclick="downloadMapCycle()">Download MapCycle.txt</button>
+        </div>
+    </div>
+
+    <div class="mapcycle-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        
+        <!-- LEFT: Controls -->
+        <div class="mc-controls" style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">1. Filter & Add</h3>
+            
+            <div class="form-group">
+                <label>Select Map</label>
+                <select id="mcMapSelect">
+                    <option value="All">All Maps</option>
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Select Game Mode</label>
+                <select id="mcModeSelect">
+                    <option value="All">All Game Modes</option>
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Lighting Preference</label>
+                <select id="mcLightingSelect">
+                    <option value="Day">Day Only</option>
+                    <option value="Night">Night Only</option>
+                    <option value="Both">Both (Day & Night)</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="addScenariosToCycle()">
+                + Add To List
+            </button>
+            
+            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+                <label style="font-weight:bold; color:#e53e3e;">Manage List</label>
+                <button type="button" class="btn btn-danger" style="width:100%; margin-top:5px;" onclick="clearMapCycle()">
+                    Clear List
+                </button>
+            </div>
+        </div>
+
+        <!-- RIGHT: Output -->
+        <div class="mc-output">
+            <h3 style="margin-top:0;">2. Generated File Content</h3>
+            <textarea id="mapCycleOutput" readonly style="width:100%; height:400px; font-family:'Consolas', monospace; white-space:pre; padding:10px; border:1px solid #ddd; border-radius:4px; background:#f8f9fa;"></textarea>
+            <div style="font-size:0.85em; color:#666; margin-top:5px;">
+                File location: <code>Insurgency/Config/Server/MapCycle.txt</code>
+            </div>
+        </div>
+    </div>
+</div>
 			
         </div> 
     </div>
@@ -3062,5 +3126,329 @@ document.addEventListener('DOMContentLoaded', function() {
     initGameIniForm();
 });
 	</script>
+		<script>
+			// ==========================================
+// MAPCYCLE GENERATOR LOGIC
+// ==========================================
+
+// 1. Data Source (Compiled from your list)
+const scenarioDatabase = [
+    // Bab
+    { map: "Bab", mode: "Checkpoint Insurgents", code: "Scenario_Bab_Checkpoint_Insurgents" },
+    { map: "Bab", mode: "Checkpoint Security", code: "Scenario_Bab_Checkpoint_Security" },
+    { map: "Bab", mode: "Domination", code: "Scenario_Bab_Domination" },
+    { map: "Bab", mode: "Firefight East", code: "Scenario_Bab_Firefight_East" },
+    { map: "Bab", mode: "Outpost", code: "Scenario_Bab_Outpost" },
+    { map: "Bab", mode: "Push Insurgents", code: "Scenario_Bab_Push_Insurgents" },
+    { map: "Bab", mode: "Push Security", code: "Scenario_Bab_Push_Security" },
+    { map: "Bab", mode: "Ambush", code: "Scenario_Bab_Ambush" },
+    { map: "Bab", mode: "Survival", code: "Scenario_Bab_Survival" },
+    { map: "Bab", mode: "Defusal", code: "Scenario_Bab_Defusal" },
+
+    // Crossing (Canyon)
+    { map: "Crossing", mode: "Ambush", code: "Scenario_Crossing_Ambush" },
+    { map: "Crossing", mode: "Checkpoint Insurgents", code: "Scenario_Crossing_Checkpoint_Insurgents" },
+    { map: "Crossing", mode: "Checkpoint Security", code: "Scenario_Crossing_Checkpoint_Security" },
+    { map: "Crossing", mode: "Domination", code: "Scenario_Crossing_Domination" },
+    { map: "Crossing", mode: "Firefight West", code: "Scenario_Crossing_Firefight_West" },
+    { map: "Crossing", mode: "Frontline", code: "Scenario_Crossing_Frontline" },
+    { map: "Crossing", mode: "Outpost", code: "Scenario_Crossing_Outpost" },
+    { map: "Crossing", mode: "Push Insurgents", code: "Scenario_Crossing_Push_Insurgents" },
+    { map: "Crossing", mode: "Push Security", code: "Scenario_Crossing_Push_Security" },
+    { map: "Crossing", mode: "Skirmish", code: "Scenario_Crossing_Skirmish" },
+    { map: "Crossing", mode: "Team Deathmatch", code: "Scenario_Crossing_Team_Deathmatch" },
+    { map: "Crossing", mode: "Defusal", code: "Scenario_Crossing_Defusal" },
+    { map: "Crossing", mode: "FFA", code: "Scenario_Crossing_FFA" },
+
+    // Farmhouse
+    { map: "Farmhouse", mode: "Ambush", code: "Scenario_Farmhouse_Ambush" },
+    { map: "Farmhouse", mode: "Checkpoint Insurgents", code: "Scenario_Farmhouse_Checkpoint_Insurgents" },
+    { map: "Farmhouse", mode: "Checkpoint Security", code: "Scenario_Farmhouse_Checkpoint_Security" },
+    { map: "Farmhouse", mode: "Domination", code: "Scenario_Farmhouse_Domination" },
+    { map: "Farmhouse", mode: "Firefight East", code: "Scenario_Farmhouse_Firefight_East" },
+    { map: "Farmhouse", mode: "Firefight West", code: "Scenario_Farmhouse_Firefight_West" },
+    { map: "Farmhouse", mode: "Frontline", code: "Scenario_Farmhouse_Frontline" },
+    { map: "Farmhouse", mode: "Push Insurgents", code: "Scenario_Farmhouse_Push_Insurgents" },
+    { map: "Farmhouse", mode: "Push Security", code: "Scenario_Farmhouse_Push_Security" },
+    { map: "Farmhouse", mode: "Skirmish", code: "Scenario_Farmhouse_Skirmish" },
+    { map: "Farmhouse", mode: "Survival", code: "Scenario_Farmhouse_Survival" },
+    { map: "Farmhouse", mode: "Team Deathmatch", code: "Scenario_Farmhouse_Team_Deathmatch" },
+    { map: "Farmhouse", mode: "Outpost", code: "Scenario_Farmhouse_Outpost" },
+    { map: "Farmhouse", mode: "Defusal", code: "Scenario_Farmhouse_Defusal" },
+
+    // Hideout (Town)
+    { map: "Hideout", mode: "Ambush", code: "Scenario_Hideout_Ambush" },
+    { map: "Hideout", mode: "Checkpoint Insurgents", code: "Scenario_Hideout_Checkpoint_Insurgents" },
+    { map: "Hideout", mode: "Checkpoint Security", code: "Scenario_Hideout_Checkpoint_Security" },
+    { map: "Hideout", mode: "Domination", code: "Scenario_Hideout_Domination" },
+    { map: "Hideout", mode: "Firefight East", code: "Scenario_Hideout_Firefight_East" },
+    { map: "Hideout", mode: "Firefight West", code: "Scenario_Hideout_Firefight_West" },
+    { map: "Hideout", mode: "Frontline", code: "Scenario_Hideout_Frontline" },
+    { map: "Hideout", mode: "Push Insurgents", code: "Scenario_Hideout_Push_Insurgents" },
+    { map: "Hideout", mode: "Push Security", code: "Scenario_Hideout_Push_Security" },
+    { map: "Hideout", mode: "Skirmish", code: "Scenario_Hideout_Skirmish" },
+    { map: "Hideout", mode: "Survival", code: "Scenario_Hideout_Survival" },
+    { map: "Hideout", mode: "Team Deathmatch", code: "Scenario_Hideout_Team_Deathmatch" },
+    { map: "Hideout", mode: "Outpost", code: "Scenario_Hideout_Outpost" },
+    { map: "Hideout", mode: "Ambush East", code: "Scenario_Hideout_Ambush_East" },
+    { map: "Hideout", mode: "Defusal", code: "Scenario_Hideout_Defusal" },
+
+    // Hillside (Sinjar)
+    { map: "Hillside", mode: "Ambush", code: "Scenario_Hillside_Ambush" },
+    { map: "Hillside", mode: "Checkpoint Insurgents", code: "Scenario_Hillside_Checkpoint_Insurgents" },
+    { map: "Hillside", mode: "Checkpoint Security", code: "Scenario_Hillside_Checkpoint_Security" },
+    { map: "Hillside", mode: "Domination", code: "Scenario_Hillside_Domination" },
+    { map: "Hillside", mode: "Firefight East", code: "Scenario_Hillside_Firefight_East" },
+    { map: "Hillside", mode: "Firefight West", code: "Scenario_Hillside_Firefight_West" },
+    { map: "Hillside", mode: "Frontline", code: "Scenario_Hillside_Frontline" },
+    { map: "Hillside", mode: "Outpost", code: "Scenario_Hillside_Outpost" },
+    { map: "Hillside", mode: "Push Insurgents", code: "Scenario_Hillside_Push_Insurgents" },
+    { map: "Hillside", mode: "Push Security", code: "Scenario_Hillside_Push_Security" },
+    { map: "Hillside", mode: "Skirmish", code: "Scenario_Hillside_Skirmish" },
+    { map: "Hillside", mode: "Survival", code: "Scenario_Hillside_Survival" },
+    { map: "Hillside", mode: "Team Deathmatch", code: "Scenario_Hillside_Team_Deathmatch" },
+
+    // Ministry
+    { map: "Ministry", mode: "Ambush", code: "Scenario_Ministry_Ambush" },
+    { map: "Ministry", mode: "Checkpoint Insurgents", code: "Scenario_Ministry_Checkpoint_Insurgents" },
+    { map: "Ministry", mode: "Checkpoint Security", code: "Scenario_Ministry_Checkpoint_Security" },
+    { map: "Ministry", mode: "Domination", code: "Scenario_Ministry_Domination" },
+    { map: "Ministry", mode: "Firefight", code: "Scenario_Ministry_Firefight_A" },
+    { map: "Ministry", mode: "Skirmish", code: "Scenario_Ministry_Skirmish" },
+    { map: "Ministry", mode: "Team Deathmatch", code: "Scenario_Ministry_Team_Deathmatch" },
+    { map: "Ministry", mode: "Outpost", code: "Scenario_Ministry_Outpost" },
+    { map: "Ministry", mode: "Survival", code: "Scenario_Ministry_Survival" },
+    { map: "Ministry", mode: "Defusal", code: "Scenario_Ministry_Defusal" },
+
+    // Outskirts (Compound)
+    { map: "Outskirts", mode: "Checkpoint Insurgents", code: "Scenario_Outskirts_Checkpoint_Insurgents" },
+    { map: "Outskirts", mode: "Checkpoint Security", code: "Scenario_Outskirts_Checkpoint_Security" },
+    { map: "Outskirts", mode: "Firefight East", code: "Scenario_Outskirts_Firefight_East" },
+    { map: "Outskirts", mode: "Firefight West", code: "Scenario_Outskirts_Firefight_West" },
+    { map: "Outskirts", mode: "Frontline", code: "Scenario_Outskirts_Frontline" },
+    { map: "Outskirts", mode: "Push Insurgents", code: "Scenario_Outskirts_Push_Insurgents" },
+    { map: "Outskirts", mode: "Push Security", code: "Scenario_Outskirts_Push_Security" },
+    { map: "Outskirts", mode: "Skirmish", code: "Scenario_Outskirts_Skirmish" },
+    { map: "Outskirts", mode: "Team Deathmatch", code: "Scenario_Outskirts_Team_Deathmatch" },
+    { map: "Outskirts", mode: "Survival", code: "Scenario_Outskirts_Survival" },
+    { map: "Outskirts", mode: "Defusal", code: "Scenario_Outskirts_Defusal" },
+    { map: "Outskirts", mode: "Domination", code: "Scenario_Outskirts_Domination" },
+    { map: "Outskirts", mode: "Outpost", code: "Scenario_Outskirts_Outpost" },
+    { map: "Outskirts", mode: "Ambush", code: "Scenario_Outskirts_Ambush" },
+    { map: "Outskirts", mode: "Ambush East", code: "Scenario_Outskirts_Ambush_East" },
+
+    // Precinct
+    { map: "Precinct", mode: "Ambush", code: "Scenario_Precinct_Ambush" },
+    { map: "Precinct", mode: "Checkpoint Insurgents", code: "Scenario_Precinct_Checkpoint_Insurgents" },
+    { map: "Precinct", mode: "Checkpoint Security", code: "Scenario_Precinct_Checkpoint_Security" },
+    { map: "Precinct", mode: "Firefight East", code: "Scenario_Precinct_Firefight_East" },
+    { map: "Precinct", mode: "Firefight West", code: "Scenario_Precinct_Firefight_West" },
+    { map: "Precinct", mode: "Frontline", code: "Scenario_Precinct_Frontline" },
+    { map: "Precinct", mode: "Push Insurgents", code: "Scenario_Precinct_Push_Insurgents" },
+    { map: "Precinct", mode: "Push Security", code: "Scenario_Precinct_Push_Security" },
+    { map: "Precinct", mode: "Skirmish", code: "Scenario_Precinct_Skirmish" },
+    { map: "Precinct", mode: "Team Deathmatch", code: "Scenario_Precinct_Team_Deathmatch" },
+    { map: "Precinct", mode: "Survival", code: "Scenario_Precinct_Survival" },
+    { map: "Precinct", mode: "Defusal", code: "Scenario_Precinct_Defusal" },
+    { map: "Precinct", mode: "Domination West", code: "Scenario_Precinct_Domination_West" },
+    { map: "Precinct", mode: "Domination East", code: "Scenario_Precinct_Domination_East" },
+    { map: "Precinct", mode: "Outpost", code: "Scenario_Precinct_Outpost" },
+    { map: "Precinct", mode: "Ambush East", code: "Scenario_Precinct_Ambush_East" },
+    { map: "Precinct", mode: "FFA", code: "Scenario_Precinct_FFA" },
+
+    // Refinery (Oilfield)
+    { map: "Refinery", mode: "Ambush", code: "Scenario_Refinery_Ambush" },
+    { map: "Refinery", mode: "Checkpoint Insurgents", code: "Scenario_Refinery_Checkpoint_Insurgents" },
+    { map: "Refinery", mode: "Checkpoint Security", code: "Scenario_Refinery_Checkpoint_Security" },
+    { map: "Refinery", mode: "Firefight West", code: "Scenario_Refinery_Firefight_West" },
+    { map: "Refinery", mode: "Frontline", code: "Scenario_Refinery_Frontline" },
+    { map: "Refinery", mode: "Push Insurgents", code: "Scenario_Refinery_Push_Insurgents" },
+    { map: "Refinery", mode: "Push Security", code: "Scenario_Refinery_Push_Security" },
+    { map: "Refinery", mode: "Skirmish", code: "Scenario_Refinery_Skirmish" },
+    { map: "Refinery", mode: "Team Deathmatch", code: "Scenario_Refinery_Team_Deathmatch" },
+    { map: "Refinery", mode: "Survival", code: "Scenario_Refinery_Survival" },
+    { map: "Refinery", mode: "Defusal", code: "Scenario_Refinery_Defusal" },
+    { map: "Refinery", mode: "Domination", code: "Scenario_Refinery_Domination" },
+    { map: "Refinery", mode: "Outpost", code: "Scenario_Refinery_Outpost" },
+
+    // Summit (Mountain)
+    { map: "Summit", mode: "Ambush West", code: "Scenario_Summit_Ambush_West" },
+    { map: "Summit", mode: "Checkpoint Insurgents", code: "Scenario_Summit_Checkpoint_Insurgents" },
+    { map: "Summit", mode: "Checkpoint Security", code: "Scenario_Summit_Checkpoint_Security" },
+    { map: "Summit", mode: "Firefight East", code: "Scenario_Summit_Firefight_East" },
+    { map: "Summit", mode: "Firefight West", code: "Scenario_Summit_Firefight_West" },
+    { map: "Summit", mode: "Frontline", code: "Scenario_Summit_Frontline" },
+    { map: "Summit", mode: "Push Insurgents", code: "Scenario_Summit_Push_Insurgents" },
+    { map: "Summit", mode: "Push Security", code: "Scenario_Summit_Push_Security" },
+    { map: "Summit", mode: "Skirmish", code: "Scenario_Summit_Skirmish" },
+    { map: "Summit", mode: "Team Deathmatch", code: "Scenario_Summit_Team_Deathmatch" },
+    { map: "Summit", mode: "Survival", code: "Scenario_Summit_Survival" },
+    { map: "Summit", mode: "Domination", code: "Scenario_Summit_Domination" },
+    { map: "Summit", mode: "Outpost", code: "Scenario_Summit_Outpost" },
+    { map: "Summit", mode: "Ambush East", code: "Scenario_Summit_Ambush_East" },
+    { map: "Summit", mode: "Defusal", code: "Scenario_Summit_Defusal" },
+
+    // Power Plant
+    { map: "PowerPlant", mode: "Ambush", code: "Scenario_Powerplant_Ambush" },
+    { map: "PowerPlant", mode: "Checkpoint Insurgents", code: "Scenario_PowerPlant_Checkpoint_Insurgents" },
+    { map: "PowerPlant", mode: "Checkpoint Security", code: "Scenario_PowerPlant_Checkpoint_Security" },
+    { map: "PowerPlant", mode: "Domination", code: "Scenario_PowerPlant_Domination" },
+    { map: "PowerPlant", mode: "Firefight East", code: "Scenario_PowerPlant_Firefight_East" },
+    { map: "PowerPlant", mode: "Firefight West", code: "Scenario_PowerPlant_Firefight_West" },
+    { map: "PowerPlant", mode: "Push Insurgents", code: "Scenario_PowerPlant_Push_Insurgents" },
+    { map: "PowerPlant", mode: "Push Security", code: "Scenario_PowerPlant_Push_Security" },
+    { map: "PowerPlant", mode: "Survival", code: "Scenario_PowerPlant_Survival" },
+    { map: "PowerPlant", mode: "Frontline", code: "Scenario_PowerPlant_Frontline" },
+    { map: "PowerPlant", mode: "Outpost", code: "Scenario_PowerPlant_Outpost" },
+    { map: "PowerPlant", mode: "FFA", code: "Scenario_PowerPlant_FFA" },
+    { map: "PowerPlant", mode: "Skirmish", code: "Scenario_PowerPlant_Skirmish" },
+
+    // Tell
+    { map: "Tell", mode: "Ambush West", code: "Scenario_Tell_Ambush_West" },
+    { map: "Tell", mode: "Checkpoint Insurgents", code: "Scenario_Tell_Checkpoint_Insurgents" },
+    { map: "Tell", mode: "Checkpoint Security", code: "Scenario_Tell_Checkpoint_Security" },
+    { map: "Tell", mode: "Domination East", code: "Scenario_Tell_Domination_East" },
+    { map: "Tell", mode: "Firefight East", code: "Scenario_Tell_Firefight_East" },
+    { map: "Tell", mode: "Firefight West", code: "Scenario_Tell_Firefight_West" },
+    { map: "Tell", mode: "Outpost", code: "Scenario_Tell_Outpost" },
+    { map: "Tell", mode: "Push Insurgents", code: "Scenario_Tell_Push_Insurgents" },
+    { map: "Tell", mode: "Push Security", code: "Scenario_Tell_Push_Security" },
+    { map: "Tell", mode: "Survival", code: "Scenario_Tell_Survival" },
+    { map: "Tell", mode: "Frontline", code: "Scenario_Tell_Frontline" },
+    { map: "Tell", mode: "Ambush East", code: "Scenario_Tell_Ambush_East" },
+    { map: "Tell", mode: "Defusal", code: "Scenario_Tell_Defusal" },
+    { map: "Tell", mode: "FFA", code: "Scenario_Tell_FFA" },
+
+    // Tideway (Buhriz)
+    { map: "Tideway", mode: "Checkpoint Insurgents", code: "Scenario_Tideway_Checkpoint_Insurgents" },
+    { map: "Tideway", mode: "Checkpoint Security", code: "Scenario_Tideway_Checkpoint_Security" },
+    { map: "Tideway", mode: "Domination", code: "Scenario_Tideway_Domination" },
+    { map: "Tideway", mode: "Firefight West", code: "Scenario_Tideway_Firefight_West" },
+    { map: "Tideway", mode: "Frontline", code: "Scenario_Tideway_Frontline" },
+    { map: "Tideway", mode: "Push Insurgents", code: "Scenario_Tideway_Push_Insurgents" },
+    { map: "Tideway", mode: "Push Security", code: "Scenario_Tideway_Push_Security" },
+    { map: "Tideway", mode: "Survival", code: "Scenario_Tideway_Survival" },
+    { map: "Tideway", mode: "Outpost", code: "Scenario_Tideway_Outpost" },
+    { map: "Tideway", mode: "Ambush", code: "Scenario_Tideway_Ambush" },
+    { map: "Tideway", mode: "Defusal", code: "Scenario_Tideway_Defusal" }
+];
+
+// 2. Global State for Map Cycle
+let currentMapCycle = [];
+
+// 3. Initialize Dropdowns
+function initMapCycleUI() {
+    const mapSelect = document.getElementById('mcMapSelect');
+    const modeSelect = document.getElementById('mcModeSelect');
+    if(!mapSelect || !modeSelect) return;
+
+    // Get unique Maps
+    const uniqueMaps = [...new Set(scenarioDatabase.map(s => s.map))].sort();
+    uniqueMaps.forEach(map => {
+        const opt = document.createElement('option');
+        opt.value = map;
+        opt.textContent = map;
+        mapSelect.appendChild(opt);
+    });
+
+    // Get unique Modes
+    const uniqueModes = [...new Set(scenarioDatabase.map(s => s.mode))].sort();
+    uniqueModes.forEach(mode => {
+        const opt = document.createElement('option');
+        opt.value = mode;
+        opt.textContent = mode;
+        modeSelect.appendChild(opt);
+    });
+}
+
+// 4. Logic: Add scenarios based on filters
+function addScenariosToCycle() {
+    const mapFilter = document.getElementById('mcMapSelect').value;
+    const modeFilter = document.getElementById('mcModeSelect').value;
+    const lighting = document.getElementById('mcLightingSelect').value;
+
+    let matches = scenarioDatabase.filter(scenario => {
+        const mapMatch = (mapFilter === "All") || (scenario.map === mapFilter);
+        
+        // Exact mode match logic, or partial if needed? 
+        // For now, exact string match based on the dropdown.
+        // But if I pick "All", it allows anything.
+        // If I pick "Checkpoint Security", it finds that string.
+        // Note: Some modes are "Firefight West", "Firefight East". 
+        // If user wants generic "Firefight", they might need to be specific or we add loose matching.
+        // Given the dataset, specific is safer.
+        const modeMatch = (modeFilter === "All") || (scenario.mode === modeFilter);
+
+        return mapMatch && modeMatch;
+    });
+
+    if(matches.length === 0) {
+        showNotification("No scenarios found with those filters.", "error");
+        return;
+    }
+
+    // Process lighting logic
+    let addedCount = 0;
+    matches.forEach(scen => {
+        if(lighting === "Day" || lighting === "Both") {
+            currentMapCycle.push(`(Scenario="${scen.code}",Lighting="Day")`);
+            addedCount++;
+        }
+        if(lighting === "Night" || lighting === "Both") {
+            currentMapCycle.push(`(Scenario="${scen.code}",Lighting="Night")`);
+            addedCount++;
+        }
+    });
+
+    updateMapCycleOutput();
+    showNotification(`Added ${addedCount} entries.`, "success");
+}
+
+function clearMapCycle() {
+    if(confirm("Clear the entire map cycle list?")) {
+        currentMapCycle = [];
+        updateMapCycleOutput();
+    }
+}
+
+function updateMapCycleOutput() {
+    const textArea = document.getElementById('mapCycleOutput');
+    if(textArea) {
+        textArea.value = currentMapCycle.join("\n");
+    }
+}
+
+function copyMapCycle() {
+    const content = document.getElementById('mapCycleOutput');
+    content.select();
+    document.execCommand('copy');
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(content.value).then(() => {
+            showNotification('MapCycle copied!', 'success');
+        });
+    } else {
+        showNotification('MapCycle copied!', 'success');
+    }
+}
+
+function downloadMapCycle() {
+    const content = document.getElementById('mapCycleOutput').value;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'MapCycle.txt';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', function() {
+    initMapCycleUI();
+});
+		</script>
 </body>
 </html>
