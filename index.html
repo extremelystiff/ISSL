@@ -189,6 +189,10 @@
             color: white; width: 22px; height: 22px; border-radius: 50%; text-align: center;
             line-height: 22px; font-weight: bold; font-size: 12px; z-index: 2;
         }
+		/* Hide the default checkbox input so only the custom checkmark shows */
+		.mod-card input[type="checkbox"] {
+		    display: none !important;
+		}
 
         .mod-image-container { width: 100%; height: 110px; background-color: #edf2f7; position: relative; overflow: hidden; }
         .mod-image { width: 100%; height: 100%; object-fit: cover; }
@@ -1730,51 +1734,52 @@ function logMutatorSelection(mutatorName) {
 }
         
         // Mutators data
-	const mutators = [
-	    { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
-	    { name: 'AntiMaterielRiflesOnly', description: 'Only anti-materiel rifles are available along with normal equipment and explosives.' },
-	    { name: 'ArmsRace', description: 'Every two kills give a new weapon. A kill with the final weapon wins the round.' },
-	    { name: 'BoltActionsOnly', description: 'Only bolt-action rifles are available along with normal equipment and explosives.' },
-	    { name: 'Broke', description: 'Start with 0 supply points.' },
-	    { name: 'BudgetAntiquing', description: 'Normal equipment and explosives, but limited to old and inexpensive weapons.' },
-	    { name: 'BulletSponge', description: 'Health is increased.' },
-	    { name: 'Competitive', description: 'Equipment is more expensive, rounds are shorter, and capturing objectives is faster.' },
-	    { name: 'CompetitiveLoadouts', description: 'Player classes are replaced with those from Competitive.' },
-	    { name: 'DesertEaglesOnly', description: 'Only Desert Eagle pistols are available along with normal equipment and explosives.' },
-	    { name: 'FastMovement', description: 'Move Faster.' },
-	    { name: 'Frenzy', description: 'Fight against AI enemies who only use melee attacks. Watch out for special enemies.' },
-	    { name: 'FullyLoaded', description: 'All weapons, equipment, and explosives in the game are available in the Loadout Menu' },
-	    { name: 'GrenadeLaunchersOnly', description: 'Only Grenade Launchers are available.' },
-	    { name: 'Guerrillas', description: 'Start with 5 supply points.' },
-	    { name: 'Gunslingers', description: 'Kill the enemy more than they kill you with a big stinkin\' revolver. And explosives.' },
-	    { name: 'Hardcore', description: 'Mutator featuring slower movement speeds and longer capture times.' },
-	    { name: 'HeadshotOnly', description: 'Players only take damage when shot in the head.' },
-	    { name: 'HotPotato', description: 'A live fragmentation grenade is dropped on death.' },
-	    { name: 'LMGOnly', description: 'Only light machine guns are available along with normal equipment and explosives.' },
-	    { name: 'LockedAim', description: 'Weapons always point to the center of the screen.' },
-	    { name: 'MakarovsOnly', description: 'Makarovs are the only option.' },
-	    { name: 'NoAim', description: 'Aiming down sights is disabled.' },
-	    { name: 'NoDeathCam', description: 'Forces the death camera to be disabled for all players.' },
-	    { name: 'NoDrops', description: 'No scavenging allowed.' },
-	    { name: 'NoThirdPerson', description: 'The third person camera for spectator mode is disabled.' },
-	    { name: 'OfficialRules', description: 'All gamemodes are forced to default rules.' },
-	    { name: 'PistolsOnly', description: 'Only pistols are available along with normal equipment and explosives.' },
-	    { name: 'Poor', description: 'Start with limited supply.' },
-	    { name: 'ShotgunsOnly', description: 'Only Shotguns are available along with normal equipment and explosives.' },
-	    { name: 'SlowCaptureTimes', description: 'Objectives will take longer to capture.' },
-	    { name: 'SlowMovement', description: 'Move slower.' },
-	    { name: 'SmallFirefight', description: 'Adjusts Firefight to suit a smaller player count by adjusting round count, round timer, and capture times.' },
-	    { name: 'SoldierOfFortune', description: 'Gain supply points as your score increases.' },
-	    { name: 'SpecialOperations', description: 'Start with 30 supply points.' },
-	    { name: 'Strapped', description: 'Start with 1 supply point.' },
-	    { name: 'TacticalVoiceChat', description: 'Allows dead players to speak to the living, disables proximity chat to the enemy.' },
-	    { name: 'TieBreaker', description: 'In Firefight, enable overtime and replaying rounds in the event of a draw.' },
-	    { name: 'Ultralethal', description: 'Everyone dies with one shot.' },
-	    { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
-	    { name: 'Warlords', description: 'Start with 10 supply points.' },
-	    { name: 'Welrods', description: 'Every player is forced to use the bolt-action Welrod pistol.' },
-	    { name: 'WelrodsOnly', description: 'Only bolt-action Welrod pistols are available along with normal equipment and explosives.' }
-	];
+const mutators = [
+    { name: 'AllYouCanEat', description: 'Start with 100 supply points.' },
+    { name: 'AntiMaterielRiflesOnly', description: 'Only anti-materiel rifles are available along with normal equipment and explosives.' },
+    { name: 'ArmsRace', description: 'Every two kills give a new weapon. A kill with the final weapon wins the round.' },
+    { name: 'BoltActionsOnly', description: 'Only bolt-action rifles are available along with normal equipment and explosives.' },
+    { name: 'Broke', description: 'Start with 0 supply points.' },
+    { name: 'BudgetAntiquing', description: 'Normal equipment and explosives, but limited to old and inexpensive weapons.' },
+    { name: 'BulletSponge', description: 'Health is increased.' },
+    { name: 'ChadTeam666Night', description: 'Mutator featuring 100 supply points, melee and special enemies, and vampirism.' },
+    { name: 'Competitive', description: 'Equipment is more expensive, rounds are shorter, and capturing objectives is faster.' },
+    { name: 'CompetitiveLoadouts', description: 'Player classes are replaced with those from Competitive.' },
+    { name: 'DesertEaglesOnly', description: 'Only Desert Eagle pistols are available along with normal equipment and explosives.' },
+    { name: 'FastMovement', description: 'Move Faster.' },
+    { name: 'Frenzy', description: 'Fight against AI enemies who only use melee attacks. Watch out for special enemies.' },
+    { name: 'FullyLoaded', description: 'All weapons, equipment, and explosives in the game are available in the Loadout Menu.' },
+    { name: 'GrenadeLaunchersOnly', description: 'Only Grenade Launchers are available.' },
+    { name: 'Guerrillas', description: 'Start with 5 supply points.' },
+    { name: 'Gunslingers', description: 'Kill the enemy more than they kill you with a big stinkin\' revolver. And explosives.' },
+    { name: 'Hardcore', description: 'Mutator featuring slower movement speeds and longer capture times.' },
+    { name: 'HeadshotOnly', description: 'Players only take damage when shot in the head.' },
+    { name: 'HotPotato', description: 'A live fragmentation grenade is dropped on death.' },
+    { name: 'LMGOnly', description: 'Only light machine guns are available along with normal equipment and explosives.' },
+    { name: 'LockedAim', description: 'Weapons always point to the center of the screen.' },
+    { name: 'MakarovsOnly', description: 'Makarovs are the only option.' },
+    { name: 'NoAim', description: 'Aiming down sights is disabled.' },
+    { name: 'NoDeathCam', description: 'Forces the death camera to be disabled for all players.' },
+    { name: 'NoDrops', description: 'No scavenging allowed.' },
+    { name: 'NoThirdPerson', description: 'The third person camera for spectator mode is disabled.' },
+    { name: 'OfficialRules', description: 'All gamemodes are forced to default rules.' },
+    { name: 'PistolsOnly', description: 'Only pistols are available along with normal equipment and explosives.' },
+    { name: 'Poor', description: 'Start with limited supply.' },
+    { name: 'ShotgunsOnly', description: 'Only Shotguns are available along with normal equipment and explosives.' },
+    { name: 'SlowCaptureTimes', description: 'Objectives will take longer to capture.' },
+    { name: 'SlowMovement', description: 'Move slower.' },
+    { name: 'SmallFirefight', description: 'Adjusts Firefight to suit a smaller player count by adjusting round count, round timer, and capture times.' },
+    { name: 'SoldierOfFortune', description: 'Gain supply points as your score increases.' },
+    { name: 'SpecialOperations', description: 'Start with 30 supply points.' },
+    { name: 'Strapped', description: 'Start with 1 supply point.' },
+    { name: 'TacticalVoiceChat', description: 'Allows dead players to speak to the living, disables proximity chat to the enemy.' },
+    { name: 'TieBreaker', description: 'In Firefight, enable overtime and replaying rounds in the event of a draw.' },
+    { name: 'Ultralethal', description: 'Everyone dies with one shot.' },
+    { name: 'Vampirism', description: 'Receive health when dealing damage to enemies equal to the amount of damage dealt.' },
+    { name: 'Warlords', description: 'Start with 10 supply points.' },
+    { name: 'Welrods', description: 'Every player is forced to use the bolt-action Welrod pistol.' },
+    { name: 'WelrodsOnly', description: 'Only bolt-action Welrod pistols are available along with normal equipment and explosives.' }
+];
         
         function logCustomMutatorToGAS(mutatorName) {
           // Only send if user has mods selected
