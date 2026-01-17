@@ -297,6 +297,77 @@
         /* Notification */
         .notification { position: fixed; bottom: 20px; right: 20px; background-color: var(--success); color: white; padding: 15px 20px; border-radius: 6px; opacity: 0; transition: opacity 0.5s; z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-weight: 600; }
         .notification.show { opacity: 1; }
+
+
+		/* For Game.ini section */
+		/* --- Game.ini Accordion Styles --- */
+.ini-section {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.ini-header {
+    background: #f7fafc;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.ini-header:hover {
+    background: #edf2f7;
+}
+
+.ini-header::after {
+    content: '+';
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.ini-section.open .ini-header::after {
+    content: '-';
+}
+
+.ini-body {
+    display: none;
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Hidden by default, toggled by JS */
+.ini-section .ini-body { display: none; }
+.ini-section.open .ini-body { display: grid; }
+
+.ini-input-group {
+    margin-bottom: 0;
+}
+
+.ini-input-group label {
+    display: block;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #4a5568;
+}
+
+.ini-desc {
+    font-size: 0.75em;
+    color: #718096;
+    margin-top: 2px;
+    line-height: 1.3;
+}
+		/* end Game.ini section */
     </style>
 </head>
 <body>
@@ -307,6 +378,7 @@
             <button class="tab active" onclick="openTab(event, 'serverConfig')">Server Configuration</button>
             <button class="tab" onclick="openTab(event, 'mods')">Mods</button>
             <button class="tab" onclick="openTab(event, 'mutators')">Mutators</button>
+			<button class="tab" onclick="openTab(event, 'gameIni')">Game.ini Helper</button>
         </div>
         
         <div class="main-content">
@@ -681,6 +753,32 @@
                 </div>
 		    </div>
 
+			<!-- GAME.INI TAB -->
+<div id="gameIni" class="tab-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h2>Game.ini Configuration</h2>
+        <div style="display:flex; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="copyIniToClipboard()">Copy Text</button>
+            <button type="button" class="btn btn-primary" onclick="downloadGameIniFile()">Download Game.ini</button>
+        </div>
+    </div>
+
+    <div class="info-box" style="background:#e3f2fd; border-left:4px solid #2196F3; padding:15px; margin-bottom:20px;">
+        <p style="margin:0;"><strong>How to use:</strong> Adjust the settings below. The text box at the bottom will update automatically. 
+        When finished, download the file and place it in: <br>
+        <code>Insurgency/Saved/Config/WindowsServer/Game.ini</code></p>
+    </div>
+
+    <!-- The form will be generated here by JavaScript -->
+    <div id="iniFormContainer"></div>
+
+    <div class="config-output" style="margin-top:20px;">
+        <label for="iniOutput" style="font-weight:bold; display:block; margin-bottom:5px;">Generated Game.ini Content:</label>
+        <textarea id="iniOutput" readonly style="height:300px; font-family:'Consolas', monospace; white-space:pre;"></textarea>
+    </div>
+</div>
+
+			
         </div> 
     </div>
 
@@ -2699,5 +2797,270 @@ function getServerParamsString() {
     return `${travelUrl} ${otherParams.join(' ')}`;
 }
     </script>
+	<script>
+		// ==========================================
+// GAME.INI GENERATOR LOGIC
+// ==========================================
+
+// Configuration Schema based on your request
+const iniConfigData = [
+    {
+        title: "General Gameplay (INSGameMode)",
+        section: "[/Script/Insurgency.INSGameMode]",
+        fields: [
+            { key: "bKillFeed", type: "bool", def: false, desc: "Is the kill feed enabled?" },
+            { key: "bKillFeedSpectator", type: "bool", def: true, desc: "Kill feed for spectators/replays?" },
+            { key: "bKillerInfo", type: "bool", def: true, desc: "Show killer info to victim?" },
+            { key: "bKillerInfoRevealDistance", type: "bool", def: false, desc: "Reveal distance of kills?" },
+            { key: "TeamKillLimit", type: "number", def: 3, desc: "Kicks after this many TKs" },
+            { key: "TeamKillGrace", type: "number", def: 0.2, desc: "Grace timer between TK incidents" },
+            { key: "TeamKillReduceTime", type: "number", def: 90, desc: "Seconds to reduce TK count by 1" },
+            { key: "bDeadSay", type: "bool", def: false, desc: "Can alive see dead chat?" },
+            { key: "bVoiceAllowDeadChat", type: "bool", def: false, desc: "Can alive hear dead voice?" },
+            { key: "bVoiceEnemyHearsLocal", type: "bool", def: true, desc: "Can enemies hear proximity voice?" }
+        ]
+    },
+    {
+        title: "Multiplayer Rules (INSMultiplayerMode)",
+        section: "[/Script/Insurgency.INSMultiplayerMode]",
+        fields: [
+            { key: "InitialSupply", type: "number", def: 15, desc: "Starting supply points" },
+            { key: "MaximumSupply", type: "number", def: 15, desc: "Max supply earnable" },
+            { key: "bAutoAssignTeams", type: "bool", def: true, desc: "Auto assign teams on connect" },
+            { key: "bAllowFriendlyFire", type: "bool", def: true, desc: "Enable Friendly Fire" },
+            { key: "FriendlyFireModifier", type: "number", def: 0.2, desc: "Damage modifier for FF" },
+            { key: "FriendlyFireReflect", type: "number", def: 0, desc: "Damage reflected back to attacker" },
+            { key: "bAutoBalanceTeams", type: "bool", def: true, desc: "Enable auto balance" },
+            { key: "bMapVoting", type: "bool", def: true, desc: "Enable map voting at end of game" },
+            { key: "IdleLimit", type: "number", def: 150, desc: "Seconds before kicking idle player" }
+        ]
+    },
+    {
+        title: "Voting System",
+        section: "[/Script/Insurgency.TeamInfo]\nbVotingEnabled=True\nTeamVoteIssues=/Script/Insurgency.VoteIssueKick\n\n[/Script/Insurgency.VoteIssueKick]",
+        fields: [
+            { key: "MinimumPlayersRequired", type: "number", def: 3, desc: "Min players to start vote" },
+            { key: "MinimumPlayerRatio", type: "number", def: 0.25, desc: "Ratio of team to start vote" },
+            { key: "VotePassRatio", type: "number", def: 0.75, desc: "Ratio of Yes votes needed" },
+            { key: "VoteTimeout", type: "number", def: 90, desc: "Cooldown between votes" },
+            { key: "bCanTargetEnemies", type: "bool", def: false, desc: "Can vote kick enemies?" }
+        ]
+    },
+    {
+        title: "Mutator: Headshots Only",
+        section: "[/Script/Insurgency.Mutator_HeadshotOnly]",
+        fields: [
+            { key: "bCheckMeleeDamage", type: "bool", def: false, desc: "Should melee be checked for headshots?" }
+        ]
+    },
+    {
+        title: "Mutator: Hot Potato",
+        section: "[/Script/Insurgency.Mutator_HotPotato]",
+        fields: [
+            { key: "bIgnoreHeadshots", type: "bool", def: false, desc: "Don't drop grenade on headshot" },
+            { key: "bBotsOnly", type: "bool", def: false, desc: "Only bots drop grenades" }
+        ]
+    },
+    {
+        title: "Mutator: Vampirism",
+        section: "[/Script/Insurgency.Mutator_Vampirism]",
+        fields: [
+            { key: "bCountFriendlyFire", type: "bool", def: false, desc: "Gain health from Friendly Fire?" },
+            { key: "MaxHealth", type: "number", def: 1000, desc: "Max health gain limit" }
+        ]
+    },
+    {
+        title: "Mutator: Arms Race",
+        section: "[/Script/Insurgency.Mutator_ArmsRace]", // Inferred section based on standard naming
+        fields: [
+            { key: "bItemsDrop", type: "bool", def: false, desc: "If players can drop items" },
+            { key: "bEnablePickupItems", type: "bool", def: false, desc: "Allow pickup items on map" },
+            { key: "PenaltyPoints", type: "number", def: 2, desc: "Points taken on penalty" }
+        ]
+    },
+    {
+        title: "Co-op Settings (INSCoopMode)",
+        section: "[/Script/Insurgency.INSCoopMode]",
+        fields: [
+            { key: "AIDifficulty", type: "number", def: 0.5, desc: "AI Difficulty (0.0 - 1.0)" },
+            { key: "FriendlyBotQuota", type: "number", def: 4, desc: "Number of friendly bots" },
+            { key: "MinimumEnemies", type: "number", def: 6, desc: "Min enemy bots" },
+            { key: "MaximumEnemies", type: "number", def: 12, desc: "Max enemy bots" }
+        ]
+    },
+    {
+        title: "Gamemode: Checkpoint",
+        section: "[/Script/Insurgency.INSCheckpointGameMode]",
+        fields: [
+            { key: "DefendTimer", type: "number", def: 90, desc: "Counter-attack duration" },
+            { key: "DefendTimerFinal", type: "number", def: 180, desc: "Final objective counter-attack duration" },
+            { key: "RespawnDPR", type: "number", def: 0.1, desc: "Dead Player Ratio to respawn team" },
+            { key: "RespawnDelay", type: "number", def: 20, desc: "Respawn delay in seconds" },
+            { key: "CounterAttackRespawnDPR", type: "number", def: 0.2, desc: "DPR during counter-attack" },
+            { key: "bForceSoloWaves", type: "bool", def: true, desc: "Enable local play reinforcement system" }
+        ]
+    },
+    {
+        title: "Gamemode: Survival",
+        section: "[/Script/Insurgency.INSSurvivalGameMode]",
+        fields: [
+            { key: "NumWaves", type: "number", def: 7, desc: "Successful captures required" },
+            { key: "bEnableExtractionObjective", type: "bool", def: true, desc: "Enable extraction sequence" },
+            { key: "ExtractionObjectiveHoldTime", type: "number", def: 150, desc: "Hold time for extraction" },
+            { key: "ObjectiveDefendDistance", type: "number", def: 2000, desc: "Bot defense radius" }
+        ]
+    },
+    {
+        title: "Gamemode: Outpost",
+        section: "[/Script/Insurgency.INSOutpostGameMode]",
+        fields: [
+            { key: "NumWaves", type: "number", def: 7, desc: "Number of waves to survive" },
+            { key: "WaveSurvivalSupplyAward", type: "number", def: 1, desc: "Supply given per wave" },
+            { key: "PrepareTimer", type: "number", def: 45, desc: "Time between waves" },
+            { key: "DefendTimer", type: "number", def: 120, desc: "Time for attack wave" }
+        ]
+    }
+];
+
+// Initialize the form
+function initGameIniForm() {
+    const container = document.getElementById('iniFormContainer');
+    if(!container) return;
+    container.innerHTML = '';
+
+    iniConfigData.forEach((group, index) => {
+        // Create Section
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'ini-section';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'ini-header';
+        header.textContent = group.title;
+        header.onclick = () => {
+            sectionDiv.classList.toggle('open');
+        };
+
+        // Body
+        const body = document.createElement('div');
+        body.className = 'ini-body';
+
+        // Fields
+        group.fields.forEach(field => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'ini-input-group';
+
+            const label = document.createElement('label');
+            label.textContent = field.key;
+            
+            let input;
+            if (field.type === 'bool') {
+                input = document.createElement('select');
+                const optTrue = document.createElement('option');
+                optTrue.value = 'True';
+                optTrue.text = 'True';
+                const optFalse = document.createElement('option');
+                optFalse.value = 'False';
+                optFalse.text = 'False';
+                
+                input.add(optTrue);
+                input.add(optFalse);
+                input.value = field.def ? 'True' : 'False';
+            } else {
+                input = document.createElement('input');
+                input.type = field.type === 'number' ? 'number' : 'text';
+                input.value = field.def;
+                if(field.type === 'number') input.step = "any";
+            }
+
+            // Event listener to update preview
+            input.addEventListener('change', generateIniOutput);
+            input.addEventListener('input', generateIniOutput);
+
+            // Add metadata for generator
+            input.dataset.section = index;
+            input.dataset.key = field.key;
+
+            const desc = document.createElement('div');
+            desc.className = 'ini-desc';
+            desc.textContent = field.desc;
+
+            wrapper.appendChild(label);
+            wrapper.appendChild(input);
+            wrapper.appendChild(desc);
+            body.appendChild(wrapper);
+        });
+
+        sectionDiv.appendChild(header);
+        sectionDiv.appendChild(body);
+        container.appendChild(sectionDiv);
+    });
+
+    // Generate initial state
+    generateIniOutput();
+}
+
+function generateIniOutput() {
+    let output = "";
+    const inputs = document.querySelectorAll('#iniFormContainer input, #iniFormContainer select');
+    
+    // Group inputs by section index
+    const sectionMap = {};
+
+    inputs.forEach(input => {
+        const sectionIdx = input.dataset.section;
+        if (!sectionMap[sectionIdx]) sectionMap[sectionIdx] = [];
+        sectionMap[sectionIdx].push(input);
+    });
+
+    // Build String
+    Object.keys(sectionMap).forEach(idx => {
+        const group = iniConfigData[idx];
+        output += `${group.section}\n`;
+        
+        sectionMap[idx].forEach(input => {
+            // Optional: Only output if different from default? 
+            // For now, output everything for clarity.
+            output += `${input.dataset.key}=${input.value}\n`;
+        });
+        output += "\n";
+    });
+
+    document.getElementById('iniOutput').value = output.trim();
+}
+
+function downloadGameIniFile() {
+    const content = document.getElementById('iniOutput').value;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Game.ini';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+}
+
+function copyIniToClipboard() {
+    const content = document.getElementById('iniOutput');
+    content.select();
+    document.execCommand('copy'); // Fallback for older browsers
+    
+    // Attempt modern API
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(content.value).then(() => {
+            showNotification('Game.ini content copied!', 'success');
+        });
+    } else {
+        showNotification('Game.ini content copied!', 'success');
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', function() {
+    initGameIniForm();
+});
+	</script>
 </body>
 </html>
