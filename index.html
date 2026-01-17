@@ -639,20 +639,33 @@
 
     <div id="notification" class="notification"></div>
 
-    <!-- API Helper Modal -->
+<!-- Updated API Helper Modal -->
     <div id="apiHelperModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 600px;">
             <span class="close-modal" onclick="closeApiHelper()">&times;</span>
             <h2>Mod.io API Token Helper</h2>
-            <p>Paste your API Token below to generate a ready-to-use <code>GameUserSettings.ini</code> file.</p>
-            <p style="font-size:0.85em; color:#666;">This runs entirely in your browser. Your token is not saved or sent to us.</p>
             
-            <div style="margin:20px 0;">
-                <label style="font-weight:bold; display:block; margin-bottom:5px;">API Token (Optional):</label>
-                <input type="text" id="apiTokenField" placeholder="Paste Token Here..." style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
+            <div style="font-size: 0.9em; line-height: 1.5; color: #444;">
+                <p><strong>Step 1: Get your Token</strong><br>
+                Go to <a href="https://mod.io/me/access" target="_blank" style="color:#d3a03e;">Mod.io API Access</a>. Create a "Read" token named "Sandstorm".</p>
+
+                <div style="margin: 15px 0;">
+                    <label style="font-weight:bold; display:block; margin-bottom:5px;">Step 2: Paste Token (Optional)</label>
+                    <input type="text" id="apiTokenField" placeholder="Paste your API Token here..." style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
+                    <p style="font-size:0.8em; color:#666; margin-top:5px;">
+                        <em>Pasting here allows you to download a pre-made file. We do not store this.</em>
+                    </p>
+                </div>
+
+                <p><strong>Step 3: Save to GameUserSettings.ini</strong><br>
+                The file is located at:<br>
+                <code style="background:#f4f4f4; padding:2px 5px; display:block; margin-top:5px; word-break:break-all;">
+                    \sandstorm_server\Insurgency\Saved\Config\WindowsServer\GameUserSettings.ini
+                </code>
+                </p>
             </div>
 
-            <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
                 <button class="btn btn-secondary" onclick="closeApiHelper()">Cancel</button>
                 <button class="btn btn-primary" onclick="downloadIniFile()">Download .ini File</button>
             </div>
@@ -1116,30 +1129,36 @@ function applyUrlParameters() {
 
 // Modify your DOMContentLoaded listener to call applyUrlParameters appropriately
 document.addEventListener('DOMContentLoaded', function() {
-    // Keep your existing initialization
+    // 1. Load Presets
     loadPresetsFromStorage();
-    initializeCustomMutators(); // Generates initial mutator list
+    
+    // 2. Initialize Custom Mutators logic
+    loadCustomMutators(); // Load saved custom ones
+    
+    // 3. *** FIX: GENERATE MUTATOR LIST IMMEDIATELY ***
+    generateMutatorCheckboxes(); 
+    
+    // 4. Initialize Suggestions
     initMutatorSuggestions();
+    
+    // 5. Setup Tab Clicks
     setupModTabBehavior();
 
-    // Fetch mods, THEN apply URL parameters (important for mods)
+    // 6. Fetch Mods & Apply URL Params
     fetchMods().then(() => {
-        console.log("Mods fetched, now applying URL parameters.");
-        applyUrlParameters(); // Apply params after mods are loaded and sortedMods is ready
-        // Check if suggestions need updating *after* params applied
+        console.log("Mods fetched, applying params.");
+        applyUrlParameters(); 
         updateMutatorSuggestions();
     }).catch(error => {
-        console.error("Error fetching mods during init:", error);
-        // Still try to apply other parameters even if mods fail
-        applyUrlParameters();
+        console.error("Error fetching mods:", error);
+        applyUrlParameters(); // Try applying params anyway
     });
 
-    // Add event listeners to form inputs to regenerate config on change
+    // 7. Listeners for Config Generation
     document.getElementById('serverForm').addEventListener('change', generateConfig);
     document.getElementById('serverForm').addEventListener('keyup', generateConfig);
 
-
-    console.log("Initial DOM Content Loaded setup complete.");
+    console.log("Initialization complete.");
 });
         
 // This code integrates with your Google App Script backend
@@ -2367,37 +2386,33 @@ function searchMods() {
         });
         
         // Modio info
-        function setupModTabBehavior() {
-          const tabButtons = document.querySelectorAll('.tab');
-          tabButtons.forEach(button => {
-            if (button.textContent.trim() === 'Mods') {
-              button.addEventListener('click', function() {
+function setupModTabBehavior() {
+    const tabButtons = document.querySelectorAll('.tab');
+    tabButtons.forEach(button => {
+        if (button.textContent.trim() === 'Mods') {
+            button.addEventListener('click', function() {
                 const modCheckboxesContainer = document.getElementById('modCheckboxes');
                 if (!modCheckboxesContainer) return;
 
-                if (sortedMods && sortedMods.length > 0) {
-                  generateModCheckboxes();
-                  console.log("Mods tab clicked: Regenerated mod list from existing data.");
+                // Only fetch if we haven't already
+                if (!sortedMods || sortedMods.length === 0) {
+                    modCheckboxesContainer.innerHTML = '<p style="text-align:center; padding:20px;">Loading mods list... Please wait.</p>';
+                    fetchMods().then(() => {
+                        generateModCheckboxes();
+                    }).catch(err => {
+                        modCheckboxesContainer.innerHTML = '<p style="text-align:center;">Failed to load mod list. Please refresh.</p>';
+                    });
                 } else {
-                  modCheckboxesContainer.innerHTML = '<p>Loading mod list...</p>';
-                  console.log("Mods tab clicked: Mods not ready, showing loading. Attempting fetch.");
-                  fetchMods().then(() => {
-                     generateModCheckboxes();
-                     checkAndShowApiSetupHelper();
-                  }).catch(err => {
-                     modCheckboxesContainer.innerHTML = '<p>Failed to load mod list. Please refresh the page.</p>';
-                     console.error("Error fetching mods on tab click:", err);
-                     checkAndShowApiSetupHelper();
-                  });
-                  return; 
+                    // Just regenerate to be safe/responsive
+                    generateModCheckboxes();
                 }
-                setTimeout(() => {
-                    checkAndShowApiSetupHelper();
-                }, 50);
-              });
-            }
-          });
+                
+                // *** REMOVED: checkAndShowApiSetupHelper(); *** 
+                // This stops the old popup.
+            });
         }
+    });
+}
 
         function checkAndShowApiSetupHelper() {
           const hasApiToken = localStorage.getItem('modioApiToken');
