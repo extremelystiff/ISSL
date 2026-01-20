@@ -17954,5 +17954,23 @@
     "metadata_blob": "null",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5709592,
+    "name": "HealthRegenPlus",
+    "summary": "HealthRegenPlus",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/healthregenplus",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/13e6/5709592/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
