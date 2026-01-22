@@ -17972,5 +17972,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5715838,
+    "name": "GooseOilfield",
+    "summary": "A checkpoint security variant of Oilfield / Refinery Map Name: GooseOilfield Scenario: Scenario_GooseOilfield_Checkpoint_Security",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/gooseoilfield",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/2245/5715838/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
