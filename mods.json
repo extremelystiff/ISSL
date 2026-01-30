@@ -17990,5 +17990,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5742909,
+    "name": "Cave Azhir",
+    "summary": "Azhir cave map",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/cave-azhir",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/96a3/5742909/crop_320x180/gemini_generated_image_2xyz652x.png"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
