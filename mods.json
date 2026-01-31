@@ -18005,5 +18005,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5747048,
+    "name": "Vehicle Spawner Fix",
+    "summary": "Fix \"seats to fill\" on vehicle spawners",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/vehicle-spawner-fix",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/e370/5747048/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
