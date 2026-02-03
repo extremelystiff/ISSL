@@ -18023,5 +18023,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5757322,
+    "name": "vrutils2",
+    "summary": "this is just a test mod for vrutils2",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/vrutils2",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/8402/5757322/crop_320x180/screenshot2026-02-02220449.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1.01
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
