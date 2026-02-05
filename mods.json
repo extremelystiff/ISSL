@@ -18041,5 +18041,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5761391,
+    "name": "Competitive Map Layouts",
+    "summary": "Competetive reworks of vanilla maps",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/compfflayout",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/4fcb/5761391/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
