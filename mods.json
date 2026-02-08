@@ -18057,5 +18057,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5748299,
+    "name": "Daybreak",
+    "summary": "Map port of map Bridge.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/daybreak",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/1600/5748299/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.31
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
