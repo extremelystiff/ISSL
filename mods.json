@@ -18075,5 +18075,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5783431,
+    "name": "ChatBoxPlus",
+    "summary": "ChatBoxPlus",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/chatboxplus",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/b612/5783431/crop_320x180/file.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
