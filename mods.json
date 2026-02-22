@@ -18093,5 +18093,18 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5812364,
+    "name": "Fireteam",
+    "summary": "2v2, Wingman",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/fireteam1",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/5620/5812364/crop_320x180/logo.png"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
