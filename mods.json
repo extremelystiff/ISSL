@@ -18154,5 +18154,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5819382,
+    "name": "DD MK18 Milspec+",
+    "summary": "DD MK18 Milspec+ skin for MK18",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/dd-mk18-milspec",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/c67e/5819382/crop_320x180/milspec.jpg"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
