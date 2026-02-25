@@ -18186,5 +18186,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5821293,
+    "name": "Test120",
+    "summary": "Mod to test functionality 1.20",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/test120",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/0da3/5821293/crop_320x180/editorcrash.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
