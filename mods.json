@@ -18220,5 +18220,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5824386,
+    "name": "vrutils2",
+    "summary": "testing - mod still work in process",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/vrutils21",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/9e62/5824386/crop_320x180/blacklockscreen.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1.01
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
