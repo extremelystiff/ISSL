@@ -18238,5 +18238,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5824980,
+    "name": "FNSTestMedic",
+    "summary": "Test repackage of medicon",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/fnstestmedic",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/cd31/5824980/crop_320x180/sjpitfc.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
