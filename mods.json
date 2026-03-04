@@ -18256,5 +18256,24 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5840078,
+    "name": "tactools",
+    "summary": "Testing, don't download",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/tactools",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/5355/5840078/crop_320x180/tactools.jpg"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
