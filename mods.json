@@ -18291,5 +18291,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5844541,
+    "name": "Mashtuur",
+    "summary": "Urban Desert Under Construction",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/mashtuur",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/8c5e/5844541/crop_320x180/underconstruction_profile.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
