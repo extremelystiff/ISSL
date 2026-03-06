@@ -18275,5 +18275,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 5843018,
+    "name": "UnlimitedAmmo",
+    "summary": "Gives Unlimited Ammo",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/unlimitedammo",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/8007/5843018/crop_320x180/modiologo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
