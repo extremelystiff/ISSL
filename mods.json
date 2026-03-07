@@ -18307,5 +18307,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5847226,
+    "name": "free look test",
+    "summary": "Free camera look test",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/free-look-test",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/6232/5847226/crop_320x180/change_weapon_2k_delpmaspu.png"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
