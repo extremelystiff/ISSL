@@ -18320,5 +18320,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5849535,
+    "name": "Playerspeed",
+    "summary": "Tweak Player Crouch/Walk,Sprint Speed",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/playerspeed",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a2df/5849535/crop_320x180/modiologo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
