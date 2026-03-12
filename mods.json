@@ -18336,5 +18336,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5861536,
+    "name": "R-ICL",
+    "summary": "Radish's Insurgency Community League Mutator",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/r-icl",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/ca3f/5861536/crop_320x180/1icl.png"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
