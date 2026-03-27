@@ -18407,5 +18407,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5918977,
+    "name": "epicmod228",
+    "summary": "idk idk idk",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/epicmod228",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/bbf2/5918977/crop_320x180/gd1ypy2w8aem_wb.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.2"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
