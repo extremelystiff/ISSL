@@ -18439,5 +18439,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5933244,
+    "name": "meow",
+    "summary": "idk",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/meow",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/8b70/5933244/crop_320x180/20250502_094157.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "9.9.9"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
