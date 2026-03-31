@@ -18471,5 +18471,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5936324,
+    "name": "plswork",
+    "summary": "yeah",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/plswork",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/05be/5936324/crop_320x180/illustration1.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "3.3.3"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
