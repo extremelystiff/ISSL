@@ -18455,5 +18455,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5935857,
+    "name": "coolmod67",
+    "summary": "coolmod",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/coolmod671",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/14e6/5935857/crop_320x180/illustration1.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "2.2.8"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
