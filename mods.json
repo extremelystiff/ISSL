@@ -18487,5 +18487,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5940562,
+    "name": "Exchange",
+    "summary": "Gulag-style warmup arena for Insurgency: Sandstorm. Players are pulled from the balcony into 1v1 fights, reset after each kill, and rotated continuously.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/exchange",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d686/5940562/crop_320x180/highresscreenshot00001.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
