@@ -18503,5 +18503,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5949175,
+    "name": "InspectWeaponPlus",
+    "summary": "??????? InspectWeaponPlus",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/inspectweaponplus",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d084/5949175/crop_320x180/file.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
