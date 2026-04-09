@@ -18537,5 +18537,26 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5967059,
+    "name": "Refinery_FREEDOM",
+    "summary": "No more invisible walls turning interesting terrain into wolfenstein 3D. Scenario_Refinery_FREEDOM _Survival, _Checkpoint_Insurgents/Security (and hc), _Domination, _Team_DeathMatch, _Outpost. Just add \"_FREEDOM\" after the map name.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/oilfield-freedom",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/839f/5967059/crop_320x180/preview.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
