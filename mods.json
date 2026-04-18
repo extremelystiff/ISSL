@@ -18571,5 +18571,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 5990023,
+    "name": "FireSupportIndicatorPlus",
+    "summary": "?????????? FireSupportIndicatorPlus",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/firesupportindicatorplus",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/eb6b/5990023/crop_320x180/file.2.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
