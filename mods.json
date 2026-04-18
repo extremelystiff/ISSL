@@ -18589,5 +18589,20 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 5993546,
+    "name": "MAPS1V1",
+    "summary": "Open AlphaMap?Scenario=Scenario_AlphaMap_Duel?",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/maps1v11",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/f43a/5993546/crop_320x180/map1v1tn.png"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
