@@ -18604,5 +18604,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6031941,
+    "name": "MoreAmmoPlus",
+    "summary": "??????? MoreAmmoPlus",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/moreammoplus",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/4499/6031941/crop_320x180/file.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
