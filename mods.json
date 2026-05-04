@@ -18622,5 +18622,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6036895,
+    "name": "CustomSkins",
+    "summary": "Allows you to apply custom skins to yourself.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/customskins",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/1579/6036895/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
