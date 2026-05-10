@@ -18638,5 +18638,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6048189,
+    "name": "SupplyGain",
+    "summary": "??? SupplyGain",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/supplygain",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/7d43/6048189/crop_320x180/file.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1 Test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
