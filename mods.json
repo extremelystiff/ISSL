@@ -18656,5 +18656,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6065528,
+    "name": "TrotroTest",
+    "summary": "test",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/trotrotest",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/47b8/6065528/crop_320x180/capturedcran2025-10-26164820.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.1.1.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
