@@ -18672,5 +18672,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6070899,
+    "name": "Facility",
+    "summary": "map for fireifgt",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/facility",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/eb19/6070899/crop_320x180/frogdj3.jpg"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
