@@ -18685,5 +18685,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6090054,
+    "name": "Test2",
+    "summary": "moretests",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/test21",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/3d2c/6090054/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
