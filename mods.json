@@ -18701,5 +18701,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6096282,
+    "name": "Estates",
+    "summary": "Map port of map Estates, created by Todi",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/estates",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a805/6096282/crop_320x180/screenshot00002.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 2
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
