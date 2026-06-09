@@ -18719,5 +18719,24 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6120159,
+    "name": "SEAF vs Automatons",
+    "summary": "Adds a SEAF faction and an Automaton faction you can use using the included Mutator.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/seaf-vs-automatons",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/02d3/6120159/crop_320x180/modlogo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
