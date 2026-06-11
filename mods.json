@@ -18738,5 +18738,23 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6130057,
+    "name": "Menu Ears",
+    "summary": "Allows you to hear your surroundings while inside the in-game menus.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/menu-ears",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/dcd8/6130057/crop_320x180/menu_ears.1.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1.04
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
