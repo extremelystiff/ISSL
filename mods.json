@@ -18756,5 +18756,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6130267,
+    "name": "Better Friendly Markers",
+    "summary": "Improves the visibility of friendly HUD markers.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/better-friendly-markers",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/895c/6130267/crop_320x180/bfm.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
