@@ -18772,5 +18772,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6130558,
+    "name": "Warehouse",
+    "summary": "Map warehouse",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/warehouse",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/3294/6130558/crop_320x180/warehouse-title.jpg"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
