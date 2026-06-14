@@ -18790,5 +18790,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6134559,
+    "name": "Frosta",
+    "summary": "Frosta ist f?r alle da.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/frosta",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/213a/6134559/crop_320x180/frosta.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1.03
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
