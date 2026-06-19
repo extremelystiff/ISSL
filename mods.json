@@ -18824,5 +18824,18 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6149978,
+    "name": "Overwatch Hl2",
+    "summary": "Fight combine soldiers from Half Life 2 or become them..",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/overwatch-hl21",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/e6ca/6149978/crop_320x180/icon.png"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
