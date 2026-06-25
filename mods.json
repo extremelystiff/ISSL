@@ -18837,5 +18837,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6163602,
+    "name": "Unofficial Fixes",
+    "summary": "Temporary fixes to address some existing gameplay issues.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/unofficial-fixes",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d251/6163602/crop_320x180/uf.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "Beta 1.0.0_r"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
