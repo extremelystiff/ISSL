@@ -18855,5 +18855,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6188025,
+    "name": "First Person Legs Rev.",
+    "summary": "Adds Legs to your first person view. With optional player shadows.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/first-person-legs-rev",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/ec4d/6188025/crop_320x180/image.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "Beta 1.0.0_r"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
