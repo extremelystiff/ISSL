@@ -18873,5 +18873,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6206816,
+    "name": "RISSDB",
+    "summary": "placeholder",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/rissdb",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d46d/6206816/crop_320x180/ezgif-456ffc4b9a10ead0.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
