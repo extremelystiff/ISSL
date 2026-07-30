@@ -18915,5 +18915,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6267332,
+    "name": "Bot Equipment Adjustments",
+    "summary": "Adjust bot equipment based on combat situations, allowing gear to be added or removed dynamically.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/botequipmentadjustments",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/8953/6267332/crop_320x180/botequipmentadjustments.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "Beta 0.1.0_r"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
