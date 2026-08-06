@@ -18933,5 +18933,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6281602,
+    "name": "Infection",
+    "summary": "Infection-style TDM Gamemode",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/infection",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/caf7/6281602/crop_320x180/test.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.2
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
