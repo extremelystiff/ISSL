@@ -18951,5 +18951,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6290266,
+    "name": "GooseGap",
+    "summary": "Goose Gap V1",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goosegap",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/167e/6290266/crop_320x180/chatgptimageaug7202603_18_56am.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
