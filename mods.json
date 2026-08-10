@@ -18983,5 +18983,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6298490,
+    "name": "GoosePrison",
+    "summary": "Checkpoint Security variant of Prison",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/gooseprison",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d4cc/6298490/crop_320x180/chatgptimageaug10202602_43_11pm.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
