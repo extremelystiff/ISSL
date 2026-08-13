@@ -18999,5 +18999,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6304194,
+    "name": "Overwatch",
+    "summary": "First tool in what strives to be a set of overwatch tools. Currently base UAV only.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/overwatch",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a419/6304194/crop_320x180/mod_logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
