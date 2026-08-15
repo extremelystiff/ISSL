@@ -19015,5 +19015,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6311004,
+    "name": "Goose Crossing",
+    "summary": "Checkpoint Security Variant of Crossing",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/goose-crossing",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/8c3e/6311004/crop_320x180/chatgptimageaug15202603_00_35pm.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
