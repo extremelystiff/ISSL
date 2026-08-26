@@ -19031,5 +19031,24 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6336249,
+    "name": "warbll",
+    "summary": "Work in progress, for internal testing",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/warbll",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/211d/6336249/crop_320x180/chatgptimageaug26202607_51_49am.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
