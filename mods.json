@@ -19050,5 +19050,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6366336,
+    "name": "57thRTV",
+    "summary": "Rock The Vote mutator for 57th Squadumb servers. Allows players to vote to end the current match and proceed to the native map vote.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/57thrtv",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/9af0/6366336/crop_320x180/d08f45aa-c10b-4903-89c9-d9d4bce.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
