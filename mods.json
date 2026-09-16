@@ -19066,5 +19066,37 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6387488,
+    "name": "NWI Maps for Search And Destroy gamemode - updated",
+    "summary": "Search &amp; Destroy scenarios for the Competitive SnD mod.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/nwi-maps-for-search-and-destroy-gamemode-updated",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/61d6/6387488/crop_320x180/competitive_snd_updated.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
+  },
+  {
+    "id": 6387480,
+    "name": "Search and Destroy - Updated Version",
+    "summary": "Competitive Search &amp; Destroy for Insurgency: Sandstorm, bringing classic defusal rules similar to CS:GO.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/search-and-destroy-updated-version1",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a57a/6387480/crop_320x180/competitive_snd_updated.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
