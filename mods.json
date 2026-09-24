@@ -19098,5 +19098,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6402242,
+    "name": "M38A1 106mm Jeep",
+    "summary": "Five-seat M38A1 jeep with a 106mm recoilless rifle for Checkpoint. Private playtest prototype.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/m38a1-106mm-jeep",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/b2ae/6402242/crop_320x180/m38a1_revision11_preview.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.14"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
