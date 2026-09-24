@@ -19116,5 +19116,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6402722,
+    "name": "Mod Launcher and Scenario Editor",
+    "summary": "Offline local play launcher for Insurgency: Sandstorm. Bots, mods, mutators, scenarios and every match rule, without typing console commands. This mod is open-source and available on GitHub.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/mod-launcher-and-scenario-editor",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/646d/6402722/crop_320x180/screenshot2026-09-24172936.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.3.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
