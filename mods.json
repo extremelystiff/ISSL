@@ -19132,5 +19132,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6412533,
+    "name": "Liberacao Infernal RJ",
+    "summary": "Mapa CO-OP Checkpoint personalizado para Insurgency: Sandstorm.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/liberacao-infernal-rj",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a39e/6412533/crop_320x180/insurgencytop.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
