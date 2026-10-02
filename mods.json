@@ -19148,5 +19148,20 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6419654,
+    "name": "Vanilla+ Outpost",
+    "summary": "my changes to outpost.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/vanilla-outpost",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d710/6419654/crop_320x180/images.jpg"
+    },
+    "modfile": null,
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
