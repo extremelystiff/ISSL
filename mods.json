@@ -19163,5 +19163,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6430687,
+    "name": "Rust Repacked",
+    "summary": "Rebuilt repack of the Rust (MW2) map for the current Sandstorm SDK. Original by TOCA_ - layout, spawns and lighting restored from the 0.115b release. Team Deathmatch and Free For All. All credit to the original author.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/rust-repacked",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/c5e9/6430687/crop_320x180/rust-logo-v01.jpg"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.116
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
