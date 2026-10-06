@@ -19179,5 +19179,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6432120,
+    "name": "JAC",
+    "summary": "Just another City",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/jac",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d7f0/6432120/crop_320x180/constructions_area.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
