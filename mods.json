@@ -19197,5 +19197,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6433090,
+    "name": "Shipment Repack",
+    "summary": "Rebuilt repack of the Shipment map for the current Sandstorm SDK. Original by Patmang &amp; Heromanofer - layout, spawns, objectives and day/night lighting restored. TDM, Domination and Massacre. All credit to the original authors.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/shipment-repack",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/c585/6433090/crop_320x180/shipment-logo-v01.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.8.2"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
