@@ -19229,5 +19229,24 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6430327,
+    "name": "ZeFireSupport",
+    "summary": "Beta Version Allows Commanders to call in fire support without requiring an Observer. Only for Checkpoints",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/zefiresupport",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/7aba/6430327/crop_320x180/firesupport.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
