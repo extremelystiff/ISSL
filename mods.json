@@ -19296,5 +19296,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6437892,
+    "name": "Sandstorm Mod Manager",
+    "summary": "Manager will allow you to move your downloaded Sandstorm mods to any drive or directory on your computer. They no longer need to reside in C:\\Users\\Public\\Mod.io. Process, Unsub and re-download any mod. Real Time Download Progress and Speed Graph.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/sandstorm-mod-manager",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a872/6437892/crop_320x180/sandstormmodmanager.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.4.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
