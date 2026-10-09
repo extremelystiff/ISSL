@@ -19280,5 +19280,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6437040,
+    "name": "ShootHouse Repacked",
+    "summary": "Shoot House rebuilt for the current version of Insurgency: Sandstorm. Domination, Firefight and Team Deathmatch. Original map by warmaster2143, re-uploaded with permission.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/shoothouse-repacked",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/e04b/6437040/crop_320x180/shoothouse-logo-v1.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
