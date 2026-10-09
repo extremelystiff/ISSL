@@ -19264,5 +19264,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6436929,
+    "name": "JunkYard Repacked",
+    "summary": "JunkYard rebuilt for the current version of Insurgency: Sandstorm. A compact checkpoint map in a scrapyard, with day and night lighting. Original map by Synthean13.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/junkyard-repacked",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d44f/6436929/crop_320x180/junkyard_maps_ui_textures_map_t.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1.5
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
