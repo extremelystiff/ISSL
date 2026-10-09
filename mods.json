@@ -19248,5 +19248,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6436640,
+    "name": "Sandstorm Player Boot",
+    "summary": "Add this script to your Steam Launch Options for Insurgency Sandstorm and it will download any updated mods or any newly subscribed mods before the game launches. It is fast and displays a Download Progress and ETA for each download in Real Time.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/sandstorm-player-boot",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/41d1/6436640/crop_320x180/playerbootbanner.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.1.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
