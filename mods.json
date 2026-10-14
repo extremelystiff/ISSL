@@ -19325,5 +19325,24 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6450348,
+    "name": "AI Modifier Dev",
+    "summary": "Customizable AI settings and added behaviors. DEV Branch, open for public testing.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ai-modifier-dev",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/1cbb/6450348/crop_320x180/banner_ai_dev.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1a"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
