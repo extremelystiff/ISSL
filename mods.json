@@ -19344,5 +19344,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6438165,
+    "name": "Sandstorm Server Manager",
+    "summary": "Install and Manage one or more servers on one computer without using Virtual Machines. Downloads and installs all required support files if needed. Opens TCD and UDP ports for you. Server Dashboard, Analytics and Rcon Dashboard.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/sandstorm-server-manager",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/6d7e/6438165/crop_320x180/servermanager.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
