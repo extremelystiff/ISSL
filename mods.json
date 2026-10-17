@@ -19376,5 +19376,25 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6452349,
+    "name": "Electrolytes",
+    "summary": "Washington, D.C. map featuring the White House grounds, nearby streets and Washington Monument. Checkpoint, Firefight and Outpost scenarios.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/electrolytes",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/7e6f/6452349/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.3"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
