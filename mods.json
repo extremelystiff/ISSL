@@ -19360,5 +19360,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6455697,
+    "name": "A1",
+    "summary": "A1 ???????? ????????",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/a1",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/56bb/6455697/crop_320x180/modio_logo_a1.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "2026.10.17-test2"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
