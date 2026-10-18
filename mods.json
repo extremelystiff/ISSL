@@ -19396,5 +19396,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6462265,
+    "name": "V2",
+    "summary": "?????? ??????",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/v21",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/df4f/6462265/crop_320x180/v2_logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
