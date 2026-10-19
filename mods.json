@@ -19412,5 +19412,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6463897,
+    "name": "tstrpk",
+    "summary": "dont download it",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/tstrpk",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/b0e3/6463897/crop_320x180/scarf-1280x720.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 0.1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
