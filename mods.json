@@ -19444,5 +19444,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6467633,
+    "name": "anyweapon allslots",
+    "summary": "you can use any weapon in noth primary and secondary slot with a new class.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/anyweapon-allslots",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/45d3/6467633/crop_320x180/allslotslogo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
