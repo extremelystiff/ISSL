@@ -19462,5 +19462,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6482631,
+    "name": "Insurgent Air Support",
+    "summary": "Insurgent bots call in a weakened, inaccurate Apache during co-op Checkpoint counter-attacks.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/insurgent-air-support",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/895d/6482631/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
