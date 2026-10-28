@@ -19478,5 +19478,24 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6484933,
+    "name": "Bot Squad Commands",
+    "summary": "Lead your friendly bots with a command wheel (hold I) or chat commands. Bots keep fighting while they follow. Mutator for co-op with friendly bots (players get it automatically from the server via mod.io).",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/bot-squad-commands",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/6ab4/6484933/crop_320x180/botsquad_logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 2
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
