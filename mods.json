@@ -19497,5 +19497,21 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6488692,
+    "name": "Ambient Music",
+    "summary": "Quiet background music while you push between objectives in co-op Checkpoint. It fades out when a counter-attack starts so the game's own counter-attack music plays, then comes back afterwards. Uses only the game's built-in music.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/ambient-music",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/0292/6488692/crop_320x180/ambient_logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
