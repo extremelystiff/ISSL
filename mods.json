@@ -19513,5 +19513,28 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6493511,
+    "name": "Boomers Combat Taunts",
+    "summary": "Enemy bots running, fighting and yelling random taunts. Glorious chaos.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/boomers-combat-taunts",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/cc72/6493511/crop_320x180/boomers-cartoon-insurgents.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.3.0-test"
+    },
+    "metadata_blob": "PluginName:BoomersCombatTaunts,ContentDirectory:../../../Insurgency/Mods/BoomersCombatTaunts/Content,GameVersion:1.22.0,BuildCL:0,CompatibleCL:0",
+    "metadata_kvp": [
+      {
+        "metakey": "Mutator",
+        "metavalue": "BoomersCombatTaunts"
+      }
+    ],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
