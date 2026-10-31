@@ -19536,5 +19536,28 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6493781,
+    "name": "Boomers Staggered Spawns",
+    "summary": "Bots enter the fight four at a time, every two seconds. Player spawns stay normal.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/boomers-staggered-spawns",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/7f98/6493781/crop_320x180/boomersstaggeredspawns.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0-test"
+    },
+    "metadata_blob": "PluginName:BoomersStaggeredSpawns,ContentDirectory:../../../Insurgency/Mods/BoomersStaggeredSpawns/Content,GameVersion:1.22.0,BuildCL:0,CompatibleCL:0",
+    "metadata_kvp": [
+      {
+        "metakey": "Mutator",
+        "metavalue": "BoomersStaggeredSpawns"
+      }
+    ],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
