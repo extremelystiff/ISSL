@@ -19559,5 +19559,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6496010,
+    "name": "Boomers Ping Kicker",
+    "summary": "Configurable server ping checks with a private warning before disconnecting high-ping players.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/boomers-ping-kicker",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/fe03/6496010/crop_320x180/boomerspingkicker.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.1-test"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
