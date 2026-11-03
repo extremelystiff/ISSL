@@ -19604,5 +19604,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6499908,
+    "name": "MiniTestMap",
+    "summary": "Small test map for Insurgency: Sandstorm featuring a functional Checkpoint Security scenario.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/minitestmap",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/9f15/6499908/crop_320x180/-.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
