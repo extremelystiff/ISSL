@@ -19638,5 +19638,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6516588,
+    "name": "VoicePackTest",
+    "summary": "alalalalal",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/voicepacktest",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/e92b/6516588/crop_320x180/untitled123.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "r.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
