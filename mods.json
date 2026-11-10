@@ -19654,5 +19654,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6518234,
+    "name": "POOL DAY - PMERJ vs Insurgentes",
+    "summary": "Arena de piscina com PMERJ vs Insurgentes, PvP e bots. Autor: Rafael Borges. Versao beta para testes.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/pool-day-pmerj-vs-insurgentes",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/e53c/6518234/crop_320x180/poolday_modio.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0-beta.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
