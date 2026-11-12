@@ -19670,5 +19670,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6522155,
+    "name": "Song Dao Valley",
+    "summary": "Realistic Vietnam War co-op Checkpoint map. Security attacks from a US firebase across flooded paddies, the Song Dao river and triple-canopy jungle to the command bunker on Hill 474. 8 objectives, dense jungle, period props.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/song-dao-valley",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/0160/6522155/crop_320x180/logo_songdaovalley.1.jpg"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
