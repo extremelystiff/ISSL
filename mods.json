@@ -19688,5 +19688,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 4278920,
+    "name": "Hydro_Beta",
+    "summary": "Beta build for testing",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/hydro-beta",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/b9fe/4278920/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.0.1c"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
