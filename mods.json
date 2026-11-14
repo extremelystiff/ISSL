@@ -19704,5 +19704,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6456754,
+    "name": "TestAISetting",
+    "summary": "test test test test mod",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/testat",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/7878/6456754/crop_320x180/tdfm060k6jzkn8kf9.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "v1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
