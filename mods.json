@@ -19740,5 +19740,21 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6530980,
+    "name": "Motherboard ? Micro PC Arena (FFA)",
+    "summary": "A miniature FFA battlefield inside a giant PC: motherboard lanes, RAM canyons, cooler towers, RGB jump pads and quiet computer ambience.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/motherboard-micro-pc-arena-ffa",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a70b/6530980/crop_320x180/01-board-and-fans.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.50"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
