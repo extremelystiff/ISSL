@@ -19756,5 +19756,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6531542,
+    "name": "TinyWorkshop - Giant Workshop FFA",
+    "summary": "Tiny soldiers in a giant electronics workshop: free-for-all combat, vertical routes, jump pads, interactive props and keyboard sounds.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/tinyworkshop-giant-workshop-ffa",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/d2ec/6531542/crop_320x180/restored_workspace.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.8.53"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
