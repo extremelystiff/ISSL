@@ -19722,5 +19722,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6530462,
+    "name": "MapVotePrintInfo",
+    "summary": "test test test test",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/mapvoteprintinfo",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/9c0d/6530462/crop_320x180/test.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "R100"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
