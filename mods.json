@@ -19772,5 +19772,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6537154,
+    "name": "Visible Capture Zones",
+    "summary": "Subtle, fading cyan grid lines mark active Checkpoint capture boundaries while keeping your view of the fight clear.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/visible-capture-zones",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/e865/6537154/crop_320x180/logo.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.2.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
