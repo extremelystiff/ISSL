@@ -19806,5 +19806,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6547856,
+    "name": "Dinghy Repair",
+    "summary": "Community compatibility patch for Snakeyio?s Dinghy?s Loadout 0.7.2. Rebuild the original on Windows from your own download.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/dinghy-repair",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/7dc8/6547856/crop_320x180/dinghy-repair-listing.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
