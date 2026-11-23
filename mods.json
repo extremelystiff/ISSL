@@ -19822,5 +19822,21 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6548684,
+    "name": "Test Mod",
+    "summary": "Info",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/test-mod",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/3007/6548684/crop_320x180/0-copy.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": 1
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
   }
 ]
