@@ -19838,5 +19838,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6552175,
+    "name": "yisi??",
+    "summary": "??????????",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/yisi",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/f7a0/6552175/crop_320x180/cover_black_1280x720.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.0.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
