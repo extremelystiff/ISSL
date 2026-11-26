@@ -19892,5 +19892,25 @@
       "[object Object]",
       "[object Object]"
     ]
+  },
+  {
+    "id": 6554207,
+    "name": "Overclock",
+    "summary": "Co-op Checkpoint theater with an AR visor, drone support, Dinghy weapons and distinct faction voices. One download for Windows players and servers.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/overclock-coop",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/ee9d/6554207/crop_320x180/overclock.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.2.2"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
