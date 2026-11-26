@@ -19856,5 +19856,41 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6548291,
+    "name": "Overclock Support",
+    "summary": "Drone Technician support for Overclock. The main Overclock listing includes this native Windows client and server dependency.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/overclock-vehicles",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a41e/6548291/crop_320x180/overclock.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.2.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": []
+  },
+  {
+    "id": 6547626,
+    "name": "Overclock",
+    "summary": "Sci-fi Checkpoint theater with a squad visor, Felix, drones, faction voices and alternate ammunition. Native Windows client and dedicated-server release.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/overclock",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a336/6547626/crop_320x180/overclocksquad00000.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "1.2.0"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ]
   }
 ]
