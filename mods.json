@@ -19928,5 +19928,23 @@
     "metadata_blob": "",
     "metadata_kvp": [],
     "tags": []
+  },
+  {
+    "id": 6556287,
+    "name": "AFE2 Prologue",
+    "summary": "A dark industrial Prologue map adapted for Security co-op Checkpoint. Fight through 16 objectives with multiple approaches, resupply points, and permanently open passages.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/afe2-prologue",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/9acf/6556287/crop_320x180/01-industrial-lighting.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0-beta.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
