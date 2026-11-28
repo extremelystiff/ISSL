@@ -19946,5 +19946,23 @@
     "tags": [
       "[object Object]"
     ]
+  },
+  {
+    "id": 6559556,
+    "name": "AFE2 Colony",
+    "summary": "17-objective sci-fi industrial Checkpoint map with Security and reverse Insurgent routes. Dark lighting, repaired surfaces and distant enemy spawns. Public beta.",
+    "profileUrl": "https://mod.io/g/insurgencysandstorm/m/afe2-colony",
+    "logo": {
+      "thumb_320x180": "https://thumb.modcdn.io/mods/a050/6559556/crop_320x180/01-life-support.png"
+    },
+    "modfile": {
+      "id": 0,
+      "version": "0.1.0-beta.1"
+    },
+    "metadata_blob": "",
+    "metadata_kvp": [],
+    "tags": [
+      "[object Object]"
+    ]
   }
 ]
